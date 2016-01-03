@@ -149,15 +149,15 @@ echo "}" >> /etc/nginx/sites-available/default
 service nginx restart
 
 # check if the repo has been checked out and clone it if it hasn't
-if [ -d /opt/telecube.pbx ]; then
-	cd /opt/telecube.pbx
+if [ -d /opt/telecube-pbx ]; then
+	cd /opt/telecube-pbx
 	git pull
 else
 	cd /opt
-	git clone https://github.com/telecube/telecube.pbx.git
+	git clone https://github.com/telecube/telecube-pbx.git
 fi
 
-rsync -av --delete /opt/telecube.pbx/html/ /var/www/html/
+rsync -av --delete /opt/telecube-pbx/html/ /var/www/html/
 
-rsync -av --delete /opt/telecube.pbx/agi-bin /var/lib/asterisk/
+rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/
 
