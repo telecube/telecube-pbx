@@ -27,6 +27,25 @@ if !(whiptail --title "Telecube PBX Install" --yesno "This script will install t
     exit 1
 fi
 
+# we have to make sure mysql, asterisk and nginx aren't already installed
+ASTERISK_INSTALLED="$(dpkg-query -l | grep asterisk | wc -l)"
+if [ "$ASTERISK_INSTALLED" != "0" ]; then
+	echo "Asterisk is already installed!"
+	echo "To continue you must remove it: apt-get remove -y asterisk && apt-get purge && apt-get autoremove -y"
+	exit 1
+fi
+MYSQL_INSTALLED="$(dpkg-query -l | grep mysql-server | wc -l)"
+if [ "$MYSQL_INSTALLED" != "0" ]; then
+	echo "Mysql is already installed!"
+	echo "To continue you must remove it: apt-get remove -y mysql-server && apt-get purge && apt-get autoremove -y"
+	exit 1
+fi
+NGINX_INSTALLED="$(dpkg-query -l | grep nginx | wc -l)"
+if [ "$NGINX_INSTALLED" != "0" ]; then
+	echo "Nginx is already installed!"
+	echo "To continue you must remove it: apt-get remove -y nginx && apt-get purge && apt-get autoremove -y"
+	exit 1
+fi
 
 if [ ! -f /etc/apt/sources.list.d/nginx-stable.list ]; then
 	echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/nginx-stable.list 
@@ -51,16 +70,11 @@ while true ; do
 	fi	
 done
 
-# generate a random 16 char str for mysql password
-mysql_root_pass=$(openssl rand -base64 16)
 
 x=0
 while true ; do
 
-	echo mysql-server mysql-server/root_password password $mysql_root_pass | sudo debconf-set-selections
-	echo mysql-server mysql-server/root_password_again password $mysql_root_pass | sudo debconf-set-selections
-
-	if debconf-apt-progress -- aptitude -y install asterisk asterisk-dahdi asterisk-mysql asterisk-core-sounds-en-wav asterisk-moh-opsound-wav nginx php5 php5-fpm php5-mysql mysql-server git rsync
+	if debconf-apt-progress -- aptitude -y install asterisk asterisk-dahdi asterisk-mysql asterisk-core-sounds-en-wav asterisk-moh-opsound-wav nginx php5 php5-fpm php5-mysql php5-curl git rsync
 		then 
 			echo "done .."
 			break
@@ -75,6 +89,32 @@ while true ; do
 		break 
 	fi	
 done
+
+# generate a random 16 char str for mysql password
+mysql_root_pass=$(openssl rand -base64 16)
+
+x=0
+while true ; do
+
+	echo mysql-server mysql-server/root_password password $mysql_root_pass | sudo debconf-set-selections
+	echo mysql-server mysql-server/root_password_again password $mysql_root_pass | sudo debconf-set-selections
+
+	if debconf-apt-progress -- aptitude -y install mysql-server
+		then 
+			echo "done .."
+			break
+		else 
+			echo "oops, trying again in a few seconds .."
+			sleep 3
+	fi
+	
+	x=$((x+1))
+	if ["$x" = 30] ; then 
+		echo "\n\n## ERROR! ##\nFailed to install some critical packages!\n## ## ##\n"
+		break 
+	fi	
+done
+
 
 # write the password to the config file in /opt so the control panel has access to the db
 echo "<?php\n\$mysql_root_pass = \"$mysql_root_pass\";\n?>" > /opt/base_config.inc.php
