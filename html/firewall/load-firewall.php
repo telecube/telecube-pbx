@@ -5,10 +5,17 @@ use Telecube\Db;
 $Config = new Config;
 $Db     = new Db;
 
-try{
-	$dbPDO = new PDO('mysql:dbname='.$Config->get("db_name").';host='.$Config->get("db_host").';port='.$Config->get("db_port"), $Config->get("db_user"), $Config->get("db_pass"));
-} catch(PDOException $ex){
-	exit( 'Connection failed: ' . $ex->getMessage() );
+$x=0;
+while ($x <= 10) {
+	try{
+		$dbPDO = new PDO('mysql:dbname='.$Config->get("db_name").';host='.$Config->get("db_host").';port='.$Config->get("db_port"), $Config->get("db_user"), $Config->get("db_pass"));
+		break;
+	} catch(PDOException $ex){
+		//exit( 'Connection failed: ' . $ex->getMessage() );
+		echo 'Connection failed: ' . $ex->getMessage();
+		$x++;
+		sleep(3);
+	}
 }
 $dbPDO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
