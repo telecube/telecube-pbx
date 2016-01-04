@@ -5,7 +5,7 @@ use Telecube\Db;
 
 $err = false;
 
-if(isset($_POST['user'])){
+if(isset($_POST['login_form'])){
 	$Config = new Config;
 	$Db     = new Db;
 
@@ -39,6 +39,11 @@ if(isset($_POST['user'])){
 			session_start();
 
 			$_SESSION["user"] = $pbx_login_username;
+			// check for default user/pass
+			if($pbx_login_username == "admin" && $pbx_login_password == "admin"){
+				$_SESSION["force_password_change"] = 1;
+			}
+
 			header("Location: /");
 		}else{
 			$err = "Login credentials incorrect.";
@@ -66,27 +71,41 @@ if(isset($_POST['user'])){
 
     <div class="container">
 
-    <h1>Hello, Telecube PBX!</h1>
+		<div class="row">
+        
+        <div class="col-lg-3">
+        </div>
+        <div class="col-lg-6">
 
-	<div class="alert alert-warning" role="alert" style="display:<?php echo $err ? "" : "none";?>">
-		<strong>Error:</strong> <?php echo $err ? $err : "";?>
-	</div>
 
-    <form class="form-signin" method="post">
-      <h2 class="form-signin-heading">Log in</h2>
-      <label for="user" class="sr-only">Username</label>
-      <input type="text" id="user" name="user" class="form-control" placeholder="Username" required autofocus>
-      <label for="password" class="sr-only">Password</label>
-      <input type="password" id="pass" name="pass" class="form-control" placeholder="Password" required>
-      <div class="checkbox">
-        <label>
-        <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
-    </form>
+		    <h1>Hello, Telecube PBX!</h1>
+
+		    <form method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
+		        <div class="form-group">
+		            <label for="user">Username</label>
+		            <input type="text" class="form-control" id="user" name="user" placeholder="username">
+		            <input type="hidden" name="login_form" value="1">
+		        </div>
+		        <div class="form-group">
+		            <label for="pass">Password</label>
+		            <input type="password" class="form-control" id="pass" name="pass" placeholder="Password">
+		        </div>
+
+		        <button type="submit" class="btn btn-primary">Login</button>
+		    </form>
+
+			<p>&nbsp;</p>
+			<div class="alert alert-warning" role="alert" style="display:<?php echo $err ? "" : "none";?>">
+				<strong>Error:</strong> <?php echo $err ? $err : "";?>
+			</div>
+
+
+		</div>
+		</div>
+
 
     </div> <!-- /container -->
+
 
 
 

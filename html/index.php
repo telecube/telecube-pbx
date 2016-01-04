@@ -15,7 +15,7 @@ require("init.php");
     <div class="container">
 
       <h1>Hello, Telecube PBX!</h1>
-      <a href="/logout.php">Logout</a>
+
     
 
     </div>
