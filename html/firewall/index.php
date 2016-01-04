@@ -127,8 +127,38 @@ for($i=0;$i<$j;$i++) {
         </div>
       </form>
 
+      <form method="post" action="update.php">
+        <div class="panel panel-primary"> 
+          <div class="panel-heading"> 
+            <h3 class="panel-title">HTTPS Access (This webpage!)</h3> 
+          </div> 
+          <div class="panel-body">
+            <p>HTTPS is port 443 which is open to the world by default.</p>
+            <p>You can block HTTPS if you have added whitelisted IP address(es)</p>
+            <input type="hidden" name="firewall_update" value="https_update">
+            <div class="radio">
+              <label>
+                <input type="radio" name="fw_https_port" id="optionsRadios1" value="443" <?php echo $https_ports == "443" ? " checked" : "";?>>
+                Open
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="fw_https_port" id="optionsRadios2" value="off" <?php echo $https_ports == "off" ? " checked" : "";?>>
+                Closed
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Update HTTPS Options</button>
+            <p>&nbsp;</p>
+            <div class="alert alert-warning" role="alert" style="display:<?php echo isset($_GET['err']) ? "" : "none";?>">
+              <strong>Error:</strong> <?php echo isset($_GET['err']) ? $_GET['err'] : "";?>
+            </div>
+          </div> 
+        </div>
+      </form>
+
       <div class="well">
-        <h4>IP Tables Output</h4>
+        <h4>Iptables Output</h4>
         <code><?php $last = exec('sudo /sbin/iptables -nL', $o, $r);  print nl2br(htmlentities(implode("\n", $o)));?></code>
       </div>
 

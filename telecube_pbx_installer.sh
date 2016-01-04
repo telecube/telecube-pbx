@@ -131,7 +131,6 @@ while true ; do
 	fi	
 done
 
-
 # write the password to the config file in /opt so the control panel has access to the db
 echo "<?php\n\$mysql_root_pass = \"$mysql_root_pass\";\n?>" > /opt/base_config.inc.php
 
@@ -145,6 +144,8 @@ mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, v
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_sip_ports', '5060');"
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_rtp_ports', '8000:55000');"
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_https_ports', '443');"
+mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[]');"
+mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
 
 mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
 mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.user WHERE User=''"
