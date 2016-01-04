@@ -27,20 +27,10 @@ $addrule = `sudo /sbin/iptables -A INPUT -i lo -j ACCEPT`;
 $addrule = `sudo /sbin/iptables -A OUTPUT -o lo -j ACCEPT`;
 $addrule = `sudo /sbin/iptables -A INPUT -s 127.0.0.1 -j ACCEPT`;
 
-#Creating default policies
+# Creating default policies
 $addrule = `sudo /sbin/iptables -P INPUT DROP`;
 $addrule = `sudo /sbin/iptables -P OUTPUT DROP`;
 $addrule = `sudo /sbin/iptables -P FORWARD DROP`;
-
-$addrule = `sudo /sbin/iptables -A INPUT -p tcp --dport 443 -j ACCEPT`;
-$addrule = `sudo /sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT`;
-
-/* 
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_ssh_ports', '22');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_sip_ports', '5060');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_rtp_ports', '8000:55000');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_https_ports', '443');"
-*/
 
 $j = count($res);
 for($i=0;$i<$j;$i++) { 
@@ -74,6 +64,7 @@ for($i=0;$i<$j;$i++) {
 	}
 }
 
+# allow established connections
 $addrule = `sudo /sbin/iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT`;
 $addrule = `sudo /sbin/iptables -A FORWARD -i eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT`;
 $addrule = `sudo /sbin/iptables -A OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT`;
