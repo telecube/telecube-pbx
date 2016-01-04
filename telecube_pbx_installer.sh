@@ -131,6 +131,191 @@ mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.user WHERE User=''"
 mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'"
 mysql -u root -p"$mysql_root_pass" -e "FLUSH PRIVILEGES"
 
+mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.sip_devices (
+id int(11) NOT NULL,
+\`name\` varchar(80) NOT NULL DEFAULT '',
+\`context\` varchar(80) DEFAULT NULL,
+callingpres enum('allowed_not_screened','allowed_passed_screen','allowed_failed_screen','allowed','prohib_not_screened','prohib_passed_screen','prohib_failed_screen','prohib','unavailable') DEFAULT 'allowed_not_screened',
+deny text,
+permit text,
+secret varchar(80) DEFAULT NULL,
+md5secret varchar(80) DEFAULT NULL,
+remotesecret varchar(250) DEFAULT NULL,
+transport enum('tcp','udp','tcp,udp') DEFAULT NULL,
+\`host\` varchar(31) NOT NULL DEFAULT '',
+nat varchar(32) NOT NULL DEFAULT 'no',
+\`type\` enum('user','peer','friend') NOT NULL DEFAULT 'friend',
+\`call-limit\` int(10) unsigned NOT NULL,
+accountcode varchar(20) DEFAULT NULL,
+amaflags varchar(13) DEFAULT NULL,
+def_ac varchar(6) NOT NULL,
+callgroup varchar(10) DEFAULT NULL,
+callerid varchar(80) DEFAULT NULL,
+defaultip varchar(15) DEFAULT NULL,
+dtmfmode varchar(7) DEFAULT NULL,
+fromuser varchar(80) DEFAULT NULL,
+fromdomain varchar(80) DEFAULT NULL,
+insecure varchar(64) DEFAULT NULL,
+\`language\` char(2) DEFAULT NULL,
+mailbox varchar(50) DEFAULT NULL,
+pickupgroup varchar(10) DEFAULT NULL,
+namedcallgroup varchar(64) DEFAULT NULL,
+namedpickupgroup varchar(64) DEFAULT NULL,
+qualify char(3) DEFAULT NULL,
+regexten varchar(80) DEFAULT NULL,
+rtptimeout char(3) DEFAULT NULL,
+rtpholdtimeout char(3) DEFAULT NULL,
+setvar varchar(100) DEFAULT NULL,
+disallow varchar(100) DEFAULT 'all',
+allow varchar(100) DEFAULT 'g729;ilbc;gsm;ulaw;alaw;g722;g723',
+mohsuggest varchar(100) NOT NULL,
+fullcontact varchar(80) NOT NULL DEFAULT '',
+ipaddr varchar(15) NOT NULL DEFAULT '',
+\`port\` mediumint(5) unsigned NOT NULL DEFAULT '0',
+username varchar(80) NOT NULL DEFAULT '',
+defaultuser varchar(80) NOT NULL DEFAULT '',
+subscribecontext varchar(80) DEFAULT NULL,
+directmedia enum('yes','no') DEFAULT NULL,
+trustrpid enum('yes','no') DEFAULT NULL,
+sendrpid enum('yes','no') DEFAULT NULL,
+progressinband enum('never','yes','no') DEFAULT NULL,
+promiscredir enum('yes','no') DEFAULT NULL,
+useclientcode enum('yes','no') DEFAULT NULL,
+callcounter enum('yes','no') DEFAULT NULL,
+busylevel int(10) unsigned DEFAULT NULL,
+allowoverlap enum('yes','no') DEFAULT 'yes',
+allowsubscribe enum('yes','no') DEFAULT 'yes',
+allowtransfer enum('yes','no') DEFAULT 'yes',
+ignoresdpversion enum('yes','no') DEFAULT 'no',
+template varchar(100) DEFAULT NULL,
+videosupport enum('yes','no','always') DEFAULT 'no',
+maxcallbitrate int(10) unsigned DEFAULT NULL,
+rfc2833compensate enum('yes','no') DEFAULT 'yes',
+\`session-timers\` enum('originate','accept','refuse') DEFAULT 'accept',
+\`session-expires\` int(5) unsigned DEFAULT '1800',
+\`session-minse\` int(5) unsigned DEFAULT '90',
+\`session-refresher\` enum('uac','uas') DEFAULT 'uas',
+t38pt_usertpsource enum('yes','no') DEFAULT NULL,
+outboundproxy varchar(250) DEFAULT NULL,
+callbackextension varchar(250) DEFAULT NULL,
+registertrying enum('yes','no') DEFAULT 'yes',
+timert1 int(5) unsigned DEFAULT '500',
+timerb int(8) unsigned DEFAULT NULL,
+qualifyfreq int(5) unsigned DEFAULT '120',
+contactpermit varchar(250) DEFAULT NULL,
+contactdeny varchar(250) DEFAULT NULL,
+lastms int(11) NOT NULL,
+regserver varchar(100) NOT NULL DEFAULT '',
+regseconds int(11) NOT NULL DEFAULT '0',
+useragent varchar(254) NOT NULL,
+parkinglot varchar(128) DEFAULT NULL,
+bar_mobile varchar(1) NOT NULL,
+bar_fixed varchar(1) NOT NULL,
+bar_int varchar(1) NOT NULL,
+bar_13 varchar(1) NOT NULL
+);"
+
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.sip_devices ADD PRIMARY KEY (id), ADD UNIQUE KEY \`name\` (\`name\`), ADD KEY \`host\` (\`host\`), ADD KEY \`useragent\` (\`useragent\`), ADD KEY \`call-limit\` (\`call-limit\`);"
+
+mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.voicemail_users (
+uniqueid int(11) NOT NULL,
+v2e_id int(10) unsigned NOT NULL,
+\`context\` varchar(50) NOT NULL DEFAULT '',
+mailbox varchar(11) NOT NULL DEFAULT '0',
+\`password\` varchar(5) NOT NULL DEFAULT '0',
+fullname varchar(150) NOT NULL DEFAULT '',
+email text NOT NULL,
+pager varchar(50) NOT NULL DEFAULT '',
+tz varchar(10) NOT NULL DEFAULT 'central',
+attach varchar(4) NOT NULL DEFAULT 'no',
+maxmsg int(5) unsigned NOT NULL DEFAULT '999',
+msg_format varchar(16) NOT NULL DEFAULT 'WAV',
+saycid varchar(4) NOT NULL DEFAULT 'no',
+dialout varchar(10) NOT NULL DEFAULT '',
+callback varchar(10) NOT NULL DEFAULT '',
+review varchar(4) NOT NULL DEFAULT 'no',
+operator varchar(4) NOT NULL DEFAULT 'no',
+envelope varchar(4) NOT NULL DEFAULT 'no',
+sayduration varchar(4) NOT NULL DEFAULT 'no',
+saydurationm tinyint(4) NOT NULL DEFAULT '1',
+sendvoicemail varchar(4) NOT NULL DEFAULT 'no',
+\`delete\` varchar(4) NOT NULL DEFAULT 'no',
+nextaftercmd varchar(4) NOT NULL DEFAULT 'yes',
+forcename varchar(4) NOT NULL DEFAULT 'no',
+forcegreetings varchar(4) NOT NULL DEFAULT 'no',
+hidefromdir varchar(4) NOT NULL DEFAULT 'yes',
+stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);"
+
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.voicemail_users ADD PRIMARY KEY (uniqueid), ADD KEY mailbox_context (mailbox,\`context\`), ADD KEY v2e_id (v2e_id);"
+
+mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.queues (
+\`name\` varchar(128) NOT NULL,
+qid int(10) unsigned NOT NULL,
+musiconhold varchar(128) DEFAULT NULL,
+announce varchar(128) DEFAULT NULL,
+\`context\` varchar(128) DEFAULT NULL,
+timeout int(11) DEFAULT NULL,
+monitor_type varchar(50) NOT NULL,
+monitor_format varchar(128) DEFAULT NULL,
+queue_youarenext varchar(128) DEFAULT NULL,
+queue_thereare varchar(128) DEFAULT NULL,
+queue_callswaiting varchar(128) DEFAULT NULL,
+queue_holdtime varchar(128) DEFAULT NULL,
+queue_minutes varchar(128) DEFAULT NULL,
+queue_seconds varchar(128) DEFAULT NULL,
+queue_lessthan varchar(128) DEFAULT NULL,
+queue_thankyou varchar(128) DEFAULT NULL,
+queue_reporthold varchar(128) DEFAULT NULL,
+announce_frequency int(11) DEFAULT NULL,
+announce_round_seconds int(11) DEFAULT NULL,
+announce_holdtime varchar(128) DEFAULT NULL,
+retry int(11) DEFAULT NULL,
+wrapuptime int(11) DEFAULT NULL,
+maxlen int(11) DEFAULT NULL,
+servicelevel int(11) DEFAULT NULL,
+strategy varchar(128) DEFAULT NULL,
+joinempty varchar(128) DEFAULT NULL,
+leavewhenempty varchar(128) DEFAULT NULL,
+eventmemberstatus varchar(4) DEFAULT NULL,
+eventwhencalled varchar(4) DEFAULT NULL,
+reportholdtime tinyint(1) DEFAULT NULL,
+memberdelay int(11) DEFAULT NULL,
+weight int(11) DEFAULT NULL,
+timeoutrestart tinyint(1) DEFAULT NULL,
+periodic_announce varchar(50) DEFAULT NULL,
+periodic_announce_frequency int(11) DEFAULT NULL,
+ringinuse tinyint(1) DEFAULT NULL,
+setinterfacevar varchar(4) NOT NULL DEFAULT 'yes'
+);"
+
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.queues ADD PRIMARY KEY (qid), ADD KEY \`name\` (\`name\`);"
+
+mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.queue_members (
+uniqueid int(10) unsigned NOT NULL,
+membername varchar(40) DEFAULT NULL,
+queue_name varchar(128) DEFAULT NULL,
+interface varchar(128) DEFAULT NULL,
+penalty int(11) DEFAULT NULL,
+paused tinyint(1) DEFAULT NULL
+);"
+
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.queue_members ADD PRIMARY KEY (uniqueid), ADD UNIQUE KEY queue_interface (queue_name,interface), ADD KEY queue_name (queue_name);"
+
+mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.musiconhold (
+\`name\` varchar(80) NOT NULL,
+\`directory\` varchar(255) NOT NULL DEFAULT '',
+application varchar(255) NOT NULL DEFAULT '',
+\`mode\` varchar(80) NOT NULL DEFAULT '',
+digit char(1) NOT NULL DEFAULT '',
+sort varchar(16) NOT NULL DEFAULT '',
+format varchar(16) NOT NULL DEFAULT ''
+);"
+
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.musiconhold ADD PRIMARY KEY (\`name\`);"
+
+
+
 
 # create certs folder
 if [ ! -d /var/www/certs ]; then
