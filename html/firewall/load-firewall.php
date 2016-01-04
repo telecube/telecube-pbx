@@ -12,12 +12,9 @@ try{
 }
 $dbPDO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-
-
 $q = "select * from preferences where name LIKE 'fw_%';";
 $data = array();
 $res = $Db->pdo_query($q,$data,$dbPDO);
-print_r($res);
 
 #Flush all existing chains
 $addrule = `sudo /sbin/iptables --flush`;
