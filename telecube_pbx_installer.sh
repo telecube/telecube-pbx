@@ -201,7 +201,7 @@ rsync -av --delete /opt/telecube-pbx/html/ /var/www/html/
 
 rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/
 
-echo "\n\n##############################"
+echo "\n\n#########################################"
 echo "Done!"
 echo "You can log in to your server at the following address(es)"
 
@@ -213,6 +213,6 @@ do
 done
 
 echo "Default username/password is admin/admin"
-echo "##############################"
+echo "#########################################"
 
 
