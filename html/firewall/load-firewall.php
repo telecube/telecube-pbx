@@ -1,5 +1,5 @@
 <?php
-require("../classes/_autoloader.php");
+require("/var/www/html/classes/_autoloader.php");
 use Telecube\Config;
 use Telecube\Db;
 $Config = new Config;
