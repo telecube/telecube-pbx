@@ -129,7 +129,7 @@ for($i=0;$i<$j;$i++) {
 
       <div class="well">
         <h4>IP Tables Output</h4>
-        <code><?php $last = exec('sudo /sbin/iptables -L', $o, $r);  print nl2br(htmlentities(implode("\n", $o)));?></code>
+        <code><?php $last = exec('sudo /sbin/iptables -nL', $o, $r);  print nl2br(htmlentities(implode("\n", $o)));?></code>
       </div>
 
 
