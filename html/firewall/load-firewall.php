@@ -31,6 +31,13 @@ $addrule = `sudo /sbin/iptables -P FORWARD DROP`;
 
 $j = count($res);
 for($i=0;$i<$j;$i++) { 
+	if($res[$i]['name'] == "fw_whitelist_ips"){
+		$list = json_decode($res[$i]['value']);
+		$jj = count($list);
+		for($ii=0;$ii<$jj;$ii++) { 
+			$addrule = `sudo /sbin/iptables -A INPUT -s $list[$ii] -j ACCEPT`;
+		}
+	}
 	# ssh ports
 	if($res[$i]['name'] == "fw_ssh_ports"){
 		if($res[$i]['value'] == "both"){
@@ -65,6 +72,5 @@ for($i=0;$i<$j;$i++) {
 $addrule = `sudo /sbin/iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT`;
 $addrule = `sudo /sbin/iptables -A FORWARD -i eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT`;
 $addrule = `sudo /sbin/iptables -A OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT`;
-
 
 ?>

@@ -1,7 +1,8 @@
 <?php
 require("../init.php");
 
-//print_r($_POST);
+//print_r($_POST); exit;
+
 if($_POST["firewall_update"] == "ssh_update"){
 	$q = "update preferences set value = ? where name = 'fw_ssh_ports';";
 	$data = array($_POST["fw_ssh_port"]);
@@ -39,6 +40,14 @@ if($_POST["firewall_update"] == "https_update"){
 	$data = array($_POST["fw_https_port"]);
 	$Db->pdo_query($q,$data,$dbPDO);
 	$update_type = "https_ports";
+}
+
+if($_POST["firewall_update"] == "whitelist_ips"){
+	$list = trim($_POST["fw_whitelist_ips"]);
+	$q = "update preferences set value = ? where name = 'fw_whitelist_ips';";
+	$data = array(json_encode(explode("\r\n", $list)));
+	$Db->pdo_query($q,$data,$dbPDO);
+	$update_type = "whitelist_ips";
 }
 
 

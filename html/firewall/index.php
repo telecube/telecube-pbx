@@ -20,6 +20,9 @@ for($i=0;$i<$j;$i++) {
   if($res[$i]['name'] == "fw_https_ports"){
     $https_ports = $res[$i]['value'];
   }
+  if($res[$i]['name'] == "fw_whitelist_ips"){
+    $whitelist_ips = json_decode(stripslashes($res[$i]['value']));
+  }
 }
 
 
@@ -149,13 +152,30 @@ for($i=0;$i<$j;$i++) {
               </label>
             </div>
             <button type="submit" class="btn btn-primary">Update HTTPS Options</button>
-            <p>&nbsp;</p>
+            <p style="display:<?php echo isset($_GET['err']) ? "" : "none";?>">&nbsp;</p>
             <div class="alert alert-warning" role="alert" style="display:<?php echo isset($_GET['err']) ? "" : "none";?>">
               <strong>Error:</strong> <?php echo isset($_GET['err']) ? $_GET['err'] : "";?>
             </div>
           </div> 
         </div>
       </form>
+
+      <form method="post" action="update.php">
+        <div class="panel panel-primary"> 
+          <div class="panel-heading"> 
+            <h3 class="panel-title">Whitelist IP Addresses</h3> 
+          </div> 
+          <div class="panel-body">
+            <p>Add IP addresses to a whitelist, one per line.</p>
+            <p>They can be single (10.0.1.2) or CIDR (10.0.1.0/24) format only.</p>
+            <input type="hidden" name="firewall_update" value="whitelist_ips">
+            <textarea class="form-control" name="fw_whitelist_ips" rows="5"><?php echo implode("\n", $whitelist_ips);?></textarea>
+            <p></p>
+            <button type="submit" class="btn btn-primary">Update Whitelist IPs</button>
+          </div> 
+        </div>
+      </form>
+
 
       <div class="well">
         <h4>Iptables Output</h4>
