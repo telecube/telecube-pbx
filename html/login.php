@@ -35,7 +35,7 @@ if(isset($_POST['login_form'])){
 	if($pbx_login_username && $pbx_login_password){
 		if($_POST['user'] == $pbx_login_username && $_POST['pass'] == $pbx_login_password){
 
-			session_name($Config->session_name);
+			session_name($Config->get("session_name"));
 			session_start();
 
 			$_SESSION["user"] = $pbx_login_username;
