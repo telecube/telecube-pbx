@@ -22,7 +22,7 @@ if [ "$NAME" != "Ubuntu" ] || [ "$VERSION_ID" != "14.04" ]; then
 fi
 
 
-if !(whiptail --title "Telecube PBX Un-Install" --yesno "This script will delete the Telecube PBX and remove the associated packages.\n\nALL DATA WILL BE DELETED!\n\nDo you want to continue?" 10 60) then
+if !(whiptail --title "Telecube PBX Un-Install" --yesno "This script will delete the Telecube PBX and remove the associated packages.\n\nALL DATA WILL BE DELETED!\n\nDo you want to continue?" 15 60) then
     echo "Bye."
     exit 1
 fi
