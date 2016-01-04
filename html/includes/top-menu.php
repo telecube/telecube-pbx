@@ -15,15 +15,22 @@
               <li class="active"><a href="/">Dashboard</a></li>
               <li><a href="#contact">Contact</a></li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">PBX Settings <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="/extensions/">Extensions</a></li>
                   <li><a href="/trunks">Trunks</a></li>
-                  <li><a href="#">Something else here</a></li>
                   <li role="separator" class="divider"></li>
-                  <li class="dropdown-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
+                  <li class="dropdown-header">PBX Features</li>
+                  <li><a href="#">Auto Attendant (IVR)</a></li>
+                  <li><a href="#">Queues (Ring Groups)</a></li>
+                  <li><a href="#">Music On Hold</a></li>
+                  <li><a href="#">Address Book</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Server Settings <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/firewall/">Firewall</a></li>
                 </ul>
               </li>
               <li><a href="/logout.php">Logout</a></li>

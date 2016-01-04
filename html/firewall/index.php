@@ -14,9 +14,9 @@ require("../init.php");
 
     <div class="container">
 
-      <h1>Trunks</h1>
+      <h1>Firewall</h1>
       <div class="well">
-        <p>Trunks are the connections between your PBX server and voip providers or other servers.</p>
+        <p>Configure firewall options here.</p>
       </div>
     
 

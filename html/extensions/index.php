@@ -14,8 +14,10 @@ require("../init.php");
 
     <div class="container">
 
-      <h1>Hello, Telecube PBX!</h1>
-    
+      <h1>Extensions</h1>
+      <div class="well">
+        <p>Extensions are what your voip devices connect to.</p>
+      </div>
 
     </div>
 
