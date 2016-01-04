@@ -1,6 +1,7 @@
 <?php
 require("init.php");
 $msg = false;
+$err = false;
 if(isset($_POST["pass_change_form"])){
 	// make sure the user/pass1 are not empty
 	if(empty($_POST["username"]) || empty($_POST["password_1"]) || empty($_POST["password_2"])){
