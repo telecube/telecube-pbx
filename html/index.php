@@ -1,5 +1,6 @@
 <?php
 require("init.php");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +17,9 @@ require("init.php");
 
       <h1>Hello, Telecube PBX!</h1>
 
-    
+
+
+
 
     </div>
 

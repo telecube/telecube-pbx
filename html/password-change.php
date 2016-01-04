@@ -19,7 +19,7 @@ if(isset($_POST["pass_change_form"])){
 
 			unset($_SESSION["force_password_change"]);
 
-			$msg = "Password update successful. Redirecting to dashboard ..";
+			$msg = "Password update successful. Redirecting to dashboard . <span class=\"glyphicon glyphicon-refresh glyphicon-spin\"></span>";
 			
 			header( "refresh:5;url=/" );
 
