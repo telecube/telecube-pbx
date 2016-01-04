@@ -47,6 +47,22 @@ if [ "$NGINX_INSTALLED" != "0" ]; then
 	exit 1
 fi
 
+# enable port 32122
+STR="Port 32122"
+if grep -Fxq "$STR" /etc/ssh/sshd_config
+then
+    # code if found
+    echo "Port 32122 already configured"
+else
+    # code if not found
+	sed -i '/Port 22/a Port 32122\n' /etc/ssh/sshd_config
+
+	echo "Added port 32122 to sshd_config ..."
+fi
+
+# restart ssh
+/etc/init.d/ssh restart
+
 if [ ! -f /etc/apt/sources.list.d/nginx-stable.list ]; then
 	echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/nginx-stable.list 
 	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C 
@@ -74,7 +90,7 @@ done
 x=0
 while true ; do
 
-	if debconf-apt-progress -- aptitude -y install asterisk asterisk-dahdi asterisk-mysql asterisk-core-sounds-en-wav asterisk-moh-opsound-wav nginx php5 php5-fpm php5-mysql php5-curl git rsync
+	if debconf-apt-progress -- aptitude -y install asterisk asterisk-dahdi asterisk-mysql asterisk-core-sounds-en-wav asterisk-moh-opsound-wav nginx php5 php5-fpm php5-mysql php5-curl php5-cli git rsync iptables
 		then 
 			echo "done .."
 			break
@@ -125,6 +141,10 @@ mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE telecube.preferences (name v
 
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('pbx_login_username', 'admin');"
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('pbx_login_password', 'admin');"
+mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_ssh_ports', '22');"
+mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_sip_ports', '5060');"
+mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_rtp_ports', '8000:55000');"
+mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_https_ports', '443');"
 
 mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
 mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.user WHERE User=''"
@@ -314,8 +334,11 @@ format varchar(16) NOT NULL DEFAULT ''
 
 mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.musiconhold ADD PRIMARY KEY (\`name\`);"
 
+# set sudoers permissions
+echo "# Telecube PBX Sudoers permissions" > /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /sbin/iptables" >> /etc/sudoers.d/telecube-sudo
 
-
+/etc/init.d/sudoers restart
 
 # create certs folder
 if [ ! -d /var/www/certs ]; then
@@ -385,6 +408,12 @@ fi
 rsync -av --delete /opt/telecube-pbx/html/ /var/www/html/
 
 rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/
+
+# start the firewall
+/usr/bin/php /var/www/html/firewall/load-firewall.php
+
+# add cron
+crontab -l | { cat; echo "@reboot /usr/bin/php /var/www/html/firewall/load-firewall.php >/dev/null 2>&1"; } | crontab -
 
 echo "\n\n#########################################"
 echo "Done!"

@@ -52,4 +52,11 @@ rm -f /opt/base_config.inc.php
 # remove the asterisk configs
 rm -R -f /var/lib/asterisk
 
+# remove suoders conf
+rm -f /etc/sudoers.d/telecube-sudo
+
+# clear cron
+echo "" | crontab -
+
+
 echo "Done .. !"

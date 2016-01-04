@@ -13,7 +13,6 @@
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="active"><a href="/">Dashboard</a></li>
-              <li><a href="#contact">Contact</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">PBX Settings <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -33,6 +32,7 @@
                   <li><a href="/firewall/">Firewall</a></li>
                 </ul>
               </li>
+              <li><a href="/update/">Update</a></li>
               <li><a href="/logout.php">Logout</a></li>
             </ul>
           </div><!--/.nav-collapse -->
