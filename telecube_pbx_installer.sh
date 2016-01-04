@@ -201,3 +201,18 @@ rsync -av --delete /opt/telecube-pbx/html/ /var/www/html/
 
 rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/
 
+echo "\n\n##############################"
+echo "Done!"
+echo "You can log in to your server at the following address(es)"
+
+HOST_IP=$(ifconfig | awk -F':' '/inet addr/&&!/127.0.0.1/{split($2,_," ");print _[1]}')
+arr=$(echo $HOST_IP | tr " " "\n")
+for x in $arr
+do
+    echo "https://$x/login.php"
+done
+
+echo "Default username/password is admin/admin"
+echo "##############################"
+
+
