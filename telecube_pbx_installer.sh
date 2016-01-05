@@ -230,13 +230,14 @@ regserver varchar(100) NOT NULL DEFAULT '',
 regseconds int(11) NOT NULL DEFAULT '0',
 useragent varchar(254) NOT NULL,
 parkinglot varchar(128) DEFAULT NULL,
+label varchar(254) DEFAULT '',
 bar_mobile varchar(1) NOT NULL,
 bar_fixed varchar(1) NOT NULL,
 bar_int varchar(1) NOT NULL,
 bar_13 varchar(1) NOT NULL
 );"
-
 mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.sip_devices ADD PRIMARY KEY (id), ADD UNIQUE KEY \`name\` (\`name\`), ADD KEY \`host\` (\`host\`), ADD KEY \`useragent\` (\`useragent\`), ADD KEY \`call-limit\` (\`call-limit\`);"
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.sip_devices MODIFY id int(11) NOT NULL AUTO_INCREMENT;"
 
 mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.voicemail_users (
 uniqueid int(11) NOT NULL,
@@ -267,8 +268,8 @@ forcegreetings varchar(4) NOT NULL DEFAULT 'no',
 hidefromdir varchar(4) NOT NULL DEFAULT 'yes',
 stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );"
-
 mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.voicemail_users ADD PRIMARY KEY (uniqueid), ADD KEY mailbox_context (mailbox,\`context\`), ADD KEY v2e_id (v2e_id);"
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.voicemail_users MODIFY uniqueid int(11) NOT NULL AUTO_INCREMENT;"
 
 mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.queues (
 \`name\` varchar(128) NOT NULL,
@@ -309,8 +310,8 @@ periodic_announce_frequency int(11) DEFAULT NULL,
 ringinuse tinyint(1) DEFAULT NULL,
 setinterfacevar varchar(4) NOT NULL DEFAULT 'yes'
 );"
-
 mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.queues ADD PRIMARY KEY (qid), ADD KEY \`name\` (\`name\`);"
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.queues MODIFY qid int(10) NOT NULL AUTO_INCREMENT;"
 
 mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.queue_members (
 uniqueid int(10) unsigned NOT NULL,
@@ -320,8 +321,8 @@ interface varchar(128) DEFAULT NULL,
 penalty int(11) DEFAULT NULL,
 paused tinyint(1) DEFAULT NULL
 );"
-
 mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.queue_members ADD PRIMARY KEY (uniqueid), ADD UNIQUE KEY queue_interface (queue_name,interface), ADD KEY queue_name (queue_name);"
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.queue_members MODIFY uniqueid int(10) NOT NULL AUTO_INCREMENT;"
 
 mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.musiconhold (
 \`name\` varchar(80) NOT NULL,
@@ -332,14 +333,11 @@ digit char(1) NOT NULL DEFAULT '',
 sort varchar(16) NOT NULL DEFAULT '',
 format varchar(16) NOT NULL DEFAULT ''
 );"
-
 mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.musiconhold ADD PRIMARY KEY (\`name\`);"
 
 # set sudoers permissions
 echo "# Telecube PBX Sudoers permissions" > /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /sbin/iptables" >> /etc/sudoers.d/telecube-sudo
-
-#/etc/init.d/sudoers restart
 
 # create certs folder
 if [ ! -d /var/www/certs ]; then

@@ -16,7 +16,7 @@ require("../init.php");
 
       <h1>Trunks</h1>
       <div class="well">
-        <p>Trunks are the connections between your PBX server and voip providers or other servers.</p>
+        <p>Trunks are the connections between this PBX server and voip providers or other servers.</p>
       </div>
     
 

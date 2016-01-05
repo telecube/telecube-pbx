@@ -38,6 +38,7 @@ $trunks_active = strpos($rq_uri, "/trunks/") !== false ? 'class="active"' : "";
                   <li><a href="#">Auto Attendant (IVR)</a></li>
                   <li><a href="#">Queues (Ring Groups)</a></li>
                   <li><a href="#">Music On Hold</a></li>
+                  <li><a href="#">Busy Lamp Field</a></li>
                   <li><a href="#">Address Book</a></li>
                 </ul>
               </li>

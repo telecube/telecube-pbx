@@ -45,7 +45,34 @@ for($i=0;$i<$j;$i++) {
       <div class="well">
         <p>Configure firewall options here.</p>
       </div>
+
+      <div class="row">
+        
+        <div class="col-lg-6">
+
+      <form method="post" action="update.php">
+        <div class="panel panel-primary"> 
+          <div class="panel-heading"> 
+            <h3 class="panel-title">Whitelist IP Addresses</h3> 
+          </div> 
+          <div class="panel-body">
+            <p>Add IP addresses to a whitelist, one per line.</p>
+            <p>They can be single (10.0.1.2) or CIDR (10.0.1.0/24) format only.</p>
+            <input type="hidden" name="firewall_update" value="whitelist_ips">
+            <textarea class="form-control" name="fw_whitelist_ips" rows="5"><?php echo implode("\n", $whitelist_ips);?></textarea>
+            <p></p>
+            <button type="submit" class="btn btn-primary">Update Whitelist IPs</button>
+          </div> 
+        </div>
+      </form>
+
     
+        
+        </div>
+
+        <div class="col-lg-6">
+
+
       <form method="post" action="update.php">
         <div class="panel panel-primary"> 
           <div class="panel-heading"> 
@@ -78,6 +105,17 @@ for($i=0;$i<$j;$i++) {
         </div>
       </form>
 
+          
+
+          </div> 
+        </div>
+
+
+      <div class="row">
+        
+        <div class="col-lg-6">
+
+
       <form method="post" action="update.php">
         <div class="panel panel-primary"> 
           <div class="panel-heading"> 
@@ -104,6 +142,12 @@ for($i=0;$i<$j;$i++) {
         </div>
       </form>
 
+
+
+          </div> 
+
+        <div class="col-lg-6">
+
       <form method="post" action="update.php">
         <div class="panel panel-primary"> 
           <div class="panel-heading"> 
@@ -129,6 +173,15 @@ for($i=0;$i<$j;$i++) {
           </div> 
         </div>
       </form>
+
+        </div>
+
+        </div>
+
+
+      <div class="row">
+        
+        <div class="col-lg-6">
 
       <form method="post" action="update.php">
         <div class="panel panel-primary"> 
@@ -160,22 +213,10 @@ for($i=0;$i<$j;$i++) {
         </div>
       </form>
 
-      <form method="post" action="update.php">
-        <div class="panel panel-primary"> 
-          <div class="panel-heading"> 
-            <h3 class="panel-title">Whitelist IP Addresses</h3> 
           </div> 
-          <div class="panel-body">
-            <p>Add IP addresses to a whitelist, one per line.</p>
-            <p>They can be single (10.0.1.2) or CIDR (10.0.1.0/24) format only.</p>
-            <input type="hidden" name="firewall_update" value="whitelist_ips">
-            <textarea class="form-control" name="fw_whitelist_ips" rows="5"><?php echo implode("\n", $whitelist_ips);?></textarea>
-            <p></p>
-            <button type="submit" class="btn btn-primary">Update Whitelist IPs</button>
-          </div> 
-        </div>
-      </form>
+        
 
+        </div>
 
       <div class="well">
         <h4>Iptables Output</h4>

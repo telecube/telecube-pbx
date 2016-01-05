@@ -21,7 +21,7 @@ class Db{
 				}
 	    	}
 
-	    	if($query_type == "update" || $query_type == "insert" || $query_type == "delete"){
+	    	if($query_type == "update" || $query_type == "insert" || $query_type == "delete" || $query_type == "optimi"){
 	    		$res = $rec->execute($data); 
 	    	}
 
@@ -34,7 +34,6 @@ class Db{
 			return $ex->getMessage();
 	    } 
 	}
-
 }
 
 ?>
