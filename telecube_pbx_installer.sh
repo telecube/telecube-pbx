@@ -399,6 +399,9 @@ service nginx restart
 
 
 # setup the asterisk configs
+sed -i 's/astagidir => \/usr\/share\/asterisk\/agi-bin/astagidir => \/var\/lib\/asterisk\/agi-bin/g' /etc/asterisk/asterisk.conf
+sed -i 's/astdatadir => \/usr\/share\/asterisk/astdatadir => \/var\/lib\/asterisk/g' /etc/asterisk/asterisk.conf
+
 cp /etc/asterisk/sip.conf /etc/asterisk/sip.conf_BAK_$(date "+%Y-%m-%d-%H:%M:%S")
 
 HOST_IP=$(ifconfig | awk -F':' '/inet addr/&&!/127.0.0.1/{split($2,_," ");print _[1]}')
@@ -430,6 +433,7 @@ echo "sdpsession=Asterisk (Telecube) PBX" >> /etc/asterisk/sip.conf
 echo "rtcachefriends=yes" >> /etc/asterisk/sip.conf
 echo "rtsavesysname=yes" >> /etc/asterisk/sip.conf
 echo "alwaysauthreject=yes" >> /etc/asterisk/sip.conf
+echo "progressinband=yes" >> /etc/asterisk/sip.conf
 
 cp /etc/asterisk/extensions.conf /etc/asterisk/extensions.conf_BAK_$(date "+%Y-%m-%d-%H:%M:%S")
 
@@ -438,16 +442,16 @@ echo "" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
 echo "[public]" >> /etc/asterisk/extensions.conf
 echo "exten => _1[0-9]XX,1,NoOp(Dialing - ${EXTEN})" >> /etc/asterisk/extensions.conf
-echo "exten => _1[0-9]XX,n,Agi(digital-in.php)" >> /etc/asterisk/extensions.conf
+echo "exten => _1[0-9]XX,n,Agi(/var/lib/asterisk/agi-bin/voip-in.php)" >> /etc/asterisk/extensions.conf
 echo "exten => _1[0-9]XX,n,Hangup()" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
 echo "[voip-extensions]" >> /etc/asterisk/extensions.conf
 echo "exten => _X.,1,NoOp(New voip call)" >> /etc/asterisk/extensions.conf
-echo "exten => _X.,n,Agi(voip-out.php)" >> /etc/asterisk/extensions.conf
+echo "exten => _X.,n,Agi(/var/lib/asterisk/agi-bin/voip-out.php)" >> /etc/asterisk/extensions.conf
 echo "exten => _X.,n,Hangup()" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
 echo "exten => _+X.,1,NoOp(New voip call)" >> /etc/asterisk/extensions.conf
-echo "exten => _+X.,n,Agi(voip-out.php)" >> /etc/asterisk/extensions.conf
+echo "exten => _+X.,n,Agi(/var/lib/asterisk/agi-bin/voip-out.php)" >> /etc/asterisk/extensions.conf
 echo "exten => _+X.,n,Hangup()" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf

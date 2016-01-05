@@ -6,6 +6,7 @@
 require("classes/_autoloader.php");
 use Telecube\Common;
 use Telecube\Config;
+use Telecube\Curl;
 use Telecube\Db;
 $Config = new Config;
 
@@ -32,8 +33,9 @@ try{
 }
 $dbPDO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-$Db 	= new Db;
 $Common = new Common;
+$Curl 	= new Curl;
+$Db 	= new Db;
 
 
 
