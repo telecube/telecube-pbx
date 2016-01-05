@@ -339,7 +339,7 @@ mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.musiconhold ADD PRIM
 echo "# Telecube PBX Sudoers permissions" > /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /sbin/iptables" >> /etc/sudoers.d/telecube-sudo
 
-/etc/init.d/sudoers restart
+#/etc/init.d/sudoers restart
 
 # create certs folder
 if [ ! -d /var/www/certs ]; then
