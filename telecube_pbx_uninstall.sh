@@ -48,6 +48,7 @@ rm -R -f /var/lib/mysql
 # remove the install directories
 rm -R -f /opt/telecube-pbx
 rm -f /opt/base_config.inc.php
+rm -f /opt/mysql_root_pass
 
 # remove the asterisk configs
 rm -R -f /var/lib/asterisk
