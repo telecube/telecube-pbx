@@ -133,6 +133,7 @@ done
 
 # write the password to the config file in /opt so the control panel has access to the db
 echo "<?php\n\$mysql_root_pass = \"$mysql_root_pass\";\n?>" > /opt/base_config.inc.php
+echo "$mysql_root_pass" > /opt/mysql_root_pass
 
 # create the db and initial tables/values
 mysql -u root -p"$mysql_root_pass" -e "create database telecube;"
@@ -338,6 +339,7 @@ mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.musiconhold ADD PRIM
 # set sudoers permissions
 echo "# Telecube PBX Sudoers permissions" > /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /sbin/iptables" >> /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /usr/sbin/asterisk" >> /etc/sudoers.d/telecube-sudo
 
 # create certs folder
 if [ ! -d /var/www/certs ]; then
@@ -394,6 +396,96 @@ echo "        }" >> /etc/nginx/sites-available/default
 echo "}" >> /etc/nginx/sites-available/default
 
 service nginx restart
+
+
+# setup the asterisk configs
+cp /etc/asterisk/sip.conf /etc/asterisk/sip.conf_BAK_$(date "+%Y-%m-%d-%H:%M:%S")
+
+HOST_IP=$(ifconfig | awk -F':' '/inet addr/&&!/127.0.0.1/{split($2,_," ");print _[1]}')
+arr=$(echo $HOST_IP | tr " " "\n")
+for x in $arr
+do
+   ASTERISK_IP=$x
+   break
+done
+
+echo "[general]" > /etc/asterisk/sip.conf
+echo "context=public" >> /etc/asterisk/sip.conf
+echo "allowoverlap=no" >> /etc/asterisk/sip.conf
+echo "udpbindaddr=$ASTERISK_IP" >> /etc/asterisk/sip.conf
+echo "tcpenable=no" >> /etc/asterisk/sip.conf
+echo "tcpbindaddr=0.0.0.0" >> /etc/asterisk/sip.conf
+echo "transport=udp" >> /etc/asterisk/sip.conf
+echo "realm=telecube.com.au" >> /etc/asterisk/sip.conf
+echo "srvlookup=yes" >> /etc/asterisk/sip.conf
+echo "maxexpiry=240" >> /etc/asterisk/sip.conf
+echo "minexpiry=120" >> /etc/asterisk/sip.conf
+echo "defaultexpiry=180" >> /etc/asterisk/sip.conf
+echo "language=au" >> /etc/asterisk/sip.conf
+echo "sendrpid = pai" >> /etc/asterisk/sip.conf
+echo "useragent=Asterisk (Telecube) PBX" >> /etc/asterisk/sip.conf
+echo "callcounter = yes" >> /etc/asterisk/sip.conf
+echo "directmedia=no" >> /etc/asterisk/sip.conf
+echo "sdpsession=Asterisk (Telecube) PBX" >> /etc/asterisk/sip.conf
+echo "rtcachefriends=yes" >> /etc/asterisk/sip.conf
+echo "rtsavesysname=yes" >> /etc/asterisk/sip.conf
+echo "alwaysauthreject=yes" >> /etc/asterisk/sip.conf
+
+cp /etc/asterisk/extensions.conf /etc/asterisk/extensions.conf_BAK_$(date "+%Y-%m-%d-%H:%M:%S")
+
+echo "[globals]" > /etc/asterisk/extensions.conf
+echo "" >> /etc/asterisk/extensions.conf
+echo "" >> /etc/asterisk/extensions.conf
+echo "[public]" >> /etc/asterisk/extensions.conf
+echo "exten => _1[0-9]XX,1,NoOp(Dialing - ${EXTEN})" >> /etc/asterisk/extensions.conf
+echo "exten => _1[0-9]XX,n,Agi(digital-in.php)" >> /etc/asterisk/extensions.conf
+echo "exten => _1[0-9]XX,n,Hangup()" >> /etc/asterisk/extensions.conf
+echo "" >> /etc/asterisk/extensions.conf
+echo "[voip-extensions]" >> /etc/asterisk/extensions.conf
+echo "exten => _X.,1,NoOp(New voip call)" >> /etc/asterisk/extensions.conf
+echo "exten => _X.,n,Agi(voip-out.php)" >> /etc/asterisk/extensions.conf
+echo "exten => _X.,n,Hangup()" >> /etc/asterisk/extensions.conf
+echo "" >> /etc/asterisk/extensions.conf
+echo "exten => _+X.,1,NoOp(New voip call)" >> /etc/asterisk/extensions.conf
+echo "exten => _+X.,n,Agi(voip-out.php)" >> /etc/asterisk/extensions.conf
+echo "exten => _+X.,n,Hangup()" >> /etc/asterisk/extensions.conf
+echo "" >> /etc/asterisk/extensions.conf
+echo "" >> /etc/asterisk/extensions.conf
+echo ";;/* Include the BLF Listings */;;" >> /etc/asterisk/extensions.conf
+echo "#include \"blf.conf\"" >> /etc/asterisk/extensions.conf
+echo "" >> /etc/asterisk/extensions.conf
+
+echo ";; BLF Config" > /etc/asterisk/blf.conf
+
+mv /etc/asterisk/extensions.ael /etc/asterisk/extensions.ael_BAK
+mv /etc/asterisk/users.conf /etc/asterisk/users.conf_BAK
+
+MYSQL_ROOT_PASS=$(cat /opt/mysql_root_pass)
+
+cp /etc/asterisk/res_config_mysql.conf /etc/asterisk/res_config_mysql.conf_BAK_$(date "+%Y-%m-%d-%H:%M:%S")
+
+echo "[general]" > /etc/asterisk/res_config_mysql.conf 
+echo "dbhost = localhost" >> /etc/asterisk/res_config_mysql.conf
+echo "dbname = telecube" >> /etc/asterisk/res_config_mysql.conf
+echo "dbuser = root" >> /etc/asterisk/res_config_mysql.conf
+echo "dbpass = $MYSQL_ROOT_PASS" >> /etc/asterisk/res_config_mysql.conf
+echo "dbport = 3306" >> /etc/asterisk/res_config_mysql.conf
+echo "dbsock = /var/run/mysqld/mysqld.sock" >> /etc/asterisk/res_config_mysql.conf
+echo "" >> /etc/asterisk/res_config_mysql.conf
+
+cp /etc/asterisk/extconfig.conf /etc/asterisk/extconfig.conf_BAK_$(date "+%Y-%m-%d-%H:%M:%S")
+
+echo "[settings]" > /etc/asterisk/extconfig.conf
+echo "iaxusers => mysql,general,sip_devices" >> /etc/asterisk/extconfig.conf 
+echo "iaxpeers => mysql,general,sip_devices" >> /etc/asterisk/extconfig.conf
+echo "sippeers => mysql,general,sip_devices" >> /etc/asterisk/extconfig.conf
+echo "voicemail => mysql,general,voicemail_users" >> /etc/asterisk/extconfig.conf
+echo ";meetme => mysql,general,meetme" >> /etc/asterisk/extconfig.conf
+echo "queues => mysql,general,queues" >> /etc/asterisk/extconfig.conf
+echo "queue_members => mysql,general,queue_members" >> /etc/asterisk/extconfig.conf
+echo "musiconhold => mysql,general,musiconhold" >> /etc/asterisk/extconfig.conf
+echo "" >> /etc/asterisk/extconfig.conf
+
 
 # check if the repo has been checked out and clone it if it hasn't
 if [ -d /opt/telecube-pbx ]; then
