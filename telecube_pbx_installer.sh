@@ -486,6 +486,8 @@ echo "queue_members => mysql,general,queue_members" >> /etc/asterisk/extconfig.c
 echo "musiconhold => mysql,general,musiconhold" >> /etc/asterisk/extconfig.conf
 echo "" >> /etc/asterisk/extconfig.conf
 
+# restart asterisk
+service asterisk restart
 
 # check if the repo has been checked out and clone it if it hasn't
 if [ -d /opt/telecube-pbx ]; then
