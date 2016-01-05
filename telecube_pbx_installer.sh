@@ -512,8 +512,8 @@ rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/
 # add cron
 crontab -l | { cat; echo "@reboot /usr/bin/php /var/www/html/firewall/load-firewall.php >/dev/null 2>&1"; } | crontab -
 
-echo "\n\n#########################################"
-echo "Done!"
+echo "\n\nDone!"
+echo "#########################################"
 echo "You can log in to your server at the following address(es)"
 
 HOST_IP=$(ifconfig | awk -F':' '/inet addr/&&!/127.0.0.1/{split($2,_," ");print _[1]}')
