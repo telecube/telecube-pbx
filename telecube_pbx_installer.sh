@@ -135,29 +135,31 @@ done
 echo "<?php\n\$mysql_root_pass = \"$mysql_root_pass\";\n?>" > /opt/base_config.inc.php
 echo "$mysql_root_pass" > /opt/mysql_root_pass
 
+QUERY="mysql -u root -p$mysql_root_pass -e "
+
 # create the db and initial tables/values
-mysql -u root -p"$mysql_root_pass" -e "create database telecube;"
-mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE telecube.preferences (name varchar(254), value text);"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.preferences ADD UNIQUE KEY \`name\` (\`name\`);"
+$QUERY "create database telecube;"
+$QUERY "CREATE TABLE telecube.preferences (name varchar(254), value text);"
+$QUERY "ALTER TABLE telecube.preferences ADD UNIQUE KEY \`name\` (\`name\`);"
 
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('pbx_login_username', 'admin');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('pbx_login_password', 'admin');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_ssh_ports', '22');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_sip_ports', '5060');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_rtp_ports', '8000:55000');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_https_ports', '443');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[]');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('current_version_git', '');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('current_version_db', '0');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('current_version_system', '0');"
+$QUERY "insert into telecube.preferences (name, value) values ('pbx_login_username', 'admin');"
+$QUERY "insert into telecube.preferences (name, value) values ('pbx_login_password', 'admin');"
+$QUERY "insert into telecube.preferences (name, value) values ('fw_ssh_ports', '22');"
+$QUERY "insert into telecube.preferences (name, value) values ('fw_sip_ports', '5060');"
+$QUERY "insert into telecube.preferences (name, value) values ('fw_rtp_ports', '8000:55000');"
+$QUERY "insert into telecube.preferences (name, value) values ('fw_https_ports', '443');"
+$QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[]');"
+$QUERY "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '0');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '0');"
 
-mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
-mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.user WHERE User=''"
-mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'"
-mysql -u root -p"$mysql_root_pass" -e "FLUSH PRIVILEGES"
+$QUERY "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
+$QUERY "DELETE FROM mysql.user WHERE User=''"
+$QUERY "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'"
+$QUERY "FLUSH PRIVILEGES"
 
-mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.sip_devices (
+$QUERY "CREATE TABLE IF NOT EXISTS telecube.sip_devices (
 id int(11) NOT NULL,
 \`name\` varchar(80) NOT NULL DEFAULT '',
 \`context\` varchar(80) DEFAULT NULL,
@@ -240,10 +242,10 @@ bar_fixed varchar(1) NOT NULL,
 bar_int varchar(1) NOT NULL,
 bar_13 varchar(1) NOT NULL
 );"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.sip_devices ADD PRIMARY KEY (id), ADD UNIQUE KEY \`name\` (\`name\`), ADD KEY \`host\` (\`host\`), ADD KEY \`useragent\` (\`useragent\`), ADD KEY \`call-limit\` (\`call-limit\`);"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.sip_devices MODIFY id int(11) NOT NULL AUTO_INCREMENT;"
+$QUERY "ALTER TABLE telecube.sip_devices ADD PRIMARY KEY (id), ADD UNIQUE KEY \`name\` (\`name\`), ADD KEY \`host\` (\`host\`), ADD KEY \`useragent\` (\`useragent\`), ADD KEY \`call-limit\` (\`call-limit\`);"
+$QUERY "ALTER TABLE telecube.sip_devices MODIFY id int(11) NOT NULL AUTO_INCREMENT;"
 
-mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.voicemail_users (
+$QUERY "CREATE TABLE IF NOT EXISTS telecube.voicemail_users (
 uniqueid int(11) NOT NULL,
 v2e_id int(10) unsigned NOT NULL,
 \`context\` varchar(50) NOT NULL DEFAULT '',
@@ -272,10 +274,10 @@ forcegreetings varchar(4) NOT NULL DEFAULT 'no',
 hidefromdir varchar(4) NOT NULL DEFAULT 'yes',
 stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.voicemail_users ADD PRIMARY KEY (uniqueid), ADD KEY mailbox_context (mailbox,\`context\`), ADD KEY v2e_id (v2e_id);"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.voicemail_users MODIFY uniqueid int(11) NOT NULL AUTO_INCREMENT;"
+$QUERY "ALTER TABLE telecube.voicemail_users ADD PRIMARY KEY (uniqueid), ADD KEY mailbox_context (mailbox,\`context\`), ADD KEY v2e_id (v2e_id);"
+$QUERY "ALTER TABLE telecube.voicemail_users MODIFY uniqueid int(11) NOT NULL AUTO_INCREMENT;"
 
-mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.queues (
+$QUERY "CREATE TABLE IF NOT EXISTS telecube.queues (
 \`name\` varchar(128) NOT NULL,
 qid int(10) unsigned NOT NULL,
 musiconhold varchar(128) DEFAULT NULL,
@@ -314,10 +316,10 @@ periodic_announce_frequency int(11) DEFAULT NULL,
 ringinuse tinyint(1) DEFAULT NULL,
 setinterfacevar varchar(4) NOT NULL DEFAULT 'yes'
 );"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.queues ADD PRIMARY KEY (qid), ADD KEY \`name\` (\`name\`);"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.queues MODIFY qid int(10) NOT NULL AUTO_INCREMENT;"
+$QUERY "ALTER TABLE telecube.queues ADD PRIMARY KEY (qid), ADD KEY \`name\` (\`name\`);"
+$QUERY "ALTER TABLE telecube.queues MODIFY qid int(10) NOT NULL AUTO_INCREMENT;"
 
-mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.queue_members (
+$QUERY "CREATE TABLE IF NOT EXISTS telecube.queue_members (
 uniqueid int(10) unsigned NOT NULL,
 membername varchar(40) DEFAULT NULL,
 queue_name varchar(128) DEFAULT NULL,
@@ -325,10 +327,10 @@ interface varchar(128) DEFAULT NULL,
 penalty int(11) DEFAULT NULL,
 paused tinyint(1) DEFAULT NULL
 );"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.queue_members ADD PRIMARY KEY (uniqueid), ADD UNIQUE KEY queue_interface (queue_name,interface), ADD KEY queue_name (queue_name);"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.queue_members MODIFY uniqueid int(10) NOT NULL AUTO_INCREMENT;"
+$QUERY "ALTER TABLE telecube.queue_members ADD PRIMARY KEY (uniqueid), ADD UNIQUE KEY queue_interface (queue_name,interface), ADD KEY queue_name (queue_name);"
+$QUERY "ALTER TABLE telecube.queue_members MODIFY uniqueid int(10) NOT NULL AUTO_INCREMENT;"
 
-mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.musiconhold (
+$QUERY "CREATE TABLE IF NOT EXISTS telecube.musiconhold (
 \`name\` varchar(80) NOT NULL,
 \`directory\` varchar(255) NOT NULL DEFAULT '',
 application varchar(255) NOT NULL DEFAULT '',
@@ -337,9 +339,9 @@ digit char(1) NOT NULL DEFAULT '',
 sort varchar(16) NOT NULL DEFAULT '',
 format varchar(16) NOT NULL DEFAULT ''
 );"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.musiconhold ADD PRIMARY KEY (\`name\`);"
+$QUERY "ALTER TABLE telecube.musiconhold ADD PRIMARY KEY (\`name\`);"
 
-mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.trunks (
+$QUERY "CREATE TABLE IF NOT EXISTS telecube.trunks (
 id int(10) unsigned NOT NULL,
 datetime datetime NOT NULL,
 name varchar(240) DEFAULT NULL,
@@ -349,8 +351,8 @@ password varchar(128) DEFAULT NULL,
 host_address varchar(128) DEFAULT NULL,
 qualify varchar(5) DEFAULT NULL
 );"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.trunks ADD PRIMARY KEY (id);"
-mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.trunks MODIFY id int(10) NOT NULL AUTO_INCREMENT;"
+$QUERY "ALTER TABLE telecube.trunks ADD PRIMARY KEY (id);"
+$QUERY "ALTER TABLE telecube.trunks MODIFY id int(10) NOT NULL AUTO_INCREMENT;"
 
 # set sudoers permissions
 echo "# Telecube PBX Sudoers permissions" > /etc/sudoers.d/telecube-sudo
@@ -486,15 +488,13 @@ echo ";; BLF Config" > /etc/asterisk/blf.conf
 mv /etc/asterisk/extensions.ael /etc/asterisk/extensions.ael_BAK
 mv /etc/asterisk/users.conf /etc/asterisk/users.conf_BAK
 
-MYSQL_ROOT_PASS=$(cat /opt/mysql_root_pass)
-
 cp /etc/asterisk/res_config_mysql.conf /etc/asterisk/res_config_mysql.conf_BAK_$(date "+%Y-%m-%d-%H:%M:%S")
 
 echo "[general]" > /etc/asterisk/res_config_mysql.conf 
 echo "dbhost = localhost" >> /etc/asterisk/res_config_mysql.conf
 echo "dbname = telecube" >> /etc/asterisk/res_config_mysql.conf
 echo "dbuser = root" >> /etc/asterisk/res_config_mysql.conf
-echo "dbpass = $MYSQL_ROOT_PASS" >> /etc/asterisk/res_config_mysql.conf
+echo "dbpass = $mysql_root_pass" >> /etc/asterisk/res_config_mysql.conf
 echo "dbport = 3306" >> /etc/asterisk/res_config_mysql.conf
 echo "dbsock = /var/run/mysqld/mysqld.sock" >> /etc/asterisk/res_config_mysql.conf
 echo "" >> /etc/asterisk/res_config_mysql.conf
@@ -539,6 +539,7 @@ rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/
 
 # add cron
 crontab -l | { cat; echo "@reboot /usr/bin/php /var/www/html/firewall/load-firewall.php >/dev/null 2>&1"; } | crontab -
+crontab -l | { cat; echo "*	*	*	*	*	/usr/bin/php /var/www/html/auto/run.php >/dev/null 2>&1"; } | crontab -
 
 echo "\n\nDone!"
 echo "#########################################"
