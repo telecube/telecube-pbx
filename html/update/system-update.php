@@ -6,15 +6,15 @@ $system_version = $Common->get_set_version_pref("current_version_system", 0);
 
 // setting perms to sip.conf so the console can write to it
 if($system_version == 0){
-	$Common->system_update('sudo /bin/chmod 0666 /etc/asterisk/sip.conf',1);
+//	$Common->system_update('sudo /bin/chmod 0666 /etc/asterisk/sip.conf',1);
 }
 // 
 if($system_version <= 1){
-	$Common->system_update("sudo /bin/echo www-data ALL=NOPASSWD: /bin/sh >> /etc/sudoers.d/telecube-sudo",2);
+//	$Common->system_update("",2);
 }
 // 
 if($system_version <= 2){
-//	$Common->system_update("sudo /bin/echo \"www-data ALL=NOPASSWD: /bin/sh\" >> /etc/sudoers.d/telecube-sudo",3);
+//	$Common->system_update("",3);
 }
 // 
 if($system_version <= 3){
