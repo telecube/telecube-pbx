@@ -189,12 +189,11 @@ rtptimeout char(3) DEFAULT NULL,
 rtpholdtimeout char(3) DEFAULT NULL,
 setvar varchar(100) DEFAULT NULL,
 disallow varchar(100) DEFAULT 'all',
-allow varchar(100) DEFAULT 'g729;ilbc;gsm;ulaw;alaw;g722;g723',
+allow varchar(100) DEFAULT 'gsm;ulaw;alaw;g722;g723;ilbc',
 mohsuggest varchar(100) NOT NULL,
 fullcontact varchar(80) NOT NULL DEFAULT '',
 ipaddr varchar(15) NOT NULL DEFAULT '',
 \`port\` mediumint(5) unsigned NOT NULL DEFAULT '0',
-username varchar(80) NOT NULL DEFAULT '',
 defaultuser varchar(80) NOT NULL DEFAULT '',
 subscribecontext varchar(80) DEFAULT NULL,
 directmedia enum('yes','no') DEFAULT NULL,
@@ -340,6 +339,8 @@ mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.musiconhold ADD PRIM
 echo "# Telecube PBX Sudoers permissions" > /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /sbin/iptables" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /usr/sbin/asterisk" >> /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /usr/bin/git" >> /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /usr/bin/rsync" >> /etc/sudoers.d/telecube-sudo
 
 # create certs folder
 if [ ! -d /var/www/certs ]; then

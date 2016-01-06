@@ -2,7 +2,7 @@
 require("../init.php");
 
 // get a list of current extensions
-$q = "select name, secret, label from sip_devices order by name;";
+$q = "select name, secret, label, bar_13, bar_int, bar_mobile, bar_fixed from sip_devices order by name;";
 $data = array();
 $res = $Db->pdo_query($q,$data,$dbPDO);
 //print_r($res);
@@ -25,36 +25,41 @@ for($i=0;$i<$j;$i++) {
     <?php include($_SERVER["DOCUMENT_ROOT"]."/includes/js.php");?>
  
 
-    <!-- bootstrap -->
-
-    <!-- x-editable (bootstrap version) -->
-    
-
-<script type="text/javascript">
-
-  $(document).ready(function() {
-      //toggle `popup` / `inline` mode
-      $.fn.editable.defaults.mode = 'popup';     
-      
-      <?php
-      $j = count($sip_devices);
-      for($i=0;$i<$j;$i++) { 
-        echo '$("#label-'.$sip_devices[$i]['name'].'").editable();'."\n";
-        echo '$("#secret-'.$sip_devices[$i]['name'].'").editable();'."\n";
-      }
-      ?>
-
-
-    $('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
+    <script type="text/javascript">
+      $(document).ready(function() {
+          //toggle `popup` / `inline` mode
+          $.fn.editable.defaults.mode = 'popup';     
+          
+          <?php
+          $j = count($sip_devices);
+          for($i=0;$i<$j;$i++) { 
+            echo '$("#label-'.$sip_devices[$i]['name'].'").editable();'."\n";
+            echo '$("#secret-'.$sip_devices[$i]['name'].'").editable();'."\n";
+            $sip_devices[$i]['bar_int'] == "y" ? $bar_int = "1" : $bar_int = "0";
+            echo '$(function(){$(\'#bar_int-'.$sip_devices[$i]['name'].'\').editable({value: '.$bar_int.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
+            $sip_devices[$i]['bar_mobile'] == "y" ? $bar_mobile = "1" : $bar_mobile = "0";
+            echo '$(function(){$(\'#bar_mobile-'.$sip_devices[$i]['name'].'\').editable({value: '.$bar_mobile.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
+            $sip_devices[$i]['bar_fixed'] == "y" ? $bar_fixed = "1" : $bar_fixed = "0";
+            echo '$(function(){$(\'#bar_fixed-'.$sip_devices[$i]['name'].'\').editable({value: '.$bar_fixed.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
+            $sip_devices[$i]['bar_13'] == "y" ? $bar_13 = "1" : $bar_13 = "0";
+            echo '$(function(){$(\'#bar_13-'.$sip_devices[$i]['name'].'\').editable({value: '.$bar_13.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
 
 
-  });
+          }
+          ?>
 
-function del_ext(){
-  alert("hello");
 
-}
-</script>
+        $('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
+
+
+
+
+
+
+      });
+
+
+    </script>
 
 
   </head>
@@ -112,29 +117,37 @@ function del_ext(){
         $x=0;
         $j = count($sip_devices);
         for($i=0;$i<$j;$i++) { 
-          echo $x==0 ? "\t".'<div class="row">'."\n" : "";
-          echo "\t\t".'<div class="col-lg-4">'."\n";
+          echo $x==0 ? '<div class="row">'."\n" : "";
+          echo '<div class="col-lg-4">'."\n";
 
-          echo "\t\t\t".'<form method="post" action="add-new.php">'."\n";
+          echo '<form method="post" action="add-new.php">'."\n";
 
-          echo "\t\t\t\t".'<div class="panel panel-default">'."\n";
-          echo "\t\t\t\t\t".'<div class="panel-heading">'."\n";
-          echo "\t\t\t\t\t\t".'<h3 class="panel-title">Ext: '.$sip_devices[$i]['name'].'</h3>'."\n";
-          echo "\t\t\t\t\t".'</div>'."\n";
-          echo "\t\t\t\t".'<div class="panel-body">'."\n";
+          echo '<div class="panel panel-default">'."\n";
+          echo '<div class="panel-heading">'."\n";
+          echo '<h3 class="panel-title">Ext: '.$sip_devices[$i]['name'].'</h3>'."\n";
+          echo '</div>'."\n";
+          echo '<div class="panel-body">'."\n";
 
 
 
-          echo "\t\t\t\t".'<p>Label: <a href="#" id="label-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Label">'.$sip_devices[$i]['label'].'</a></p>'."\n";
+          echo '<p>Label: <a href="#" id="label-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Label">'.$sip_devices[$i]['label'].'</a></p>'."\n";
+          echo '<p>Password: <a href="#" id="secret-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Password">'.$sip_devices[$i]['secret'].'</a></p>'."\n";
           
-          echo "\t\t\t\t".'<p>Password: <a href="#" id="secret-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Password">'.$sip_devices[$i]['secret'].'</a></p>'."\n";
+          echo '<span id="">';
+            echo '<hr>';
+                    //  echo "\t\t\t\t".'<p>Bar International Calls: <a href="#" id="bar_int-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar International Calls">'.$sip_devices[$i]['bar_int'].'</a></p>'."\n";
+            echo '<p>Bar International Calls: <a href="#" id="bar_int-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar International Calls"></a></p>'."\n";
+            echo '<p>Bar Mobile Calls: <a href="#" id="bar_mobile-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar Mobile Calls"></a></p>'."\n";
+            echo '<p>Bar Fixed Calls: <a href="#" id="bar_fixed-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar Fixed Calls"></a></p>'."\n";
+            echo '<p>Bar 13/1300 Calls: <a href="#" id="bar_13-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar 13/1300 Calls"></a></p>'."\n";
+
+            echo '<hr>';
+          echo '</span>';
+
+          echo '<a class="btn btn-sm btn-danger" data-toggle="confirmation" data-title="Really, delete this extension?" data-href="delete.php?ext='.$sip_devices[$i]['name'].'" data-original-title="" title="">Delete</a>'."\n";
           
-          echo "\t\t\t\t".''."\n";
-          
-          echo "\t\t\t\t".'<a class="btn btn-sm btn-danger" data-toggle="confirmation" data-title="Really, delete this extension?" data-href="delete.php?ext='.$sip_devices[$i]['name'].'" data-original-title="" title="">Delete</a>'."\n";
-          
-          echo "\t\t\t\t".'</div>'."\n";
-          echo "\t\t\t\t".'</div>'."\n";
+          echo '</div>'."\n";
+          echo '</div>'."\n";
 
 
 

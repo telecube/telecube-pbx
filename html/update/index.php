@@ -1,5 +1,8 @@
 <?php
 require("../init.php");
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +19,8 @@ require("../init.php");
 
       <h1>Hello, Telecube PBX!</h1>
     
-
+      <a href="git-update.php">Git Update</a>
+      
     </div>
 
     <?php include($_SERVER["DOCUMENT_ROOT"]."/includes/js.php");?>
