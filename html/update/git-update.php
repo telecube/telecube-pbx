@@ -1,7 +1,7 @@
 <?php
 require("../init.php");
 
-
+echo "hello";
 
 if(file_exists("/opt/telecube-pbx")){
 //	chdir('/opt/telecube-pbx');
