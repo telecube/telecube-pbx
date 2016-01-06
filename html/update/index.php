@@ -17,10 +17,10 @@ require("../init.php");
 
     <div class="container">
 
-      <h1>Hello, Telecube PBX!</h1>
+      <h1>Telecube Cloud PBX!</h1>
     
       <a href="git-update.php">Git Update</a>
-      
+
     </div>
 
     <?php include($_SERVER["DOCUMENT_ROOT"]."/includes/js.php");?>
