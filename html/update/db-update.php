@@ -12,16 +12,15 @@ for($i=0;$i<$j;$i++) {
 	if(file_exists($fp)){
 		$com 	= "sudo /bin/sh ".$fp;
 		$res 	= exec($com, $o, $r);
-		print_r($o);
-		$Log->update(json_encode($o));
+		//print_r($o);
+		$Log->updates(json_encode($o));
 		// set the next incr
 		$dbv++;
-		$Common->set_pref("current_version_system",$dbv);
+		$Common->set_pref("current_version_db",$dbv);
 	}else{
 		break;
 	}
 }
-//exit;
 $msg = "OK, update successful.";
 header("Location: /update/?msg=".$msg."&dbv=".$dbv);
 ?>

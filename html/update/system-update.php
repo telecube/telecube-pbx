@@ -13,7 +13,7 @@ for($i=0;$i<$j;$i++) {
 		$com 	= "sudo /bin/sh ".$fp;
 		$res 	= exec($com, $o, $r);
 		//print_r($o);
-		$Log->update(json_encode($o));
+		$Log->updates(json_encode($o));
 		// set the next incr
 		$sysv++;
 		$Common->set_pref("current_version_system",$sysv);
