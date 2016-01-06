@@ -5,6 +5,13 @@ namespace Telecube;
 
 class Common{
 
+	function set_pref($name, $value){
+		global $Db, $dbPDO;
+
+		$q = "update preferences set value = ? where name = ?;";
+		$Db->pdo_query($q,array($value, $name),$dbPDO);
+	}
+
 	function get_file_perm($fp){
 		return substr(sprintf('%o', fileperms($fp)), -4);
 	}

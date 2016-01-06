@@ -30,7 +30,7 @@ class Config{
 
 		$session_name 		= "TelecubePBX";
 
-		
+		$git_clone_path 	= "/opt/telecube-pbx";
 
 		return isset($$varname) ? $$varname : false;
 	}
