@@ -361,6 +361,7 @@ echo "www-data ALL=NOPASSWD: /usr/bin/rsync" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /bin/echo" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /bin/cat" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /bin/chmod" >> /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /bin/sh" >> /etc/sudoers.d/telecube-sudo
 
 # create certs folder
 if [ ! -d /var/www/certs ]; then
@@ -510,6 +511,12 @@ echo "queues => mysql,general,queues" >> /etc/asterisk/extconfig.conf
 echo "queue_members => mysql,general,queue_members" >> /etc/asterisk/extconfig.conf
 echo "musiconhold => mysql,general,musiconhold" >> /etc/asterisk/extconfig.conf
 echo "" >> /etc/asterisk/extconfig.conf
+
+/bin/chmod 0666 /etc/asterisk/sip.conf
+/bin/chmod 0666 /etc/asterisk/extensions.conf
+/bin/chmod 0666 /etc/asterisk/res_config_mysql.conf
+/bin/chmod 0666 /etc/asterisk/extconfig.conf
+/bin/chmod 0666 /etc/asterisk/blf.conf
 
 # restart asterisk
 service asterisk restart
