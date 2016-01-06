@@ -137,7 +137,8 @@ echo "$mysql_root_pass" > /opt/mysql_root_pass
 
 # create the db and initial tables/values
 mysql -u root -p"$mysql_root_pass" -e "create database telecube;"
-mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE telecube.preferences (name varchar(254), value varchar(254));"
+mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE telecube.preferences (name varchar(254), value text);"
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.preferences ADD UNIQUE KEY \`name\` (\`name\`);"
 
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('pbx_login_username', 'admin');"
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('pbx_login_password', 'admin');"
@@ -147,6 +148,9 @@ mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, v
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_https_ports', '443');"
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[]');"
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
+mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('current_version_git', '');"
+mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('current_version_db', '2');"
+mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('current_version_system', '0');"
 
 mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
 mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.user WHERE User=''"

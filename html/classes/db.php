@@ -19,12 +19,9 @@ class Db{
 				while($rs = $rec->fetch()){
 					$res[] = $rs;
 				}
-	    	}
-
-	    	if($query_type == "update" || $query_type == "insert" || $query_type == "delete" || $query_type == "optimi"){
+	    	}else{
 	    		$res = $rec->execute($data); 
 	    	}
-
 
 			$rec->closeCursor();
 			//return $query_type == "insert" ? $link->lastinsertid() : $res;

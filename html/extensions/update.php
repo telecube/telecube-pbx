@@ -1,18 +1,6 @@
 <?php
 require("../init.php");
 
-//header("HTTP/1.0 400 Bad Request");
-//print_r($_POST);
-//exit;
-
-/* 
-Array
-(
-[name] => bar_int-1000
-[value] => 1
-[pk] => 1000
-)
-*/
 $name = $_POST["pk"];
 $field = str_replace("-".$_POST["pk"], "", $_POST["name"]);
 $value = $_POST["value"];
@@ -20,9 +8,6 @@ $value = $_POST["value"];
 if($field == "bar_int" || $field == "bar_13" || $field == "bar_fixed" || $field == "bar_mobile"){
 	$value == 0 ? $value = "n" : $value = "y";
 }
-//if($field == "bar_mobile"){
-//	$value == 0 ? $value = "n" : $value = "y";
-//}
 
 $q = "update sip_devices set ".$field." = ? where name = ?;";
 $data = array($value, $name);
