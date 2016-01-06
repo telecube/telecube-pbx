@@ -15,7 +15,7 @@ for($i=0;$i<$j;$i++) {
 		print_r($o);
 		// set the next incr
 		$sysv++;
-//		$Common->set_pref("current_version_system",$sysv);
+		$Common->set_pref("current_version_system",$sysv);
 	}else{
 		break;
 	}
