@@ -8,6 +8,7 @@ use Telecube\Common;
 use Telecube\Config;
 use Telecube\Curl;
 use Telecube\Db;
+use Telecube\Log;
 $Config = new Config;
 
 session_name($Config->get("session_name"));
@@ -36,6 +37,7 @@ $dbPDO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 $Common = new Common;
 $Curl 	= new Curl;
 $Db 	= new Db;
+$Log 	= new Log;
 
 
 

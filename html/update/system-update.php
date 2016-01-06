@@ -12,7 +12,8 @@ for($i=0;$i<$j;$i++) {
 	if(file_exists($fp)){
 		$com 	= "sudo /bin/sh ".$fp;
 		$res 	= exec($com, $o, $r);
-		print_r($o);
+		//print_r($o);
+		$Log->update(json_encode($o));
 		// set the next incr
 		$sysv++;
 		$Common->set_pref("current_version_system",$sysv);
@@ -20,7 +21,7 @@ for($i=0;$i<$j;$i++) {
 		break;
 	}
 }
-exit;
+//exit;
 $msg = "OK, update successful.";
 header("Location: /update/?msg=".$msg."&sysv=".$sysv);
 ?>
