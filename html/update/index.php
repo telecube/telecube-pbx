@@ -18,10 +18,10 @@ require("../init.php");
     <div class="container">
 
       <h1>Telecube Cloud PBX!</h1>
-    
-      <p><a href="db-update.php">Run Database Update</a></p>
 
       <p><a href="git-update.php">Run Code Update</a></p>
+
+      <p><a href="db-update.php">Run Database Update</a></p>
 
     </div>
 
