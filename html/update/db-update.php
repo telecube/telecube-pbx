@@ -34,7 +34,7 @@ if($db_version <= 5){
 
 
 $msg = "OK, update successful.";
-header("Location: /update/?msg=".$msg."&dbv=".$db_version."&gitv=".$git_version."&sysv=".$system_version);
+header("Location: /update/?msg=".$msg."&dbv=".$db_version);
 
 
 ?>

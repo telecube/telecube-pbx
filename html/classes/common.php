@@ -5,6 +5,10 @@ namespace Telecube;
 
 class Common{
 
+	function get_file_perm($fp){
+		return substr(sprintf('%o', fileperms($fp)), -4);
+	}
+
 	function get_set_version_pref($prefname, $defval){
 		global $Db, $dbPDO;
 
@@ -19,8 +23,15 @@ class Common{
 		}
 	}
 
-	function system_update(){
+	function system_update($com, $v){
+		global $Db, $dbPDO;
+		
+		$com = exec($com);
 
+		$qu = "update preferences set value = ? where name = ?;";
+		$Db->pdo_query($qu,array($v, 'current_version_system'),$dbPDO);
+
+		return true;
 	}
 	
 	function db_update($q, $v){

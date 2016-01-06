@@ -25,6 +25,8 @@ require("../init.php");
 
       <p><a href="db-update.php">Run Database Update</a></p>
 
+      <p><a href="system-update.php">Run System Update</a></p>
+
     </div>
 
     <?php include($_SERVER["DOCUMENT_ROOT"]."/includes/js.php");?>
