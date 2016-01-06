@@ -19,7 +19,7 @@ require("../init.php");
 
       <h1>Telecube Cloud PBX!</h1>
     
-      <a href="git-update.php">Git Update</a>
+      <a href="git-update.php">Run Update</a>
 
     </div>
 
