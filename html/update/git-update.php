@@ -8,14 +8,14 @@ if(file_exists("/opt/telecube-pbx")){
 
 	echo "<pre>";
 
-	exec("sudo /usr/bin/git -C /opt/telecube-pbx/ status", $output, $return_var);
-	print_r($output);
+	exec("sudo /usr/bin/git -C /opt/telecube-pbx/ pull", $gOut, $return_var);
+	print_r($gOut);
 
-	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/", $output, $return_var);
-	print_r($output);
+	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/", $rOut1, $return_var);
+	print_r($rOut1);
 
-	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/html/ /var/www/html/", $output, $return_var);
-	print_r($output);
+	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/html/ /var/www/html/", $rOut2, $return_var);
+	print_r($rOut2);
 
 	echo "<pre>";
 
