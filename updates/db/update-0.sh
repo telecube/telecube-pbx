@@ -3,6 +3,8 @@
 MYSQLPASS=$(cat /opt/mysql_root_pass)
 QUERY="mysql -u root -p$MYSQLPASS -e "
 
+echo "Creating database table telecube.logging_updates"
+
 # create update log db
 $QUERY "CREATE TABLE IF NOT EXISTS telecube.logging_updates (
 	id int(10) unsigned NOT NULL auto_increment,
@@ -11,3 +13,5 @@ $QUERY "CREATE TABLE IF NOT EXISTS telecube.logging_updates (
 	log_text text NOT NULL,
 	PRIMARY KEY  (id)
 );"
+
+echo "Done."
