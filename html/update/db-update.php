@@ -13,7 +13,7 @@ for($i=0;$i<$j;$i++) {
 		$com 	= "sudo /bin/sh ".$fp;
 		$res 	= exec($com, $o, $r);
 		//print_r($o);
-		$Log->updates(json_encode($o));
+		$Log->updates(json_encode($o), "db");
 		// set the next incr
 		$dbv++;
 		$Common->set_pref("current_version_db",$dbv);
