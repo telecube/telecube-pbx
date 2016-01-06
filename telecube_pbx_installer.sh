@@ -339,12 +339,28 @@ format varchar(16) NOT NULL DEFAULT ''
 );"
 mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.musiconhold ADD PRIMARY KEY (\`name\`);"
 
+mysql -u root -p"$mysql_root_pass" -e "CREATE TABLE IF NOT EXISTS telecube.trunks (
+id int(10) unsigned NOT NULL,
+datetime datetime NOT NULL,
+name varchar(240) DEFAULT NULL,
+auth_type varchar(128) DEFAULT NULL,
+username varchar(128) DEFAULT NULL,
+password varchar(128) DEFAULT NULL,
+host_address varchar(128) DEFAULT NULL,
+qualify varchar(5) DEFAULT NULL
+);"
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.trunks ADD PRIMARY KEY (id);"
+mysql -u root -p"$mysql_root_pass" -e "ALTER TABLE telecube.trunks MODIFY id int(10) NOT NULL AUTO_INCREMENT;"
+
 # set sudoers permissions
 echo "# Telecube PBX Sudoers permissions" > /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /sbin/iptables" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /usr/sbin/asterisk" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /usr/bin/git" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /usr/bin/rsync" >> /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /bin/echo" >> /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /bin/cat" >> /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /bin/chmod" >> /etc/sudoers.d/telecube-sudo
 
 # create certs folder
 if [ ! -d /var/www/certs ]; then

@@ -2,6 +2,8 @@
 require("../init.php");
 
 //echo "hello";
+// git version
+$git_version = $Common->get_set_version_pref("current_version_git", '');
 
 if(file_exists("/opt/telecube-pbx")){
 //	chdir('/opt/telecube-pbx');
