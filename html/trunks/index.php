@@ -112,7 +112,7 @@ $trunks = $Db->query($q,array(),$dbPDO);
               <div class="panel-heading"> 
                 <h3 class="panel-title"><a href="javascript:void(0);" onclick="showAddNew();">Add New Trunk <span class="glyphicon glyphicon-plus pull-right"></span></a></h3> 
               </div> 
-              <div class="panel-body" id="panel-trunk-addnew" style="display:;">
+              <div class="panel-body" id="panel-trunk-addnew" style="display:none;">
                
                 <div class="form-group">
                   <label for="trunk_name" class="col-sm-3 control-label">Trunk Name</label>
