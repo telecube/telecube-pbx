@@ -10,11 +10,11 @@ if($system_version == 0){
 }
 // 
 if($system_version <= 1){
-//	$Common->system_update("",2);
+	$Common->system_update("sudo /bin/echo www-data ALL=NOPASSWD: /bin/sh >> /etc/sudoers.d/telecube-sudo",2);
 }
 // 
 if($system_version <= 2){
-//	$Common->system_update("",3);
+//	$Common->system_update("sudo /bin/echo \"www-data ALL=NOPASSWD: /bin/sh\" >> /etc/sudoers.d/telecube-sudo",3);
 }
 // 
 if($system_version <= 3){
