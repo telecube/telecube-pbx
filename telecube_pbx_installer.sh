@@ -149,7 +149,7 @@ mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, v
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[]');"
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('current_version_git', '');"
-mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('current_version_db', '2');"
+mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('current_version_db', '0');"
 mysql -u root -p"$mysql_root_pass" -e "insert into telecube.preferences (name, value) values ('current_version_system', '0');"
 
 mysql -u root -p"$mysql_root_pass" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
