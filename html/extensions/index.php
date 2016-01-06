@@ -58,6 +58,10 @@ for($i=0;$i<$j;$i++) {
 
       });
 
+      function showAddNew(){
+        $("#panel-extension-addnew").toggle(100);
+      }
+
 
     </script>
 
@@ -81,9 +85,9 @@ for($i=0;$i<$j;$i++) {
           <form method="post" action="add-new.php">
             <div class="panel panel-default"> 
               <div class="panel-heading"> 
-                <h3 class="panel-title">Add New Extension</h3> 
+                <h3 class="panel-title"><a href="javascript:void(0);" onclick="showAddNew();">Add New Extension <span class="glyphicon glyphicon-plus pull-right"></span></a></h3> 
               </div> 
-              <div class="panel-body">
+              <div class="panel-body" id="panel-extension-addnew" style="display:none;">
                 <p>Select a new extension number.</p>
 
                 <input type="hidden" name="extension_post_form" value="add_new">

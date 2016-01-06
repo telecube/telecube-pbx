@@ -4,7 +4,8 @@ namespace Telecube;
 
 #-- The PDO Connection Functions --#
 class Db{
-	public function pdo_query($q,$data=array(),$link){
+	
+	public function query($q,$data=array(),$link){
 	    
 	    $query_type = substr(strtolower($q), 0, 6);
 		
@@ -30,6 +31,10 @@ class Db{
 	    }catch(\PDOException $ex){
 			return $ex->getMessage();
 	    } 
+	}
+
+	function pdo_query($q,$data=array(),$link){
+		return $this->query($q,$data,$link);
 	}
 }
 
