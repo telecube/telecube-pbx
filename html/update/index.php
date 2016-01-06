@@ -17,7 +17,7 @@ require("../init.php");
 
     <div class="container">
 
-      <h1>Telecube Cloud PBX!</h1>
+      <h1>Telecube (AWESOME) Cloud PBX!</h1>
     
       <a href="git-update.php">Run Update</a>
 
