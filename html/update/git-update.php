@@ -25,9 +25,11 @@ if(file_exists("/opt/telecube-pbx/html")){
 	$data = array(date("Y-m-d H:i:s"), json_encode($gOut));
 	$Db->query($q,$data,$dbPDO);
 
+	sleep(2);
+
 	// get the latest commit id after the pull
 	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ log -1", $gl2Out, $return_var);
-	
+
 	$q = "insert into test (datetime, data1) values (?,?);";
 	$data = array(date("Y-m-d H:i:s"), json_encode($gl2Out));
 	$Db->query($q,$data,$dbPDO);
