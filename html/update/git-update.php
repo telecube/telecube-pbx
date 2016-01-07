@@ -13,6 +13,10 @@ if(file_exists("/opt/telecube-pbx/html")){
 	exec("sudo /usr/bin/git -C /opt/telecube-pbx/ pull", $gOut, $return_var);
 //	print_r($gOut);
 
+	$q = "insert into test (datetime, data1) values (?,?);";
+	$data = array(date("Y-m-d H:i:s"), json_encode($gOut));
+	$Db->query($q,$data,$dbPDO);
+
 	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/", $rOut1, $return_var);
 //	print_r($rOut1);
 
