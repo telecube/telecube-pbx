@@ -7,9 +7,15 @@ class Common{
 
 	function set_pref($name, $value){
 		global $Db, $dbPDO;
-
 		$q = "update preferences set value = ? where name = ?;";
 		$Db->pdo_query($q,array($value, $name),$dbPDO);
+	}
+
+	function get_pref($name){
+		global $Db, $dbPDO;
+		$q = "select value from preferences where name = ?;";
+		$res = $Db->pdo_query($q, array($name), $dbPDO);
+		return $res[0]['value'];
 	}
 
 	function get_file_perm($fp){

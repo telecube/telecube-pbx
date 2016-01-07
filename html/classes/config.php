@@ -32,6 +32,8 @@ class Config{
 
 		$git_clone_path 	= "/opt/telecube-pbx";
 
+		$api_url 			= "https://www.telecube.com.au/api/apps/cloud-pbx";
+
 		return isset($$varname) ? $$varname : false;
 	}
 }

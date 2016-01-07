@@ -39,6 +39,7 @@ $Curl 	= new Curl;
 $Db 	= new Db;
 $Log 	= new Log;
 
-
+// check if there are updates waiting
+$update_wait_count = $Common->get_pref("update_wait_count");
 
 ?>

@@ -2,7 +2,7 @@
 require("../init.php");
 
 // git version
-$git_version = $Common->get_set_version_pref("current_version_git", '');
+//$git_version = $Common->get_set_version_pref("current_version_git", '');
 
 if(file_exists("/opt/telecube-pbx/html")){
 
@@ -10,11 +10,13 @@ if(file_exists("/opt/telecube-pbx/html")){
 
 	// get the latest commit id after the pull
 	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ log -1", $gl2Out, $return_var);
-
 	$thiscmtid = $Common->git_commit_id_from_log($gl2Out);
+	$Common->set_pref('current_version_git', $thiscmtid);
+//	$q = "update preferences set value = ? where name = ?;";
+//	$Db->query($q, array($thiscmtid, 'current_version_git'), $dbPDO);
 
-	$q = "update preferences set value = ? where name = ?;";
-	$Db->query($q, array($thiscmtid, 'current_version_git'), $dbPDO);
+	// zero  the update wait count
+	$Common->set_pref('update_wait_count', '0');
 
 	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/", $rOut1, $return_var);
 

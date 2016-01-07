@@ -48,7 +48,7 @@ $trunks_active = strpos($rq_uri, "/trunks/") !== false ? 'class="active"' : "";
                   <li <?php echo $firewall_active;?>><a href="/firewall/">Firewall</a></li>
                 </ul>
               </li>
-              <li <?php echo $update_active;?>><a href="/update/">Update <span class="badge">1</span></a></li>
+              <li <?php echo $update_active;?>><a href="/update/">Update <span class="badge"><?php echo $update_wait_count == 0 ? "" : $update_wait_count;?></span></a></li>
               <li><a href="/logout.php">Logout</a></li>
             </ul>
           </div><!--/.nav-collapse -->
