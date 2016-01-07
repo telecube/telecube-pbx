@@ -10,7 +10,7 @@ if(file_exists("/opt/telecube-pbx/html")){
 
 //	echo "<pre>";
 
-	exec("sudo /usr/bin/git -C /opt/telecube-pbx/ pull", $gOut, $return_var);
+	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ pull", $gOut, $return_var);
 //	print_r($gOut);
 
 	$q = "insert into test (datetime, data1) values (?,?);";
