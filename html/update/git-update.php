@@ -10,6 +10,13 @@ if(file_exists("/opt/telecube-pbx/html")){
 
 //	echo "<pre>";
 
+	// get the latest commit id before the pull
+	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ log -1", $glOut, $return_var);
+	$q = "insert into test (datetime, data1) values (?,?);";
+	$data = array(date("Y-m-d H:i:s"), json_encode($glOut));
+	$Db->query($q,$data,$dbPDO);
+
+
 	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ pull", $gOut, $return_var);
 //	print_r($gOut);
 
