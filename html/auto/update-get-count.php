@@ -15,8 +15,10 @@ $url = $Config->get("api_url")."/check-updates-waiting.php";
 $data = array("pbx_uuid"=>$pbx_uuid, "commit_id"=>$commit_id, "check_type"=>"count");
 $res = $Curl->http($url, $data, '', '', 60, true);
 
-// update with the result
-$Common->set_pref("update_wait_count", $res->count);
+if(isset($res->count)){
+	// update with the result
+	$Common->set_pref("update_wait_count", $res->count);
+}
 
 
 ?>

@@ -12,8 +12,6 @@ if(file_exists("/opt/telecube-pbx/html")){
 	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ log -1", $gl2Out, $return_var);
 	$thiscmtid = $Common->git_commit_id_from_log($gl2Out);
 	$Common->set_pref('current_version_git', $thiscmtid);
-//	$q = "update preferences set value = ? where name = ?;";
-//	$Db->query($q, array($thiscmtid, 'current_version_git'), $dbPDO);
 
 	// zero  the update wait count
 	$Common->set_pref('update_wait_count', '0');
