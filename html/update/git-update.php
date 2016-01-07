@@ -27,5 +27,5 @@ if(file_exists("/opt/telecube-pbx/html")){
 	$msg = "Folder /opt/telecube-pbx does not exist!";
 }
 
-header("Location: /update/?msg=".$msg);
+header("Location: db-update.php");
 ?>

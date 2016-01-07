@@ -21,6 +21,6 @@ for($i=0;$i<$j;$i++) {
 		break;
 	}
 }
-$msg = "OK, update successful.";
-header("Location: /update/?msg=".$msg."&dbv=".$dbv);
+//$msg = "OK, update successful.";
+header("Location: system-update.php");
 ?>

@@ -23,5 +23,5 @@ for($i=0;$i<$j;$i++) {
 }
 //exit;
 $msg = "OK, update successful.";
-header("Location: /update/?msg=".$msg."&sysv=".$sysv);
+header("Location: /update/?msg=".$msg);
 ?>

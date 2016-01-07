@@ -21,11 +21,7 @@ require("../init.php");
 
       <p>&nbsp;</p>
       
-      <p><a href="git-update.php">Run Code Update</a></p>
-
-      <p><a href="db-update.php">Run Database Update</a></p>
-
-      <p><a href="system-update.php">Run System Update</a></p>
+      <p><a href="git-update.php">Run Update</a></p>
 
     </div>
 
