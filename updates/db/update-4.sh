@@ -6,5 +6,6 @@ QUERY="mysql -u root -p$MYSQLPASS -e "
 echo "seeding the updates next check time in preferences table"
 
 $QUERY "insert into telecube.preferences (name, value) values ('update_next_check','1');"
+$QUERY "insert into telecube.preferences (name, value) values ('update_waiting_count','0');"
 
 echo "Done."
