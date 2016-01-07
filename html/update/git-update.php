@@ -35,6 +35,10 @@ if(file_exists("/opt/telecube-pbx/html")){
 	$Db->query($q, array(date("Y-m-d H:i:s"), json_encode($gl2Out), $thiscmtid), $dbPDO);
 
 
+	$q = "update preferences set value = ? where name = ?;";
+	$Db->query($q, array($thiscmtid, 'current_version_git'), $dbPDO);
+
+
 	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/", $rOut1, $return_var);
 //	print_r($rOut1);
 
