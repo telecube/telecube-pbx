@@ -12,6 +12,7 @@ class Common{
 		return false;
 	}
 
+	// testing call to number type
 	function callto_type(){
 		if(strlen($n) == 4 && $n >= 1000 && $n <= 1999){
 			return "voip";
