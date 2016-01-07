@@ -2,6 +2,7 @@
 <?php
 include("init.php");
 
+$callto_type = $Common->callto_type($dnid);
 
 /* if this call is to a voip extension */
 if($Common->is_voip_ext($dnid)){

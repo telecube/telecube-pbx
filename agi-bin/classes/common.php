@@ -12,5 +12,11 @@ class Common{
 		return false;
 	}
 
+	function callto_type(){
+		if(strlen($n) == 4 && $n >= 1000 && $n <= 1999){
+			return "voip";
+		}
+		return "unknown";
+	}
 }
 ?>
