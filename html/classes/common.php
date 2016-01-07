@@ -30,6 +30,13 @@ class Common{
 		}
 	}
 
+	function git_commit_id_from_log($arr){
+		// get the commit id
+		$commit_id = str_replace("commit ", "", $arr[0]);
+		$commit_id = trim($commit_id);
+		return $commit_id;
+	}
+
 	function system_update($com, $v){
 		global $Db, $dbPDO;
 		
