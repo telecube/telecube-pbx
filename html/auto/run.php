@@ -20,6 +20,4 @@ if($min == $update_check_min){
 }
 
 
-
-
 ?>
