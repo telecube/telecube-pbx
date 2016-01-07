@@ -20,6 +20,7 @@ else
     sed -i 's/#include "sip-register.conf"/#include "sip-conf.conf"\n\n#include "sip-register.conf"/g' /etc/asterisk/sip.conf
 fi
 
+echo "reloading sip"
 /usr/sbin/asterisk -rx "sip reload"
 
 echo "Done."
