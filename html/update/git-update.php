@@ -25,20 +25,14 @@ if(file_exists("/opt/telecube-pbx/html")){
 	$data = array(date("Y-m-d H:i:s"), json_encode($gOut));
 	$Db->query($q,$data,$dbPDO);
 
-	sleep(5);
+	//sleep(5);
 
 	// get the latest commit id after the pull
 	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ log -1", $gl2Out, $return_var);
+	$thiscmtid = $Common->git_commit_id_from_log($gl2Out);
 
-	$q = "insert into test (datetime, data1) values (?,?);";
-	$data = array(date("Y-m-d H:i:s"), json_encode($gl2Out));
-	$Db->query($q,$data,$dbPDO);
-
-	// get the commit id
-	$commit_id = $gl2Out[0];
-	$q = "insert into test (datetime, data1) values (?,?);";
-	$data = array(date("Y-m-d H:i:s"), $commit_id);
-	$Db->query($q,$data,$dbPDO);
+	$q = "insert into test (datetime, data1, data2) values (?,?,?);";
+	$Db->query($q, array(date("Y-m-d H:i:s"), json_encode($gl2Out), $thiscmtid), $dbPDO);
 
 
 	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/", $rOut1, $return_var);
