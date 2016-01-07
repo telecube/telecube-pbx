@@ -9,5 +9,4 @@ if($Common->is_voip_ext($dnid)){
 }
 
 
-// test 1
 ?>
