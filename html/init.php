@@ -4,6 +4,7 @@
 #error_reporting(E_ALL);
 
 require("classes/_autoloader.php");
+use Telecube\Asterisk;
 use Telecube\Common;
 use Telecube\Config;
 use Telecube\Curl;
@@ -34,10 +35,11 @@ try{
 }
 $dbPDO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-$Common = new Common;
-$Curl 	= new Curl;
-$Db 	= new Db;
-$Log 	= new Log;
+$Asterisk 	= new Asterisk;
+$Common 	= new Common;
+$Curl 		= new Curl;
+$Db 		= new Db;
+$Log 		= new Log;
 
 // check if there are updates waiting
 $update_wait_count = $Common->get_pref("update_wait_count");

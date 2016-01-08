@@ -1,6 +1,7 @@
 <?php
 
 $mapping = array(
+	'Telecube\Asterisk' 	=> __DIR__ . '/asterisk.php',
 	'Telecube\Config' 		=> __DIR__ . '/config.php',
 	'Telecube\Common' 		=> __DIR__ . '/common.php',
 	'Telecube\Curl' 		=> __DIR__ . '/curl.php',

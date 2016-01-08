@@ -5,7 +5,8 @@ require("../init.php");
 $q = "select name, secret, port, regseconds, label, bar_13, bar_int, bar_mobile, bar_fixed from sip_devices order by name;";
 $data = array();
 $res = $Db->pdo_query($q,$data,$dbPDO);
-//$Common->ecco($res);
+$stat = $Asterisk->ext_status(1000);
+$Common->ecco($stat);
 $sip_devices = $res;
 $extensions = array();
 $j = count($res);
@@ -118,7 +119,8 @@ for($i=0;$i<$j;$i++) {
 			$x=0;
 			$j = count($sip_devices);
 			for($i=0;$i<$j;$i++) { 
-				$registered = $sip_devices[$i]['port'] > 0 && $sip_devices[$i]['regseconds'] > date("U") ? true : false;
+				//$registered = $sip_devices[$i]['port'] > 0 && $sip_devices[$i]['regseconds'] > date("U") ? true : false;
+				$registered = $Asterisk->ext_status($sip_devices[$i]['name'], "expire") > 0 ? true : false;
 				// 	echo $result->response[0]->port > 0 && $result->response[0]->regseconds > date("U") ? '<font color="#009900">Online</font>' : '<font color="#FF9900">Offline</font>';
 
 				echo $x==0 ? '<div class="row">'."\n" : "";
