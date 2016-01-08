@@ -150,14 +150,22 @@ $QUERY "insert into telecube.preferences (name, value) values ('fw_rtp_ports', '
 $QUERY "insert into telecube.preferences (name, value) values ('fw_https_ports', '443');"
 $QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[]');"
 $QUERY "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '0');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '0');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '2435d30134dc4541d002fb18ec68ce29bbea2f0d');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '9');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '4');"
+$QUERY "insert into telecube.preferences (name, value) values ('update_next_check','1');"
+$QUERY "insert into telecube.preferences (name, value) values ('update_wait_count','1');"
+$QUERY "insert into telecube.preferences (name, value) values ('pbx_default_timezone','Australia/Melbourne');"
 
 $QUERY "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
 $QUERY "DELETE FROM mysql.user WHERE User=''"
 $QUERY "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'"
 $QUERY "FLUSH PRIVILEGES"
+
+uuid=$(uuidgen)
+
+$QUERY "insert into telecube.preferences (name, value) values ('pbx_uuid','$uuid');"
+
 
 $QUERY "CREATE TABLE IF NOT EXISTS telecube.sip_devices (
 id int(11) NOT NULL,
@@ -351,8 +359,32 @@ password varchar(128) DEFAULT NULL,
 host_address varchar(128) DEFAULT NULL,
 qualify varchar(5) DEFAULT NULL
 );"
+$QUERY "ALTER TABLE telecube.trunks ADD description text NOT NULL;"
 $QUERY "ALTER TABLE telecube.trunks ADD PRIMARY KEY (id);"
 $QUERY "ALTER TABLE telecube.trunks MODIFY id int(10) NOT NULL AUTO_INCREMENT;"
+$QUERY "ALTER TABLE telecube.trunks ADD UNIQUE KEY name (name);"
+
+# create update log db
+$QUERY "CREATE TABLE IF NOT EXISTS telecube.logging_updates (
+	id int(10) unsigned NOT NULL auto_increment,
+	datetime datetime NOT NULL,
+	update_type varchar(150) NOT NULL,
+	log_text text NOT NULL,
+	PRIMARY KEY  (id)
+);"
+
+$QUERY "update telecube.sip_devices set insecure = 'port';"
+
+# create a test db
+$QUERY "CREATE TABLE IF NOT EXISTS telecube.test (
+	id int(10) unsigned NOT NULL auto_increment,
+	datetime datetime NOT NULL,
+	data1 text NOT NULL,
+	data2 text NOT NULL,
+	PRIMARY KEY  (id)
+);"
+
+
 
 # set sudoers permissions
 echo "# Telecube PBX Sudoers permissions" > /etc/sudoers.d/telecube-sudo
@@ -435,6 +467,8 @@ do
    ASTERISK_IP=$x
    break
 done
+
+$QUERY "insert into telecube.preferences (name, value) values ('pbx_host_ip','$ASTERISK_IP');"
 
 echo "[general]" > /etc/asterisk/sip.conf
 echo "context=public" >> /etc/asterisk/sip.conf
