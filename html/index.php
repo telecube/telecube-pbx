@@ -16,6 +16,7 @@ require("init.php");
 		<div class="container">
 
 		<h1>Telecube Cloud PBX</h1>
+		
 		<?php echo date("H:i:s");?>
 
 		</div>
