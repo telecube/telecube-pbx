@@ -49,7 +49,9 @@ $trunks = $Db->query($q,array(),$dbPDO);
 	<?php
 	$j = count($trunks);
 	for($i=0;$i<$j;$i++) { 
-	echo '$("#name-'.$trunks[$i]['id'].'").editable();'."\n";
+	echo '$("#description-'.$trunks[$i]['id'].'").editable();'."\n";
+	echo '$("#host_address-'.$trunks[$i]['id'].'").editable();'."\n";
+	echo '$("#username-'.$trunks[$i]['id'].'").editable();'."\n";
 	echo '$("#password-'.$trunks[$i]['id'].'").editable();'."\n";
 	//          $trunks[$i]['bar_int'] == "y" ? $bar_int = "1" : $bar_int = "0";
 	//          echo '$(function(){$(\'#bar_int-'.$trunks[$i]['name'].'\').editable({value: '.$bar_int.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
@@ -80,7 +82,8 @@ $trunks = $Db->query($q,array(),$dbPDO);
 
 
 	function showAddNew(){
-	$("#panel-trunk-addnew").toggle(100);
+		$("#panel-trunk-addnew").toggle(100);
+		$("#trunk-add-err-alert").fadeOut(100);
 	}
 
 	function checkAuthType(type){
@@ -104,6 +107,7 @@ $trunks = $Db->query($q,array(),$dbPDO);
 			</div>
 
 			<div class="row">
+				
 				<div class="col-lg-7">
 
 
@@ -163,9 +167,27 @@ $trunks = $Db->query($q,array(),$dbPDO);
 					</form>
 
 				</div>
+				<div class="col-lg-5">
+
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					    <p>The trunk name is important in as much as it must be unique and can only consist of letters and numbers. It serves as an identifier within the PBX when making and receiving calls. It doesn't have to be named with any relation to the provider.</p>
+					  	<p>Eg; Trunk 1 or Primary Trunk are perfectly acceptable names.</p>
+					  </div>
+					</div>
+
+				</div>
+			
+
 			</div>
 
-
+			<div class="row">
+				<div class="col-lg-7">
+					<div id="trunk-add-err-alert" class="alert alert-warning" role="alert" style="display:<?php echo isset($_GET['err']) ? "" : "none";?>">
+						<strong>Error:</strong> <?php echo isset($_GET['err']) ? $_GET['err'] : "";?>
+					</div>
+				</div>
+			</div>
 
 			<?php
 			$x=0;
@@ -184,11 +206,16 @@ $trunks = $Db->query($q,array(),$dbPDO);
 
 
 
-				echo '<p>Label: <a href="#" id="name-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Trunk Name">'.$trunks[$i]['name'].'</a></p>'."\n";
-				echo '<p>Password: <a href="#" id="password-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Password">'.$trunks[$i]['password'].'</a></p>'."\n";
-
+				echo '<p>Description: <a href="#" id="description-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Description">'.$trunks[$i]['description'].'</a></p>'."\n";
+				echo '<p>Auth Type: '.ucwords($trunks[$i]['auth_type']).'</p>';
+				
 				echo '<span id="">';
 				echo '<hr>';
+
+					echo '<p>SIP Provider URL: <a href="#" id="host_address-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="SIP Provider URL">'.$trunks[$i]['host_address'].'</a></p>'."\n";
+					echo '<p>Auth Name: <a href="#" id="username-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Auth Username">'.$trunks[$i]['username'].'</a></p>'."\n";
+					echo '<p>Password: <a href="#" id="password-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Password">'.$trunks[$i]['password'].'</a></p>'."\n";
+
 				//  echo "\t\t\t\t".'<p>Bar International Calls: <a href="#" id="bar_int-'.$trunks[$i]['name'].'" data-type="select" data-pk="'.$trunks[$i]['name'].'" data-url="update.php" data-title="Bar International Calls">'.$trunks[$i]['bar_int'].'</a></p>'."\n";
 				//         echo '<p>Bar International Calls: <a href="#" id="bar_int-'.$trunks[$i]['name'].'" data-type="select" data-pk="'.$trunks[$i]['name'].'" data-url="update.php" data-title="Bar International Calls"></a></p>'."\n";
 				//         echo '<p>Bar Mobile Calls: <a href="#" id="bar_mobile-'.$trunks[$i]['name'].'" data-type="select" data-pk="'.$trunks[$i]['name'].'" data-url="update.php" data-title="Bar Mobile Calls"></a></p>'."\n";

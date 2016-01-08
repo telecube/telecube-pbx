@@ -1,8 +1,9 @@
 <?php
 require("../init.php");
 
-echo "<pre>";
-print_r($_POST);
+//echo "<pre>";
+//print_r($_POST);
+$tnknm = trim($_POST['trunk_name']);
 
 /* 
 Array
@@ -29,10 +30,23 @@ mysql> describe trunks;
 +--------------+--------------+------+-----+---------+----------------+
 */
 
+// trunk name is used in the config as the identifier so it must be letters and numbers only and not contain any special characters
+$trunk_name = trim($_POST['trunk_name']);
+if(empty($trunk_name)){
+	header("Location: /trunks/?err=Trunk name must not be empty!");
+	exit;
+}
+
+$trunk_name = $Common->sanitise_trunk_name($_POST['trunk_name'], "_");
 
 $q = "insert into trunks (datetime, name, auth_type, username, password, host_address, qualify) values (?,?,?,?,?,?,?);";
-$data = array(date("Y-m-d H:i:s"), $_POST['trunk_name'], $_POST['auth_type'], $_POST['trunk_auth_name'], $_POST['trunk_pass'], $_POST['trunk_url'], "yes");
+$data = array(date("Y-m-d H:i:s"), $trunk_name, $_POST['auth_type'], $_POST['trunk_auth_name'], $_POST['trunk_pass'], $_POST['trunk_url'], "yes");
 $res = $Db->query($q,$data,$dbPDO);
+
+if(strpos(strtolower($res), "duplicate") !== false){
+	header("Location: /trunks/?err=Trunk name exists!");
+	exit;
+}
 
 // get all the trunks and reload the config files
 $regStr = "; Register Strings\n";

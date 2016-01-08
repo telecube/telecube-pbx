@@ -5,6 +5,10 @@ namespace Telecube;
 
 class Common{
 
+	function sanitise_trunk_name($str,$repl=""){
+		return preg_replace("/[^a-zA-Z0-9]+/", $repl, $str);
+	}
+
 	function set_pref($name, $value){
 		global $Db, $dbPDO;
 		$q = "update preferences set value = ? where name = ?;";
