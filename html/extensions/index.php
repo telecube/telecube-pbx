@@ -5,8 +5,8 @@ require("../init.php");
 $q = "select name, secret, port, regseconds, label, bar_13, bar_int, bar_mobile, bar_fixed from sip_devices order by name;";
 $data = array();
 $res = $Db->pdo_query($q,$data,$dbPDO);
-$stat = $Asterisk->ext_status(1000);
-$Common->ecco($stat);
+//$stat = $Asterisk->ext_status(1000,array("expire","context","Addr->IP","Reg. Contact", "Useragent"));
+//$Common->ecco($stat);
 $sip_devices = $res;
 $extensions = array();
 $j = count($res);
@@ -22,10 +22,7 @@ for($i=0;$i<$j;$i++) {
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/title.php");?>
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/css.php");?>
 
-
-
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/js.php");?>
-
 
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -45,23 +42,14 @@ for($i=0;$i<$j;$i++) {
 				echo '$(function(){$(\'#bar_fixed-'.$sip_devices[$i]['name'].'\').editable({value: '.$bar_fixed.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
 				$sip_devices[$i]['bar_13'] == "y" ? $bar_13 = "1" : $bar_13 = "0";
 				echo '$(function(){$(\'#bar_13-'.$sip_devices[$i]['name'].'\').editable({value: '.$bar_13.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
-
-
 			}
 			?>
-
-
 			$('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
-
-
-
 		});
 
 		function showAddNew(){
 			$("#panel-extension-addnew").toggle(100);
 		}
-
-
 	</script>
 	</head>
 	<body>
@@ -114,14 +102,11 @@ for($i=0;$i<$j;$i++) {
 			</div>
 
 
-
 			<?php
 			$x=0;
 			$j = count($sip_devices);
 			for($i=0;$i<$j;$i++) { 
-				//$registered = $sip_devices[$i]['port'] > 0 && $sip_devices[$i]['regseconds'] > date("U") ? true : false;
 				$registered = $Asterisk->ext_status($sip_devices[$i]['name'], "expire") > 0 ? true : false;
-				// 	echo $result->response[0]->port > 0 && $result->response[0]->regseconds > date("U") ? '<font color="#009900">Online</font>' : '<font color="#FF9900">Offline</font>';
 
 				echo $x==0 ? '<div class="row">'."\n" : "";
 				echo '<div class="col-lg-4">'."\n";
@@ -135,8 +120,6 @@ for($i=0;$i<$j;$i++) {
 				echo '<h3 class="panel-title">Ext: '.$sip_devices[$i]['name'].' <button type="button" class="btn btn-'.$regstatbtncolor.' btn-xs pull-right">'.$regstatbtntext.'</button></h3>'."\n";
 				echo '</div>'."\n";
 				echo '<div class="panel-body">'."\n";
-
-
 
 				echo '<p>Label: <a href="#" id="label-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Label">'.$sip_devices[$i]['label'].'</a></p>'."\n";
 				echo '<p>Password: <a href="#" id="secret-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Password">'.$sip_devices[$i]['secret'].'</a></p>'."\n";
@@ -157,20 +140,12 @@ for($i=0;$i<$j;$i++) {
 				echo '</div>'."\n";
 				echo '</div>'."\n";
 
-
-
 				echo "\t\t".'</div>'."\n";
 				echo $x==2 || $i == $j-1 ? "\t".'</div>'."\n" : "";
 				$x++;
 				$x=$x==3?0:$x;
 			}
 			?>
-
-
-
-
 		</div>
-
-
 	</body>
 </html>
