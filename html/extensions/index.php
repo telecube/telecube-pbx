@@ -2,16 +2,17 @@
 require("../init.php");
 
 // get a list of current extensions
-$q = "select name, secret, label, bar_13, bar_int, bar_mobile, bar_fixed from sip_devices order by name;";
+$q = "select name, secret, port, regseconds, label, bar_13, bar_int, bar_mobile, bar_fixed from sip_devices order by name;";
 $data = array();
 $res = $Db->pdo_query($q,$data,$dbPDO);
-//print_r($res);
+//$Common->ecco($res);
 $sip_devices = $res;
 $extensions = array();
 $j = count($res);
 for($i=0;$i<$j;$i++) { 
 	$extensions[] = $res[$i]['name'];
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -117,6 +118,9 @@ for($i=0;$i<$j;$i++) {
 			$x=0;
 			$j = count($sip_devices);
 			for($i=0;$i<$j;$i++) { 
+				$registered = $sip_devices[$i]['port'] > 0 && $sip_devices[$i]['regseconds'] > date("U") ? true : false;
+				// 	echo $result->response[0]->port > 0 && $result->response[0]->regseconds > date("U") ? '<font color="#009900">Online</font>' : '<font color="#FF9900">Offline</font>';
+
 				echo $x==0 ? '<div class="row">'."\n" : "";
 				echo '<div class="col-lg-4">'."\n";
 
@@ -124,7 +128,9 @@ for($i=0;$i<$j;$i++) {
 
 				echo '<div class="panel panel-default">'."\n";
 				echo '<div class="panel-heading">'."\n";
-				echo '<h3 class="panel-title">Ext: '.$sip_devices[$i]['name'].'</h3>'."\n";
+				$regstatbtncolor = $registered ? "success" : "warning";
+				$regstatbtntext = $registered ? "Registered" : "Not Registered";
+				echo '<h3 class="panel-title">Ext: '.$sip_devices[$i]['name'].' <button type="button" class="btn btn-'.$regstatbtncolor.' btn-xs pull-right">'.$regstatbtntext.'</button></h3>'."\n";
 				echo '</div>'."\n";
 				echo '<div class="panel-body">'."\n";
 

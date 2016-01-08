@@ -73,5 +73,12 @@ class Common{
 	    $password = substr( str_shuffle( $chars ), 0, $length );
 	    return $password;
 	}
+
+	// debugging helper
+	function ecco($s){
+		echo "<pre>";
+		print_r($s);
+		echo "</pre>";
+	}
 }
 ?>
