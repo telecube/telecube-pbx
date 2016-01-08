@@ -150,9 +150,9 @@ $trunks = $Db->query($q,array(),$dbPDO);
 								</div>
 
 								<div class="form-group">
-									<label for="trunk_url" class="col-sm-3 control-label">SIP Provider URL</label>
+									<label for="trunk_url" class="col-sm-3 control-label">Host Address</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control" id="trunk_url" name="trunk_url" placeholder="SIP Provider URL">
+										<input type="text" class="form-control" id="trunk_url" name="trunk_url" placeholder="Host Address">
 									</div>
 								</div>
 
