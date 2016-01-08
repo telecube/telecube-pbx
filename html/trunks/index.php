@@ -212,7 +212,7 @@ $trunks = $Db->query($q,array(),$dbPDO);
 				echo '<span id="">';
 				echo '<hr>';
 
-					echo '<p>Host IP: <a href="#" id="host_address-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="SIP Provider URL">'.$trunks[$i]['host_address'].'</a></p>'."\n";
+					echo '<p>Host Address: <a href="#" id="host_address-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="SIP Provider URL">'.$trunks[$i]['host_address'].'</a></p>'."\n";
 					echo '<p>Auth Name: <a href="#" id="username-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Auth Username">'.$trunks[$i]['username'].'</a></p>'."\n";
 					echo '<p>Password: <a href="#" id="password-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Password">'.$trunks[$i]['password'].'</a></p>'."\n";
 
