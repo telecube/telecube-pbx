@@ -123,6 +123,7 @@ for($i=0;$i<$j;$i++) {
 
 				echo '<p>Label: <a href="#" id="label-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Label">'.$sip_devices[$i]['label'].'</a></p>'."\n";
 				echo '<p>Password: <a href="#" id="secret-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Password">'.$sip_devices[$i]['secret'].'</a></p>'."\n";
+				echo '<p>PBX IP Address: '.$Common->get_pref("pbx_host_ip").'</p>'."\n";
 
 				echo '<span id="">';
 				echo '<hr>';
