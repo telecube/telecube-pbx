@@ -46,7 +46,7 @@ require("../init.php");
 
 			<h1>Preferences</h1>
 			<div class="well">
-				<p>Configure firewall options here.</p>
+				<p>Configure preference options here.</p>
 			</div>
 
 			<div class="row">
