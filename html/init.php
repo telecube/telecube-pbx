@@ -12,6 +12,7 @@ use Telecube\Db;
 use Telecube\Log;
 $Config = new Config;
 
+
 session_name($Config->get("session_name"));
 session_start();
 
@@ -40,6 +41,8 @@ $Common 	= new Common;
 $Curl 		= new Curl;
 $Db 		= new Db;
 $Log 		= new Log;
+
+date_default_timezone_set($Common->get_pref("pbx_default_timezone"));
 
 // check if there are updates waiting
 $update_wait_count = $Common->get_pref("update_wait_count");

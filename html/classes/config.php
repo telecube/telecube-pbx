@@ -6,8 +6,6 @@ namespace Telecube;
 #if(!defined('MAIN_INCLUDED'))
 #  exit("Not allowed here!");
 
-date_default_timezone_set('Australia/Melbourne');
-
 if(!file_exists("/opt/base_config.inc.php")){
 	exit("There was an installation error, the base config file is missing!");
 }
