@@ -6,7 +6,9 @@ $mapping = array(
 	'Telecube\Common' 		=> __DIR__ . '/common.php',
 	'Telecube\Curl' 		=> __DIR__ . '/curl.php',
 	'Telecube\Db' 			=> __DIR__ . '/db.php',
+	'Telecube\Ext' 			=> __DIR__ . '/extension.php',
 	'Telecube\Log' 			=> __DIR__ . '/log.php',
+	'Telecube\Trunk' 		=> __DIR__ . '/trunk.php',
 );
 
 

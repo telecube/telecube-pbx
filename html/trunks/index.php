@@ -29,9 +29,7 @@ file_put_contents($fp,$str);
 //print_r($o);
 //print_r($r);
 
-$q = "select * from trunks;";
-$trunks = $Db->query($q,array(),$dbPDO);
-
+$trunks = $Trunk->list_trunks();
 ?>
 <!DOCTYPE html>
 <html lang="en">

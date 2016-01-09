@@ -2,17 +2,8 @@
 require("../init.php");
 
 // get a list of current extensions
-$q = "select name, secret, port, regseconds, label, bar_13, bar_int, bar_mobile, bar_fixed from sip_devices order by name;";
-$data = array();
-$res = $Db->pdo_query($q,$data,$dbPDO);
-//$stat = $Asterisk->ext_status(1000,array("expire","context","Addr->IP","Reg. Contact", "Useragent"));
-//$Common->ecco($stat);
-$sip_devices = $res;
-$extensions = array();
-$j = count($res);
-for($i=0;$i<$j;$i++) { 
-	$extensions[] = $res[$i]['name'];
-}
+$sip_devices 	= $Ext->list_extensions();
+$extensions 	= $Ext->get_names($sip_devices);
 
 ?>
 <!DOCTYPE html>
