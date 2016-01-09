@@ -41,7 +41,7 @@ require("../init.php");
 				$.get( "dt-inc.php", function( data ) {
 					$("#def-tz-time").html(data);
 				});				
-				setTimeout("dtUpdate();",500);
+				setTimeout("dtUpdate();",1000);
 			}
 
 			function showAddNew(){
