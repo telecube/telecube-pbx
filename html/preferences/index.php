@@ -33,13 +33,24 @@ require("../init.php");
 				$('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
 			});
 
+			function run(){
+				dtUpdate();
+			}
+
+			function dtUpdate(){
+				$.get( "dt-inc.php", function( data ) {
+					$("#def-tz-time").html(data);
+				});				
+				setTimeout("dtUpdate();",500);
+			}
+
 			function showAddNew(){
 				$("#panel-extension-addnew").toggle(100);
 			}
 		</script>
 
 	</head>
-	<body>
+	<body onLoad="run();">
 		<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/top-menu.php");?>
 
 		<div class="container">
@@ -56,7 +67,7 @@ require("../init.php");
 					<form method="post" action="add-new.php">
 						<div class="panel panel-default"> 
 							<div class="panel-heading"> 
-								<h3 class="panel-title">Default Timezone</h3> 
+								<h3 class="panel-title">Default Timezone <span id="def-tz-time" class="pull-right"><?php include("dt-inc.php");?></span></h3> 
 							</div> 
 							<div class="panel-body" id="panel-preferences-default-timezone">
 								<p><a href="#" id="pbx_default_timezone" data-type="select" data-pk="pbx_default_timezone" data-url="update.php" data-title="Default Timezone"></a></p>
