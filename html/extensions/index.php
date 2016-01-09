@@ -41,9 +41,39 @@ $extensions 	= $Ext->get_names($sip_devices);
 		function showAddNew(){
 			$("#panel-extension-addnew").toggle(100);
 		}
+
+		function run(){
+		//	setExtensionRegisterStatus();
+		}
+
+		function setExtensionRegisterStatus(){
+
+			$.get( "ext-reg-stat.php", function( data ) {
+			//	alert(data);
+				var results = new Array();
+				try{ results = JSON.parse(data); }catch(ex){ results['status'] = ex; }
+				// do stuff here
+				if(results['status'] == "OK"){
+					for (var i = 0; i < results["exts"].length; i++) {
+					//	alert(results["exts"][i]+' '+results["data"][results["exts"][i]]);
+						if(results["data"][results["exts"][i]] == "yes"){
+							$("#btn-ext-register-status-"+results["exts"][i]).removeClass( "btn-warning" ).addClass( "btn-success" );
+							$("#span-ext-register-status-"+results["exts"][i]).html( "Registered" );
+						}else{
+							$("#btn-ext-register-status-"+results["exts"][i]).removeClass( "btn-success" ).addClass( "btn-warning" );
+							$("#span-ext-register-status-"+results["exts"][i]).html( "Not Registered" );
+						}
+					};
+					setTimeout("setExtensionRegisterStatus();", 1000);
+				}else{
+				//	alert(data);
+				}
+			});				
+
+		}
 	</script>
 	</head>
-	<body>
+	<body onLoad="run();">
 		<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/top-menu.php");?>
 
 		<div class="container">
@@ -98,6 +128,7 @@ $extensions 	= $Ext->get_names($sip_devices);
 			$j = count($sip_devices);
 			for($i=0;$i<$j;$i++) { 
 				$registered = $Asterisk->ext_status($sip_devices[$i]['name'], "expire") > 0 ? true : false;
+				//$registered = $Ext->is_registered($sip_devices[$i]['name']);
 
 				echo $x==0 ? '<div class="row">'."\n" : "";
 				echo '<div class="col-lg-4">'."\n";
@@ -108,7 +139,7 @@ $extensions 	= $Ext->get_names($sip_devices);
 				echo '<div class="panel-heading">'."\n";
 				$regstatbtncolor = $registered ? "success" : "warning";
 				$regstatbtntext = $registered ? "Registered" : "Not Registered";
-				echo '<h3 class="panel-title">Ext: '.$sip_devices[$i]['name'].' <button type="button" class="btn btn-'.$regstatbtncolor.' btn-xs pull-right">'.$regstatbtntext.'</button></h3>'."\n";
+				echo '<h3 class="panel-title">Ext: '.$sip_devices[$i]['name'].' <button type="button" id="btn-ext-register-status-'.$sip_devices[$i]['name'].'" class="btn btn-'.$regstatbtncolor.' btn-xs pull-right"><span id="span-ext-register-status-'.$sip_devices[$i]['name'].'">'.$regstatbtntext.'</span></button></h3>'."\n";
 				echo '</div>'."\n";
 				echo '<div class="panel-body">'."\n";
 

@@ -21,5 +21,13 @@ class Ext{
 		}
 		return $ext_names;
 	}
+
+	function is_registered($ext){
+		global $Db, $dbPDO;
+		$q = "select port, regseconds from sip_devices where name = ?;";
+		$res = $Db->pdo_query($q, array($ext), $dbPDO);
+		return $res[0]['port'] > 0 && $res[0]['regseconds'] > date("U") ? true : false;
+	}
+
 }
 ?>

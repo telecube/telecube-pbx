@@ -86,11 +86,11 @@ $trunks = $Trunk->list_trunks();
 	}
 
 	function checkAuthType(type){
-	if(type == 'ip'){
-	$("#panel-trunk-addnew-password").fadeOut();
-	}else{
-	$("#panel-trunk-addnew-password").fadeIn();
-	}
+		if(type == 'ip'){
+			$("#panel-trunk-addnew-password").fadeOut();
+		}else{
+			$("#panel-trunk-addnew-password").fadeIn();
+		}
 	}
 	</script>
 
