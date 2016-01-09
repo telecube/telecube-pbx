@@ -83,6 +83,7 @@ $trunks = $Db->query($q,array(),$dbPDO);
 
 	function showAddNew(){
 		$("#panel-trunk-addnew").toggle(100);
+		$("#panel-trunk-addnew-info").toggle(100);
 		$("#trunk-add-err-alert").fadeOut(100);
 	}
 
@@ -170,7 +171,10 @@ $trunks = $Db->query($q,array(),$dbPDO);
 				<div class="col-lg-5">
 
 					<div class="panel panel-default">
-					  <div class="panel-body">
+					  <div class="panel-heading">
+					    <h3 class="panel-title">&nbsp;</h3>
+					  </div>
+					  <div class="panel-body" id="panel-trunk-addnew-info" style="display:none;">
 					    <p>The trunk name is important in as much as it must be unique and can only consist of letters and numbers. It serves as an identifier within the PBX when making and receiving calls. It doesn't have to be named with any relation to the provider.</p>
 					  	<p>Eg; Trunk 1 or Primary Trunk are perfectly acceptable names.</p>
 					  </div>

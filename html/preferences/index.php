@@ -11,32 +11,32 @@ require("../init.php");
 		<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/js.php");?>
 
 
-	<script type="text/javascript">
-		$(document).ready(function() {
-			//toggle `popup` / `inline` mode
-			$.fn.editable.defaults.mode = 'popup';     
+		<script type="text/javascript">
+			$(document).ready(function() {
+				//toggle `popup` / `inline` mode
+				$.fn.editable.defaults.mode = 'popup';     
 
-			$(function(){$('#pbx_default_timezone').editable({
-				value: '<?php echo $Common->get_pref("pbx_default_timezone");?>',
-				source: [
-							<?php
-							$tzList = timezone_identifiers_list();
-							$j = count($tzList);
-							for($i=0;$i<$j;$i++) { 
-								echo "{value: '".$tzList[$i]."', text: '".$tzList[$i]."'},";
-							}
-							?>
-						]
+				$(function(){$('#pbx_default_timezone').editable({
+					value: '<?php echo $Common->get_pref("pbx_default_timezone");?>',
+					source: [
+								<?php
+								$tzList = timezone_identifiers_list();
+								$j = count($tzList);
+								for($i=0;$i<$j;$i++) { 
+									echo "{value: '".$tzList[$i]."', text: '".$tzList[$i]."'},";
+								}
+								?>
+							]
+					});
 				});
+
+				$('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
 			});
 
-			$('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
-		});
-
-		function showAddNew(){
-			$("#panel-extension-addnew").toggle(100);
-		}
-	</script>
+			function showAddNew(){
+				$("#panel-extension-addnew").toggle(100);
+			}
+		</script>
 
 	</head>
 	<body>
