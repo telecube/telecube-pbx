@@ -33,7 +33,8 @@ if($field == "active"){
 	for($i=0;$i<$j;$i++) { 
 	//	echo $res[$i]['name']."\n";
 		if($res[$i]['auth_type'] == "password"){
-			$regStr .= "register => ".$res[$i]['username'].":".$res[$i]['password'].":".$res[$i]['username']."@".$res[$i]['name']."/".$res[$i]['id']."\n";
+			$thisTrId = str_pad($res[$i]['id'], 3, "0", STR_PAD_LEFT);
+			$regStr .= "register => ".$res[$i]['username'].":".$res[$i]['password'].":".$res[$i]['username']."@".$res[$i]['name']."/".$thisTrId."\n";
 		}
 
 		// build the peers string
