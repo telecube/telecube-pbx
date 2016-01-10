@@ -1,5 +1,6 @@
 #!/usr/bin/php -q
 <?php
+
 include("init.php");
 
 
