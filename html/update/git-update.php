@@ -6,19 +6,23 @@ require("../init.php");
 
 if(file_exists("/opt/telecube-pbx/html")){
 
-	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ pull", $gOut, $return_var);
+	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ pull", $gOut, $return_var0);
 
 	// get the latest commit id after the pull
-	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ log -1", $gl2Out, $return_var);
+	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ log -1", $gl2Out, $return_var0a);
 	$thiscmtid = $Common->git_commit_id_from_log($gl2Out);
 	$Common->set_pref('current_version_git', $thiscmtid);
 
 	// zero  the update wait count
 	$Common->set_pref('update_wait_count', '0');
 
-	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/", $rOut1, $return_var);
+	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/", $rOut1, $return_var1);
+	
+	exec("sudo /bin/chown asterisk:asterisk /var/lib/asterisk/agi-bin -R", $rOut1a, $return_var1a);
 
-	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/html/ /var/www/html/", $rOut2, $return_var);
+// chown asterisk:asterisk /var/lib/asterisk/agi-bin -R
+
+	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/html/ /var/www/html/", $rOut2, $return_var2);
 
 	$msg = "OK, update successful.";
 }else{
