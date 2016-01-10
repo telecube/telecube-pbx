@@ -20,7 +20,9 @@ if(file_exists("/opt/telecube-pbx/html")){
 	
 	exec("sudo /bin/chown asterisk:asterisk /var/lib/asterisk/agi-bin -R", $rOut1a, $return_var1a);
 
-// chown asterisk:asterisk /var/lib/asterisk/agi-bin -R
+	exec("sudo /bin/chmod +x /var/lib/asterisk/agi-bin/unauthorised-call.php", $rOut1b, $return_var1b);
+	exec("sudo /bin/chmod +x /var/lib/asterisk/agi-bin/voip-out.php", $rOut1c, $return_var1c);
+	exec("sudo /bin/chmod +x /var/lib/asterisk/agi-bin/voip-in.php", $rOut1d, $return_var1d);
 
 	exec("sudo /usr/bin/rsync -av --delete /opt/telecube-pbx/html/ /var/www/html/", $rOut2, $return_var2);
 
