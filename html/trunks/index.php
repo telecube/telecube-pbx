@@ -1,35 +1,8 @@
 <?php
 require("../init.php");
-/*
-echo $Common->get_file_perm("/etc/asterisk/sip-register.conf");
-
-$fp = "/etc/asterisk/sip-register.conf";
-
-$str = file_get_contents($fp);
-
-print_r($str);
-
-$str .= "; this is new";
-
-file_put_contents($fp,$str);
-*/
-
-//chmod("/etc/asterisk/sip.conf", 0744);
-
-//$str = file("/etc/asterisk/sip.conf");
-//print_r($str);
-//$sip_conf = exec("sudo /bin/cat /etc/asterisk/sip.conf", $o, $r);
-
-//shell_exec("sudo /bin/echo \"test\" >> /etc/asterisk/sip.conf");
-
-//$ss = exec("sudo /bin/echo \"test\" >> /etc/asterisk/sip.conf",$o, $r);
-//$sip_conf = exec("sudo /bin/cat /etc/asterisk/sip.conf",$o, $r);
-
-//print_r($sip_conf);
-//print_r($o);
-//print_r($r);
 
 $trunks = $Trunk->list_trunks();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,20 +20,13 @@ $trunks = $Trunk->list_trunks();
 	<?php
 	$j = count($trunks);
 	for($i=0;$i<$j;$i++) { 
-	echo '$("#description-'.$trunks[$i]['id'].'").editable();'."\n";
-	echo '$("#host_address-'.$trunks[$i]['id'].'").editable();'."\n";
-	echo '$("#username-'.$trunks[$i]['id'].'").editable();'."\n";
-	echo '$("#password-'.$trunks[$i]['id'].'").editable();'."\n";
-	//          $trunks[$i]['bar_int'] == "y" ? $bar_int = "1" : $bar_int = "0";
-	//          echo '$(function(){$(\'#bar_int-'.$trunks[$i]['name'].'\').editable({value: '.$bar_int.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
-	//          $trunks[$i]['bar_mobile'] == "y" ? $bar_mobile = "1" : $bar_mobile = "0";
-	//          echo '$(function(){$(\'#bar_mobile-'.$trunks[$i]['name'].'\').editable({value: '.$bar_mobile.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
-	//          $trunks[$i]['bar_fixed'] == "y" ? $bar_fixed = "1" : $bar_fixed = "0";
-	//          echo '$(function(){$(\'#bar_fixed-'.$trunks[$i]['name'].'\').editable({value: '.$bar_fixed.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
-	//          $trunks[$i]['bar_13'] == "y" ? $bar_13 = "1" : $bar_13 = "0";
-	//          echo '$(function(){$(\'#bar_13-'.$trunks[$i]['name'].'\').editable({value: '.$bar_13.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
-
-
+		$disable_editable = $Trunk->is_active($trunks[$i]['id']) == "yes" ? "true" : "false";
+		echo '$(function(){$(\'#active-'.$trunks[$i]['id'].'\').editable({value: \''.$Trunk->is_active($trunks[$i]['id']).'\',source: [{value: \'no\', text: \'Inactive\'},{value: \'yes\', text: \'Active\'}], success: function(data){ disable_active('.$trunks[$i]['id'].', data); } });});';
+		echo '$(function(){$("#description-'.$trunks[$i]['id'].'").editable();});'."\n";
+		echo '$(function(){$("#host_address-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
+		echo '$(function(){$("#username-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
+		echo '$(function(){$("#password-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
+		
 	}
 	?>
 
@@ -76,7 +42,17 @@ $trunks = $Trunk->list_trunks();
 
 
 
-
+	function disable_active(id, val){
+		if(val == "yes"){
+			$('#host_address-'+id).editable('option', 'disabled', true);
+			$('#username-'+id).editable('option', 'disabled', true);
+			$('#password-'+id).editable('option', 'disabled', true);
+		}else{
+			$('#host_address-'+id).editable('option', 'disabled', false);
+			$('#username-'+id).editable('option', 'disabled', false);
+			$('#password-'+id).editable('option', 'disabled', false);
+		}
+	}
 
 
 	function showAddNew(){
@@ -210,10 +186,11 @@ $trunks = $Trunk->list_trunks();
 
 				echo '<p>Description: <a href="#" id="description-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Description">'.$trunks[$i]['description'].'</a></p>'."\n";
 				echo '<p>Auth Type: '.ucwords($trunks[$i]['auth_type']).'</p>';
+				echo '<p>Active Status: <a href="#" id="active-'.$trunks[$i]['id'].'" data-type="select" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Active Status"></a></p>'."\n";
 				
 				echo '<span id="">';
 				echo '<hr>';
-
+					echo '<p><em>Not editable when trunk is active.</em></p>';
 					echo '<p>Host Address: <a href="#" id="host_address-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="SIP Provider URL">'.$trunks[$i]['host_address'].'</a></p>'."\n";
 					echo '<p>Auth Name: <a href="#" id="username-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Auth Username">'.$trunks[$i]['username'].'</a></p>'."\n";
 					echo '<p>Password: <a href="#" id="password-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Password">'.$trunks[$i]['password'].'</a></p>'."\n";

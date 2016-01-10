@@ -147,15 +147,19 @@ $extensions 	= $Ext->get_names($sip_devices);
 				echo '<p>Password: <a href="#" id="secret-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Password">'.$sip_devices[$i]['secret'].'</a></p>'."\n";
 				echo '<p>PBX IP Address: '.$Common->get_pref("pbx_host_ip").'</p>'."\n";
 
-				echo '<span id="">';
-				echo '<hr>';
-				//  echo "\t\t\t\t".'<p>Bar International Calls: <a href="#" id="bar_int-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar International Calls">'.$sip_devices[$i]['bar_int'].'</a></p>'."\n";
-				echo '<p>Bar International Calls: <a href="#" id="bar_int-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar International Calls"></a></p>'."\n";
-				echo '<p>Bar Mobile Calls: <a href="#" id="bar_mobile-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar Mobile Calls"></a></p>'."\n";
-				echo '<p>Bar Fixed Calls: <a href="#" id="bar_fixed-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar Fixed Calls"></a></p>'."\n";
-				echo '<p>Bar 13/1300 Calls: <a href="#" id="bar_13-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar 13/1300 Calls"></a></p>'."\n";
+	//			echo "<hr>";
 
-				echo '<hr>';
+	//			echo '<p>Outgoing Trunk: <a href="#" id="bar_int-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar International Calls"></a></p>'."\n";
+
+				echo '<span id="">';
+					echo '<hr>';
+					//  echo "\t\t\t\t".'<p>Bar International Calls: <a href="#" id="bar_int-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar International Calls">'.$sip_devices[$i]['bar_int'].'</a></p>'."\n";
+					echo '<p>Bar International Calls: <a href="#" id="bar_int-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar International Calls"></a></p>'."\n";
+					echo '<p>Bar Mobile Calls: <a href="#" id="bar_mobile-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar Mobile Calls"></a></p>'."\n";
+					echo '<p>Bar Fixed Calls: <a href="#" id="bar_fixed-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar Fixed Calls"></a></p>'."\n";
+					echo '<p>Bar 13/1300 Calls: <a href="#" id="bar_13-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar 13/1300 Calls"></a></p>'."\n";
+
+					echo '<hr>';
 				echo '</span>';
 
 				echo '<a class="btn btn-sm btn-danger" data-toggle="confirmation" data-title="Really, delete this extension?" data-href="delete.php?ext='.$sip_devices[$i]['name'].'" data-original-title="" title="">Delete</a>'."\n";

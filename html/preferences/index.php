@@ -1,5 +1,6 @@
 <?php
 require("../init.php");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +27,34 @@ require("../init.php");
 									echo "{value: '".$tzList[$i]."', text: '".$tzList[$i]."'},";
 								}
 								?>
+							]
+					});
+				});
+
+				$(function(){$('#pbx_nat_localnet').editable({
+					value: '<?php echo $Common->get_pref("pbx_nat_localnet");?>',
+					source: [
+								{value: '192.168.0.0/16', text: '192.168.0.0/16'},
+								{value: '172.16.0.0/12', text: '172.16.0.0/12'},
+								{value: '10.0.0.0/8', text: '10.0.0.0/8'},
+							]
+					});
+				});
+
+				$(function(){$('#pbx_nat_is_natted').editable({
+					value: '<?php echo $Common->get_pref("pbx_nat_is_natted");?>',
+					source: [
+								{value: 'yes', text: 'Yes - Server Is Local'},
+								{value: 'no', text: 'No - Server Is Hosted'},
+							]
+					});
+				});
+
+				$(function(){$('#pbx_nat_public_ip_static').editable({
+					value: '<?php echo $Common->get_pref("pbx_nat_public_ip_static");?>',
+					source: [
+								{value: 'yes', text: 'Yes - Public IP Is Static'},
+								{value: 'no', text: 'No - Public IP Is Dynamic'},
 							]
 					});
 				});
@@ -64,23 +93,66 @@ require("../init.php");
 
 				<div class="col-lg-4">
 
-					<form method="post" action="add-new.php">
-						<div class="panel panel-default"> 
-							<div class="panel-heading"> 
-								<h3 class="panel-title">Default Timezone <span id="def-tz-time" class="pull-right"><?php include("dt-inc.php");?></span></h3> 
-							</div> 
-							<div class="panel-body" id="panel-preferences-default-timezone">
-								<p><a href="#" id="pbx_default_timezone" data-type="select" data-pk="pbx_default_timezone" data-url="update.php" data-title="Default Timezone"></a></p>
-							</div> 
-						</div>
-					</form>
+					<div class="panel panel-default"> 
+						<div class="panel-heading"> 
+							<h3 class="panel-title">Default Timezone <span id="def-tz-time" class="pull-right"><?php include("dt-inc.php");?></span></h3> 
+						</div> 
+						<div class="panel-body" id="panel-preferences-default-timezone">
+							<p><a href="#" id="pbx_default_timezone" data-type="select" data-pk="pbx_default_timezone" data-url="update.php" data-title="Default Timezone"></a></p>
+						</div> 
+					</div>
 
+				</div>
+
+
+			</div>
+
+			<hr>
+
+			<div class="row">
+
+				<div class="col-lg-4">
+
+					<div class="panel panel-default"> 
+						<div class="panel-heading"> 
+							<h3 class="panel-title">PBX Is Local</h3> 
+						</div> 
+						<div class="panel-body" id="panel-preferences-pbx-is-natted">
+							<p><a href="#" id="pbx_nat_is_natted" data-type="select" data-pk="pbx_nat_is_natted" data-url="update.php" data-title="PBX Is Local"></a></p>
+						</div> 
+					</div>
+
+				</div>
+
+				<div class="col-lg-4">
+
+					<div class="panel panel-default"> 
+						<div class="panel-heading"> 
+							<h3 class="panel-title">Local Network Range</h3> 
+						</div> 
+						<div class="panel-body" id="panel-preferences-pbx-localnetwork">
+							<p><a href="#" id="pbx_nat_localnet" data-type="select" data-pk="pbx_nat_localnet" data-url="update.php" data-title="Local Network Range"></a></p>
+						</div> 
+					</div>
+
+				</div>
+
+				<div class="col-lg-4">
+
+					<div class="panel panel-default"> 
+						<div class="panel-heading"> 
+							<h3 class="panel-title">Public IP Is Static</h3> 
+						</div> 
+						<div class="panel-body" id="panel-preferences-pbx-ip-static">
+							<p><a href="#" id="pbx_nat_public_ip_static" data-type="select" data-pk="pbx_nat_public_ip_static" data-url="update.php" data-title="Local Network Range"></a></p>
+						</div> 
+					</div>
+				
 				</div>
 
 			</div>
 
 
-				
 
 
 
