@@ -3,8 +3,12 @@
 
 echo "updating the extensions.conf config"
 
+echo ";" > /etc/asterisk/extensions.conf
+echo "; Please don't modify this file directly, it is managed by the PBX and your changes may be overwritten" >> /etc/asterisk/extensions.conf
+echo ";" >> /etc/asterisk/extensions.conf
+echo "" >> /etc/asterisk/extensions.conf
 
-echo "[globals]" > /etc/asterisk/extensions.conf
+echo "[globals]" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
 
