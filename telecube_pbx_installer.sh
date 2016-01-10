@@ -21,6 +21,22 @@ if [ "$NAME" != "Ubuntu" ] || [ "$VERSION_ID" != "14.04" ]; then
     exit 1
 fi
 
+#SUPPORTED_OS=false
+#if [ "$SUPPORTED_OS" = false ]; then
+#	if [ "$NAME" = "Ubuntu" ] && [ "$VERSION_ID" = "14.04" ]; then
+#		SUPPORTED_OS=true
+#	fi
+#fi
+#if [ "$SUPPORTED_OS" = false ]; then
+#	if [ "$NAME" = "Ubuntu" ] && [ "$VERSION_ID" = "12.04" ]; then
+#		SUPPORTED_OS=true
+#	fi
+#fi
+#if [ "$SUPPORTED_OS" = false ]; then
+#	echo "Sorry, this script only supports Ubuntu versions 12.04 and 14.04"
+#	echo "You are on: $NAME $VERSION_ID"
+#	exit 1
+#fi
 
 if !(whiptail --title "Telecube PBX Install" --yesno "This script will install the Telecube PBX, do you want to continue?" 10 60) then
     echo "Bye."
@@ -567,6 +583,11 @@ fi
 rsync -av --delete /opt/telecube-pbx/html/ /var/www/html/
 
 rsync -av --delete /opt/telecube-pbx/agi-bin /var/lib/asterisk/
+
+chown asterisk:asterisk /var/lib/asterisk/agi-bin -R
+chmod +x /var/lib/asterisk/agi-bin/unauthorised-call.php
+chmod +x /var/lib/asterisk/agi-bin/voip-out.php
+chmod +x /var/lib/asterisk/agi-bin/voip-in.php
 
 # start the firewall
 /usr/bin/php /var/www/html/firewall/load-firewall.php
