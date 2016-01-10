@@ -4,7 +4,8 @@ namespace Telecube;
 
 #-- The PDO Connection Functions --#
 class Db{
-	public function pdo_query($q,$data=array(),$link){
+	
+	public function query($q,$data=array(),$link){
 	    
 	    $query_type = substr(strtolower($q), 0, 6);
 		
@@ -19,12 +20,9 @@ class Db{
 				while($rs = $rec->fetch()){
 					$res[] = $rs;
 				}
-	    	}
-
-	    	if($query_type == "update" || $query_type == "insert" || $query_type == "delete" || $query_type == "optimi"){
+	    	}else{
 	    		$res = $rec->execute($data); 
 	    	}
-
 
 			$rec->closeCursor();
 			//return $query_type == "insert" ? $link->lastinsertid() : $res;
@@ -33,6 +31,10 @@ class Db{
 	    }catch(\PDOException $ex){
 			return $ex->getMessage();
 	    } 
+	}
+
+	function pdo_query($q,$data=array(),$link){
+		return $this->query($q,$data,$link);
 	}
 }
 
