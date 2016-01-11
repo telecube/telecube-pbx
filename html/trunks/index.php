@@ -105,7 +105,7 @@ $trunks = $Trunk->list_trunks();
 									<div class="col-sm-9">
 										<select class="form-control" name="auth_type" onChange="checkAuthType(this.value);">
 											<option value="password">Password Authenticated (Register)</option>
-											<option value="ip">IP Authenticated</option>
+											<option value="ip" disabled>IP Authenticated</option>
 										</select>            
 									</div>
 								</div>
