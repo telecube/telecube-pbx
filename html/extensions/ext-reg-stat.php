@@ -20,5 +20,4 @@ for($i=0;$i<$j;$i++) {
 
 echo json_encode($ext_stat);
 
-//$registered = $Ext->is_registered($sip_devices[$i]['name']);
 ?>
