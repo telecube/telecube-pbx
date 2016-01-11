@@ -246,7 +246,7 @@ for($i=0;$i<$j;$i++) {
 							$trunkactivecolour = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "success" : "warning";
 							$trunkactivetext = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "Active" : "Inactive";
 							$trunkregisteredcolour = $trunk_register_status[$trunks[$ii]['id']] == "Registered" ? "success" : "warning";
-							$trunkregisteredtext = $trunk_register_status[$trunks[$ii]['id']];
+							$trunkregisteredtext = $trunk_register_status[$trunks[$ii]['id']] == "" ? "Unregistered" : $trunk_register_status[$trunks[$ii]['id']];
 							echo '<tr class="ui-state-default">';
 							echo '<td width="1%" style="display:none;">'.$trunks[$ii]['id'].'</td>';
 							echo '<td width="10%"><div class="btn-group-vertical btn-group-xs"><button type="button" id="btn-ext-register-status-'.$trunks[$ii]['id'].'" class="btn btn-'.$trunkactivecolour.' btn-xs pull-left">'.$trunkactivetext.'</button><button class="btn btn-xs btn-'.$trunkregisteredcolour.' pull-right" style="width:2">'.$trunkregisteredtext.'</button></div></td>';
