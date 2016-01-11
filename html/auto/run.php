@@ -20,4 +20,24 @@ if($min == $update_check_min){
 }
 
 
+/*- check the ast-manager script is running -*/
+$running = false;
+$ps = exec("ps axw | /bin/egrep ast-manager-event-handler.php", $o, $r);
+$j = count($o);
+for($i=0;$i<$j;$i++) { 
+	if(strpos($o[$i], "egrep") !== false){
+		continue;
+	}
+	if(strpos($o[$i], "ast-manager-event-handler.php") !== false){
+		$running = true;
+	}
+}
+if(!$running){
+	exec("/usr/bin/php /var/lib/asterisk/agi-bin/ast-manager-event-handler.php >/dev/null &");
+}
+/*- -*/
+
+
+
+
 ?>
