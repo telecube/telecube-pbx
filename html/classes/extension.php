@@ -24,9 +24,9 @@ class Ext{
 
 	function is_registered($ext){
 		global $Db, $dbPDO;
-		$q = "select port, regseconds from sip_devices where name = ?;";
+		$q = "select register_status from sip_devices where name = ?;";
 		$res = $Db->pdo_query($q, array($ext), $dbPDO);
-		return $res[0]['port'] > 0 && $res[0]['regseconds'] > date("U") ? true : false;
+		return $res[0]['register_status'] == "Registered" ? true : false;
 	}
 
 	function get_routing($ext){

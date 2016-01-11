@@ -85,7 +85,7 @@ for($i=0;$i<$j;$i++) {
 		}
 
 		function run(){
-		//	setExtensionRegisterStatus();
+			setExtensionRegisterStatus();
 		}
 
 		function setExtensionRegisterStatus(){
@@ -98,7 +98,7 @@ for($i=0;$i<$j;$i++) {
 				if(results['status'] == "OK"){
 					for (var i = 0; i < results["exts"].length; i++) {
 					//	alert(results["exts"][i]+' '+results["data"][results["exts"][i]]);
-						if(results["data"][results["exts"][i]] == "yes"){
+						if(results["data"][results["exts"][i]] == "Registered"){
 							$("#btn-ext-register-status-"+results["exts"][i]).removeClass( "btn-warning" ).addClass( "btn-success" );
 							$("#span-ext-register-status-"+results["exts"][i]).html( "Registered" );
 						}else{
@@ -214,8 +214,8 @@ for($i=0;$i<$j;$i++) {
 			$x=0;
 			$j = count($sip_devices);
 			for($i=0;$i<$j;$i++) { 
-				$registered = $Asterisk->ext_status($sip_devices[$i]['name'], "expire") > 0 ? true : false;
-				//$registered = $Ext->is_registered($sip_devices[$i]['name']);
+				//$registered = $Asterisk->ext_status($sip_devices[$i]['name'], "expire") > 0 ? true : false;
+				$registered = $Ext->is_registered($sip_devices[$i]['name']);
 				
 				$get_routing 	= $Ext->get_routing($sip_devices[$i]['name']);
 				$trunks 		= $get_routing !== false ? $get_routing : $orig_trunks;
