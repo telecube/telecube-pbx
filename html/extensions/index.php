@@ -58,7 +58,7 @@ for($i=0;$i<$j;$i++) {
 					echo '        emptytext: "No Calls", '."\n";   
 					echo '        source: ['."\n";
 					echo '              {value: "all", text: "All Call Types"},'."\n";
-					echo '              {value: "fixed", text: "Fixed"},'."\n";
+					echo '              {value: "fixed", text: "Fixed Lines"},'."\n";
 					echo '              {value: "mobile", text: "Mobiles"},'."\n";
 					echo '              {value: "1300", text: "1300 Numbers"},'."\n";
 					echo '              {value: "international", text: "International"}'."\n";
