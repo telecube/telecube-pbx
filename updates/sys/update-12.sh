@@ -14,4 +14,6 @@ echo "loading codec modules"
 /bin/echo "load => codec_speex.so" >> /etc/asterisk/modules.conf
 /bin/echo "load => codec_ulaw.so" >> /etc/asterisk/modules.conf
 
+service asterisk restart
+
 echo "Done."
