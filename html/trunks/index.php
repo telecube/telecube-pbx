@@ -204,7 +204,7 @@ $trunks = $Trunk->list_trunks();
 				echo '<hr>';
 				echo '</span>';
 
-				echo '<a class="btn btn-sm btn-danger" data-toggle="confirmation" data-title="Really, delete this extension?" data-href="delete.php?id='.$trunks[$i]['id'].'" data-original-title="" title="">Delete</a>'."\n";
+				echo '<a class="btn btn-sm btn-danger" data-toggle="confirmation" data-title="Really, delete this trunk?" data-href="delete.php?id='.$trunks[$i]['id'].'" data-original-title="" title="">Delete</a>'."\n";
 
 				echo '</div>'."\n";
 				echo '</div>'."\n";

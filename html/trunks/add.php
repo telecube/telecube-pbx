@@ -14,8 +14,8 @@ if(empty($trunk_name)){
 
 $trunk_name = $Common->sanitise_trunk_name($_POST['trunk_name'], "_");
 
-$q = "insert into trunks (datetime, name, auth_type, username, password, host_address, qualify, active) values (?,?,?,?,?,?,?,?);";
-$data = array(date("Y-m-d H:i:s"), $trunk_name, $_POST['auth_type'], $_POST['trunk_auth_name'], $_POST['trunk_pass'], $_POST['trunk_url'], "yes", "no");
+$q = "insert into trunks (datetime, name, auth_type, username, password, host_address, qualify, active, register_status) values (?,?,?,?,?,?,?,?,?);";
+$data = array(date("Y-m-d H:i:s"), $trunk_name, $_POST['auth_type'], $_POST['trunk_auth_name'], $_POST['trunk_pass'], $_POST['trunk_url'], "yes", "no","Unregistered");
 $res = $Db->query($q,$data,$dbPDO);
 
 if(strpos(strtolower($res), "duplicate") !== false){
