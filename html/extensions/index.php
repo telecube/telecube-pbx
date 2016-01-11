@@ -70,7 +70,7 @@ for($i=0;$i<$j;$i++) {
 			}
 			?>
 
-
+			$('.btn').tooltip();
 
 			$('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
 
@@ -244,12 +244,20 @@ for($i=0;$i<$j;$i++) {
 					for($ii=0;$ii<$jj;$ii++) { 
 						if(!empty($trunks[$ii]['id'])){
 							$trunkactivecolour = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "success" : "warning";
-							$trunkactivetext = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "Active" : "Inactive";
+							$trunkactivetooltip = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "Active" : "Inactive";
+							$trunkactivetext = $trunk_active_status[$trunks[$ii]['id']] == "yes" 
+								? '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' 
+								: '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
 							$trunkregisteredcolour = $trunk_register_status[$trunks[$ii]['id']] == "Registered" ? "success" : "warning";
-							$trunkregisteredtext = $trunk_register_status[$trunks[$ii]['id']] == "" ? "Unregistered" : $trunk_register_status[$trunks[$ii]['id']];
+							$trunkregisteredtooltip = $trunk_register_status[$trunks[$ii]['id']] == "" ? "Unregistered" : $trunk_register_status[$trunks[$ii]['id']];
+							$trunkregisteredtext = $trunk_register_status[$trunks[$ii]['id']] == "" || $trunk_register_status[$trunks[$ii]['id']] == "Unregistered" 
+								? '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' 
+								: '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
+							/* <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> */
+							/* <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> */
 							echo '<tr class="ui-state-default">';
 							echo '<td width="1%" style="display:none;">'.$trunks[$ii]['id'].'</td>';
-							echo '<td width="10%"><div class="btn-group-vertical btn-group-xs"><button type="button" id="btn-ext-register-status-'.$trunks[$ii]['id'].'" class="btn btn-'.$trunkactivecolour.' btn-xs pull-left">'.$trunkactivetext.'</button><button class="btn btn-xs btn-'.$trunkregisteredcolour.' pull-right" style="width:2">'.$trunkregisteredtext.'</button></div></td>';
+							echo '<td width="5%"><div class="btn-group-vertical btn-group-xs"><button type="button" title="'.$trunkactivetooltip.'" data-placement="right" id="btn-ext-register-status-'.$trunks[$ii]['id'].'" class="btn btn-'.$trunkactivecolour.' btn-xs pull-left">'.$trunkactivetext.'</button><button class="btn btn-xs btn-'.$trunkregisteredcolour.' pull-right"  title="'.$trunkregisteredtooltip.'" data-placement="right">'.$trunkregisteredtext.'</button></div></td>';
 							echo '<td width="40%"><strong>'.$trunks[$ii]['name'].'</strong></td>';
 							echo '<td><a class="pull-right" href="#" id="ext_allowed_calltypes_'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'" data-type="checklist" data-url="update-allowed-call-types.php" data-pk="'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'" data-title="Select allowed call types"></a></td>';
 							echo '</tr>';
