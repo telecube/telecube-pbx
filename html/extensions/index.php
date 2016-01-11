@@ -258,8 +258,8 @@ for($i=0;$i<$j;$i++) {
 							echo '<tr class="ui-state-default">';
 							echo '<td width="1%" style="display:none;">'.$trunks[$ii]['id'].'</td>';
 							echo '<td width="5%"><div class="btn-group-vertical btn-group-xs"><button type="button" title="'.$trunkactivetooltip.'" data-placement="right" id="btn-ext-register-status-'.$trunks[$ii]['id'].'" class="btn btn-'.$trunkactivecolour.' btn-xs pull-left">'.$trunkactivetext.'</button><button class="btn btn-xs btn-'.$trunkregisteredcolour.' pull-right"  title="'.$trunkregisteredtooltip.'" data-placement="right">'.$trunkregisteredtext.'</button></div></td>';
-							echo '<td width="40%"><strong>'.$trunks[$ii]['name'].'</strong></td>';
-							echo '<td><a class="pull-right" href="#" id="ext_allowed_calltypes_'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'" data-type="checklist" data-url="update-allowed-call-types.php" data-pk="'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'" data-title="Select allowed call types"></a></td>';
+							echo '<td><strong>'.$trunks[$ii]['name'].'</strong></td>';
+							echo '<td width="35%"><a class="pull-left" href="#" id="ext_allowed_calltypes_'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'" data-type="checklist" data-url="update-allowed-call-types.php" data-pk="'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'" data-title="Select allowed call types"></a></td>';
 							echo '</tr>';
 						}
 					}
