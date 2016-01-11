@@ -63,7 +63,13 @@ if($field == "active"){
 	$rel = `sudo /usr/sbin/asterisk -rx "sip reload"`;
 	//$reset = `sudo /usr/sbin/asterisk -rx "sip show peer $name load"`;
 
-	// we need to recall the extensions too
+	
+	// we can set the trunk as unregistered if active = no
+	if($value == "no"){
+		$q = "update trunks set register_status = ? where id = ?;";
+		$data = array("Unregistered", $id);
+		$Db->pdo_query($q,$data,$dbPDO);
+	}
 
 }
 

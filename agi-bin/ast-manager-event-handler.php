@@ -39,10 +39,16 @@ function event_recorder($ecode,$data,$server,$port) {
 
     if($ecode == "peerstatus"){
         $ext = str_replace("SIP/", "", $data['Peer']);
-
         $q = "update sip_devices set register_status = ? where name = ?;";
         $Db->pdo_query($q, array($data['PeerStatus'], $ext), $dbPDO);
     }
+
+    if($ecode == "registry"){
+        $trunkname = $data['Domain'];
+        $q = "update trunks set register_status = ? where name = ?;";
+        $Db->pdo_query($q, array($data['Status'], $trunkname), $dbPDO);
+    }
+
 }
 
 ?>
