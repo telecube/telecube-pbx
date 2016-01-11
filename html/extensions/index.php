@@ -5,6 +5,13 @@ require("../init.php");
 $sip_devices 	= $Ext->list_extensions();
 $extensions 	= $Ext->get_names($sip_devices);
 
+$orig_trunks = $Trunk->list_trunks();
+
+// get the active status
+$j = count($orig_trunks);
+for($i=0;$i<$j;$i++) { 
+	$trunk_active_status[$orig_trunks[$i]['id']] = $orig_trunks[$i]['active'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +21,7 @@ $extensions 	= $Ext->get_names($sip_devices);
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/css.php");?>
 
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/js.php");?>
+
 
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -25,17 +33,51 @@ $extensions 	= $Ext->get_names($sip_devices);
 			for($i=0;$i<$j;$i++) { 
 				echo '$("#label-'.$sip_devices[$i]['name'].'").editable();'."\n";
 				echo '$("#secret-'.$sip_devices[$i]['name'].'").editable();'."\n";
-				$sip_devices[$i]['bar_int'] == "y" ? $bar_int = "1" : $bar_int = "0";
-				echo '$(function(){$(\'#bar_int-'.$sip_devices[$i]['name'].'\').editable({value: '.$bar_int.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
-				$sip_devices[$i]['bar_mobile'] == "y" ? $bar_mobile = "1" : $bar_mobile = "0";
-				echo '$(function(){$(\'#bar_mobile-'.$sip_devices[$i]['name'].'\').editable({value: '.$bar_mobile.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
-				$sip_devices[$i]['bar_fixed'] == "y" ? $bar_fixed = "1" : $bar_fixed = "0";
-				echo '$(function(){$(\'#bar_fixed-'.$sip_devices[$i]['name'].'\').editable({value: '.$bar_fixed.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
-				$sip_devices[$i]['bar_13'] == "y" ? $bar_13 = "1" : $bar_13 = "0";
-				echo '$(function(){$(\'#bar_13-'.$sip_devices[$i]['name'].'\').editable({value: '.$bar_13.',source: [{value: 0, text: \'No\'},{value: 1, text: \'Yes\'}]});});';
+
+			    echo '$( "#ext_trunk_list_'.$sip_devices[$i]['name'].'" ).sortable({ cursor: "crosshair", update: function(){ getList('.$sip_devices[$i]['name'].'); } });';
+			    echo '$( "#ext_trunk_list_'.$sip_devices[$i]['name'].'" ).disableSelection();';
+
+//			    $ext_routing = 
+			//	$trunks = json_decode($Ext->get_routing($sip_devices[$i]['name']),true);
+			   // $trunks = $orig_trunks;
+				$get_routing 	= $Ext->get_routing($sip_devices[$i]['name']);
+				$trunks 		= $get_routing !== false ? $get_routing : $orig_trunks;
+
+				$jj = count($trunks);
+				for($ii=0;$ii<$jj;$ii++) { 
+					if(!isset($trunks[$ii]['allowed'])){
+						$trunks[$ii]['allowed'] = "[]";
+					}
+					//\''.str_replace(array("No Calls","","null",null), '["fixed"]', $trunks[$ii]['allowed']).'\'"
+					echo '$(function(){'."\n";
+					echo '    $("#ext_allowed_calltypes_'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'").editable({'."\n";
+					echo '/* '.json_encode($trunks[$ii]).' */'."\n";
+					$initValue = json_encode($trunks[$ii]['allowed']);
+					echo '        value: \''.$initValue.'\', '."\n";   
+					echo '        emptytext: "No Calls", '."\n";   
+					echo '        source: ['."\n";
+					echo '              {value: "all", text: "All Call Types"},'."\n";
+					echo '              {value: "fixed", text: "Fixed"},'."\n";
+					echo '              {value: "mobile", text: "Mobiles"},'."\n";
+					echo '              {value: "1300", text: "1300 Numbers"},'."\n";
+					echo '              {value: "international", text: "International"}'."\n";
+					echo '           ]'."\n";
+					echo '    });'."\n";
+					echo '});'."\n";
+				}
+
 			}
 			?>
+
+
+
 			$('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
+
+
+		    $('td').each(function(){
+		        $(this).css('width', $(this).width() +'px');
+		    });
+
 		});
 
 		function showAddNew(){
@@ -71,7 +113,36 @@ $extensions 	= $Ext->get_names($sip_devices);
 			});				
 
 		}
+
+
+		function getList(ext){
+			var optionTexts = [];
+			$("#ext_trunk_list_"+ext+" td").each(function() { optionTexts.push($(this).text()) });
+		//	alert(JSON.stringify(optionTexts));
+
+			if(navigator.userAgent.indexOf("Safari") > 0){$.ajaxSetup({async: false});}
+			$.post("/extensions/update-trunk-sorting.php", { ext: ext, arr:  JSON.stringify(optionTexts)},
+				function(data){
+				//	alert(data);
+					var results = new Array();
+					try{ results = JSON.parse(data); }catch(ex){ results['status'] = ex; }
+					// do stuff here
+					if(results['status'] == "OK"){
+			
+					}else{
+						alert(data);
+					}
+			});
+		}
+
 	</script>
+
+
+	
+	<script>
+	
+	</script>
+
 	</head>
 	<body onLoad="run();">
 		<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/top-menu.php");?>
@@ -113,6 +184,13 @@ $extensions 	= $Ext->get_names($sip_devices);
 
 								<p></p>
 
+								<select class="form-control" name="password-type">
+									<option value="crypto">Cryptographically Secure Password</option>
+									<option value"keyboard">Keyboard Friendly Password</option>
+								</select>            
+
+								<p></p>
+
 								<button type="submit" class="btn btn-primary">Add New Extension</button>
 							</div> 
 						</div>
@@ -120,20 +198,30 @@ $extensions 	= $Ext->get_names($sip_devices);
 
 				</div>
 
+				<div class="col-lg-4">
+					<div class="panel panel-default">
+						<div class="panel-heading"> 
+							<h3 class="panel-title">This PBX IP Address: <?php echo $Common->get_pref("pbx_host_ip");?></h3> 
+						</div> 
+					</div>
+				</div>
+
 			</div>
 
 
 			<?php
+			$orig_trunks = $trunks;
 			$x=0;
 			$j = count($sip_devices);
 			for($i=0;$i<$j;$i++) { 
 				$registered = $Asterisk->ext_status($sip_devices[$i]['name'], "expire") > 0 ? true : false;
 				//$registered = $Ext->is_registered($sip_devices[$i]['name']);
+				
+				$get_routing 	= $Ext->get_routing($sip_devices[$i]['name']);
+				$trunks 		= $get_routing !== false ? $get_routing : $orig_trunks;
 
 				echo $x==0 ? '<div class="row">'."\n" : "";
 				echo '<div class="col-lg-4">'."\n";
-
-				echo '<form method="post" action="add-new.php">'."\n";
 
 				echo '<div class="panel panel-default">'."\n";
 				echo '<div class="panel-heading">'."\n";
@@ -145,24 +233,34 @@ $extensions 	= $Ext->get_names($sip_devices);
 
 				echo '<p>Label: <a href="#" id="label-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Label">'.$sip_devices[$i]['label'].'</a></p>'."\n";
 				echo '<p>Password: <a href="#" id="secret-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Password">'.$sip_devices[$i]['secret'].'</a></p>'."\n";
-				echo '<p>PBX IP Address: '.$Common->get_pref("pbx_host_ip").'</p>'."\n";
-
-	//			echo "<hr>";
-
-	//			echo '<p>Outgoing Trunk: <a href="#" id="bar_int-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar International Calls"></a></p>'."\n";
 
 				echo '<span id="">';
 					echo '<hr>';
-					//  echo "\t\t\t\t".'<p>Bar International Calls: <a href="#" id="bar_int-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar International Calls">'.$sip_devices[$i]['bar_int'].'</a></p>'."\n";
-					echo '<p>Bar International Calls: <a href="#" id="bar_int-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar International Calls"></a></p>'."\n";
-					echo '<p>Bar Mobile Calls: <a href="#" id="bar_mobile-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar Mobile Calls"></a></p>'."\n";
-					echo '<p>Bar Fixed Calls: <a href="#" id="bar_fixed-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar Fixed Calls"></a></p>'."\n";
-					echo '<p>Bar 13/1300 Calls: <a href="#" id="bar_13-'.$sip_devices[$i]['name'].'" data-type="select" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Bar 13/1300 Calls"></a></p>'."\n";
+					echo "<p><small>Drag to sort the trunks and set the allowed call types.</small></p>";
+					echo '<table class="table table-striped">';
+					echo '<tbody id="ext_trunk_list_'.$sip_devices[$i]['name'].'">';
+					$jj = count($trunks);
+					for($ii=0;$ii<$jj;$ii++) { 
+						if(!empty($trunks[$ii]['id'])){
+							$trunkactivecolour = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "success" : "warning";
+							$trunkactivetext = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "Active" : "Inactive";
+							echo '<tr class="ui-state-default">';
+							echo '<td width="1%" style="display:none;">'.$trunks[$ii]['id'].'</td>';
+							echo '<td width="10%"><button type="button" id="btn-ext-register-status-'.$trunks[$ii]['id'].'" class="btn btn-'.$trunkactivecolour.' btn-xs">'.$trunkactivetext.'</button></td>';
+							echo '<td width="40%"><strong>'.$trunks[$ii]['name'].'</strong></td>';
+							echo '<td><a class="pull-right" href="#" id="ext_allowed_calltypes_'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'" data-type="checklist" data-url="update-allowed-call-types.php" data-pk="'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'" data-title="Select allowed call types"></a></td>';
+							echo '</tr>';
+						}
+					}
+					echo '</tbody>';
+					echo '</table>';
+
 
 					echo '<hr>';
+
 				echo '</span>';
 
-				echo '<a class="btn btn-sm btn-danger" data-toggle="confirmation" data-title="Really, delete this extension?" data-href="delete.php?ext='.$sip_devices[$i]['name'].'" data-original-title="" title="">Delete</a>'."\n";
+				echo '<a class="btn btn-sm btn-block btn-danger" data-toggle="confirmation" data-title="Really, delete this extension?" data-href="delete.php?ext='.$sip_devices[$i]['name'].'" data-original-title="" title="">Delete</a>'."\n";
 
 				echo '</div>'."\n";
 				echo '</div>'."\n";

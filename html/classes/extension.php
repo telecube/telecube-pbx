@@ -29,5 +29,21 @@ class Ext{
 		return $res[0]['port'] > 0 && $res[0]['regseconds'] > date("U") ? true : false;
 	}
 
+	function get_routing($ext){
+		global $Db, $dbPDO, $Common;
+		$q = "select routing from sip_devices where name = ?;";
+		$res = $Db->pdo_query($q, array($ext), $dbPDO);
+		$str = trim(stripslashes($res[0]['routing']));
+		return is_string($str) && is_array(json_decode($str, true)) ? json_decode($str, true) : false;
+	}
+
+	function set_routing($ext, $routing){
+		global $Db, $dbPDO;
+		$q = "update sip_devices set routing = ? where name = ?;";
+		$res = $Db->pdo_query($q, array(json_encode($routing), $ext), $dbPDO);
+		return true;
+	}
+
+
 }
 ?>

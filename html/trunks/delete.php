@@ -30,5 +30,24 @@ file_put_contents($regFp,$regStr);
 $rel = `sudo /usr/sbin/asterisk -rx "sip reload"`;
 
 
+// clean the extensions
+$q = "select name, routing from sip_devices;";
+$res = $Db->query($q,array(),$dbPDO);
+$j = count($res);
+for($i=0;$i<$j;$i++) { 
+	$routing = json_decode($res[$i]['routing'], true);
+	$jj = count($routing);
+	for($ii=0;$ii<$jj;$ii++) { 
+		if($routing[$ii]['id'] == $id){
+			unset($routing[$ii]);
+			break;
+		}
+	}
+	$routing = array_values($routing);
+	$q2 = "update sip_devices set routing = ? where name = ?;";
+	$res2 = $Db->pdo_query($q2, array(json_encode($routing), $res[$i]['name']), $dbPDO);
+
+}
+
 header("Location: /trunks/");
 ?>

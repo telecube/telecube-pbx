@@ -23,9 +23,30 @@ if(strpos(strtolower($res), "duplicate") !== false){
 	exit;
 }
 
+$trunk_id = $dbPDO->lastinsertid();
+
+// we need to add this to the end of the allowed list in the extensions
+$q = "select name, routing from sip_devices;";
+$res = $Db->query($q,array(),$dbPDO);
+$j = count($res);
+for($i=0;$i<$j;$i++) { 
+	$routing = json_decode($res[$i]['routing'], true);
+
+	array_push($routing, array("id"=>$trunk_id, "name"=>$trunk_name, "allowed"=>"null"));
+
+	$q2 = "update sip_devices set routing = ? where name = ?;";
+	$res2 = $Db->pdo_query($q2, array(json_encode($routing), $res[$i]['name']), $dbPDO);
+}
+
 header("Location: /trunks/");
 exit;
 
+
+
+
+
+
+/*
 // get all the trunks and reload the config files
 $regStr = "; Register Strings\n";
 $ipStr = "; IP Auth Peers\n";
@@ -46,4 +67,5 @@ $rel = `sudo /usr/sbin/asterisk -rx "sip reload"`;
 //$reset = `sudo /usr/sbin/asterisk -rx "sip show peer $name load"`;
 
 header("Location: /trunks/")
+*/
 ?>

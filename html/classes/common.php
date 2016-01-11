@@ -69,13 +69,18 @@ class Common{
 		return true;
 	}
 
-	function random_password( $length = 8, $incspecialchars = false ) {
+	function secure_password($length = 12){
+		$pass = base64_encode(openssl_random_pseudo_bytes($length));
+		return $pass;
+	}
+
+	function random_string( $length = 8, $incspecialchars = false ) {
 	    $chars = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ123456789";
 	    if($incspecialchar){
 		    $chars .= "!@#$%^&*()_-=+;:,.?";
 	    }
-	    $password = substr( str_shuffle( $chars ), 0, $length );
-	    return $password;
+	    $str = substr( str_shuffle( str_shuffle( $chars ) ), 0, $length );
+	    return $str;
 	}
 
 	// debugging helper
