@@ -22,13 +22,13 @@ if($min == $update_check_min){
 
 /*- check the ast-manager script is running -*/
 $running = false;
-$ps = exec("ps axw | /bin/egrep ami-scripts/event-handler.php.php", $o, $r);
+$ps = exec("ps axw | /bin/egrep ami-scripts/event-handler.php", $o, $r);
 $j = count($o);
 for($i=0;$i<$j;$i++) { 
 	if(strpos($o[$i], "egrep") !== false){
 		continue;
 	}
-	if(strpos($o[$i], "ami-scripts/event-handler.php.php") !== false){
+	if(strpos($o[$i], "ami-scripts/event-handler.php") !== false){
 		$running = true;
 	}
 }
