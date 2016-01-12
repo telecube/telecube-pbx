@@ -29,6 +29,10 @@ $addrule = `sudo /sbin/iptables --flush`;
 #Allow traffic on loopback
 $addrule = `sudo /sbin/iptables -A INPUT -i lo -j ACCEPT`;
 $addrule = `sudo /sbin/iptables -A OUTPUT -o lo -j ACCEPT`;
+# allow established connections
+$addrule = `sudo /sbin/iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT`;
+
+#Allow traffic on localhost
 $addrule = `sudo /sbin/iptables -A INPUT -s 127.0.0.1 -j ACCEPT`;
 
 # Creating default policies
@@ -76,7 +80,6 @@ for($i=0;$i<$j;$i++) {
 }
 
 # allow established connections
-$addrule = `sudo /sbin/iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT`;
 $addrule = `sudo /sbin/iptables -A FORWARD -i eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT`;
 $addrule = `sudo /sbin/iptables -A OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT`;
 
