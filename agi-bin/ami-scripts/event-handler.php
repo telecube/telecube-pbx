@@ -1,5 +1,5 @@
 <?php
-require_once("../classes/_autoloader.php");
+require_once(__DIR__."/../classes/_autoloader.php");
 use Telecube\AGI_AsteriskManager;
 use Telecube\Config;
 use Telecube\Db;
