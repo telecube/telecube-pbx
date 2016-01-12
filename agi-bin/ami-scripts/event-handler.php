@@ -41,12 +41,20 @@ function event_recorder($ecode,$data,$server,$port) {
         $ext = str_replace("SIP/", "", $data['Peer']);
         $q = "update sip_devices set register_status = ? where name = ?;";
         $Db->pdo_query($q, array($data['PeerStatus'], $ext), $dbPDO);
+
+        // insert a log entry
+        $q = "insert into ami_event_logs (datetime, event_type, peername, event_data) values (?,?,?,?);";
+        $Db->pdo_query($q, array(date("Y-m-d H:i:s"), $ecode, $ext, json_encode($data)), $dbPDO);
     }
 
     if($ecode == "registry"){
         $trunkname = $data['Domain'];
         $q = "update trunks set register_status = ? where name = ?;";
         $Db->pdo_query($q, array($data['Status'], $trunkname), $dbPDO);
+
+        // insert a log entry
+        $q = "insert into ami_event_logs (datetime, event_type, peername, event_data) values (?,?,?,?);";
+        $Db->pdo_query($q, array(date("Y-m-d H:i:s"), $ecode, $trunkname, json_encode($data)), $dbPDO);
     }
 
 }
