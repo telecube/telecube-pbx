@@ -70,7 +70,7 @@ for($i=0;$i<$j;$i++) {
 			}
 			?>
 
-			$('.btn').tooltip();
+			$('.btn-xs').tooltip();
 
 			$('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
 
