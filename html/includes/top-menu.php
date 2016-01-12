@@ -9,9 +9,11 @@ $firewall_active = strpos($rq_uri, "/firewall/") !== false ? 'class="active"' : 
 $preferences_active = strpos($rq_uri, "/preferences/") !== false ? 'class="active"' : ""; 
 
 $pbx_settings_active = strpos($rq_uri, "/extensions/") !== false 
-	|| strpos($rq_uri, "/trunks/") !== false ? ' active' : ""; 
+	|| strpos($rq_uri, "/trunks/") !== false ? ' active' : ""
+	|| strpos($rq_uri, "/dids/") !== false ? ' active' : ""; 
 $extensions_active = strpos($rq_uri, "/extensions/") !== false ? 'class="active"' : ""; 
 $trunks_active = strpos($rq_uri, "/trunks/") !== false ? 'class="active"' : ""; 
+$dids_active = strpos($rq_uri, "/dids/") !== false ? 'class="active"' : ""; 
 
 
 ?>
@@ -33,7 +35,8 @@ $trunks_active = strpos($rq_uri, "/trunks/") !== false ? 'class="active"' : "";
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">PBX Settings <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li <?php echo $extensions_active;?>><a href="/extensions/">Extensions</a></li>
-						<li <?php echo $trunks_active;?>><a href="/trunks">Trunks</a></li>
+						<li <?php echo $trunks_active;?>><a href="/trunks/">Trunks</a></li>
+						<li <?php echo $dids_active;?>><a href="/dids/">DIDs</a></li>
 						<li role="separator" class="divider"></li>
 						<li class="dropdown-header">PBX Features</li>
 						<li><a href="#">Auto Attendant (IVR)</a></li>
