@@ -173,6 +173,13 @@ $QUERY "insert into telecube.preferences (name, value) values ('update_next_chec
 $QUERY "insert into telecube.preferences (name, value) values ('update_wait_count','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('pbx_default_timezone','Australia/Melbourne');"
 
+EXTERNALIP=$(wget https://www.telecube.com.au/api/apps/ip-check.php -q -O -)
+$QUERY "insert into telecube.preferences (name, value) values ('pbx_nat_is_natted','yes');"
+$QUERY "insert into telecube.preferences (name, value) values ('pbx_nat_public_ip_static','yes');"
+$QUERY "insert into telecube.preferences (name, value) values ('pbx_nat_external_ip','$EXTERNALIP');"
+$QUERY "insert into telecube.preferences (name, value) values ('pbx_nat_localnet','192.168.0.0/16');"
+
+
 $QUERY "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
 $QUERY "DELETE FROM mysql.user WHERE User=''"
 $QUERY "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'"
@@ -266,6 +273,8 @@ bar_fixed varchar(1) NOT NULL,
 bar_int varchar(1) NOT NULL,
 bar_13 varchar(1) NOT NULL
 );"
+$QUERY "ALTER TABLE telecube.sip_devices ADD register_status varchar(16) NOT NULL;"
+$QUERY "ALTER TABLE telecube.sip_devices ADD routing text NOT NULL;"
 $QUERY "ALTER TABLE telecube.sip_devices ADD PRIMARY KEY (id), ADD UNIQUE KEY \`name\` (\`name\`), ADD KEY \`host\` (\`host\`), ADD KEY \`useragent\` (\`useragent\`), ADD KEY \`call-limit\` (\`call-limit\`);"
 $QUERY "ALTER TABLE telecube.sip_devices MODIFY id int(11) NOT NULL AUTO_INCREMENT;"
 
@@ -375,7 +384,9 @@ password varchar(128) DEFAULT NULL,
 host_address varchar(128) DEFAULT NULL,
 qualify varchar(5) DEFAULT NULL
 );"
+$QUERY "ALTER TABLE telecube.trunks ADD active varchar(3) NOT NULL;"
 $QUERY "ALTER TABLE telecube.trunks ADD description text NOT NULL;"
+$QUERY "ALTER TABLE telecube.trunks ADD register_status varchar(16) NOT NULL;"
 $QUERY "ALTER TABLE telecube.trunks ADD PRIMARY KEY (id);"
 $QUERY "ALTER TABLE telecube.trunks MODIFY id int(10) NOT NULL AUTO_INCREMENT;"
 $QUERY "ALTER TABLE telecube.trunks ADD UNIQUE KEY name (name);"
@@ -400,6 +411,14 @@ $QUERY "CREATE TABLE IF NOT EXISTS telecube.test (
 	PRIMARY KEY  (id)
 );"
 
+$QUERY "CREATE TABLE IF NOT EXISTS telecube.ami_event_logs (
+	id int(10) unsigned NOT NULL auto_increment,
+	datetime datetime NOT NULL,
+	event_type varchar(64) NOT NULL,
+	peername varchar(128) NOT NULL,
+	event_data text NOT NULL,
+	PRIMARY KEY  (id)
+);"
 
 
 # set sudoers permissions
