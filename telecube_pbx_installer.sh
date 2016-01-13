@@ -434,6 +434,7 @@ echo "www-data ALL=NOPASSWD: /bin/chmod" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /bin/sh" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /usr/bin/apt-get" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /usr/bin/pkill -f ami-scripts/event-handler.php" >> /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /usr/bin/kill -9 \`ps -ef|grep ami-scripts/event-handler.php|grep -v grep|awk '{print \$2}'\`" >> /etc/sudoers.d/telecube-sudo
 
 # create certs folder
 if [ ! -d /var/www/certs ]; then
