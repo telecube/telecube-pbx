@@ -27,7 +27,7 @@ if($system_info["public_address"] != $system_info["pbx_nat_external_ip"]){
 
 		$(document).ready(function() {
 
-			$('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
+			$('[data-toggle="confirmation"]').confirmation({onConfirm: function(){$("#form-debug-send-data").submit();}, popout: true, singleton: true, animation: true });
 
 		
 		});
@@ -36,7 +36,7 @@ if($system_info["public_address"] != $system_info["pbx_nat_external_ip"]){
 			var iptables = $("#debug-input-ip-tables").val();
 			var loadedmodules = $("#debug-input-asterisk-loaded-modules").val();
 			var trunks = $("#debug-input-trunks").val();
-			$.post("/debugging/send-debug-data.php", { iptables: iptables, loadedmodules: loadedmodules, trunks: trunks },
+			$.post("/debugging/send-debug-data.php", { iptables: iptables },
 				function(data){
 				//	alert(data);
 					var results = new Array();
@@ -66,74 +66,93 @@ if($system_info["public_address"] != $system_info["pbx_nat_external_ip"]){
 					</div>
 				</div>
 				<div class="col-lg-5">
-					<button style="display:none" type="submit" class="btn btn-success btn-block" data-toggle="confirmation" data-title="Send this debug data now?" data-href="javascript:sendDebug();" data-original-title="" title="">Securely Send Debug Info to Telecube HTTPS API</button>
+					<button type="submit" class="btn btn-success btn-block" data-toggle="confirmation" data-title="Send this debug data now?">Securely Send Debug Info to Telecube HTTPS API</button>
 				</div>
 			</div>
 
-
-			<div class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">System Information</h3>
-			  </div>
-			  <div class="panel-body">
-			  	<p>Public Address: <?php echo $system_info["public_address"];?></p>
-			  	<p>PBX External IP: <?php echo $system_info["pbx_nat_external_ip"];?></p>
-				<div class="alert alert-warning" role="alert" style="display:<?php echo isset($ip_alert) ? "" : "none";?>">
-					<strong>Warning:</strong> <?php echo isset($ip_alert) ? $ip_alert : "";?>
+			<form id="form-debug-send-data" method="post" action="send-debug-data.php">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">System Information</h3>
+				  </div>
+				  <div class="panel-body">
+				  	<p>Public Address: <?php echo $system_info["public_address"];?></p>
+				  	<p>PBX External IP: <?php echo $system_info["pbx_nat_external_ip"];?></p>
+					<div class="alert alert-warning" role="alert" style="display:<?php echo isset($ip_alert) ? "" : "none";?>">
+						<strong>Warning:</strong> <?php echo isset($ip_alert) ? $ip_alert : "";?>
+					</div>
+				  	<p>PBX Host IP: <?php echo $system_info["pbx_host_ip"];?></p>
+				  	<p>PBX Is Natted: <?php echo $system_info["pbx_nat_is_natted"];?></p>
+				  	<p>PBX Localnet: <?php echo $system_info["pbx_nat_localnet"];?></p>
+				  	<p>PBX Static IP: <?php echo $system_info["pbx_nat_public_ip_static"];?></p>
+				  	<p>Current GIT Version: <?php echo $system_info["current_version_git"];?></p>
+				  	<p>Current DB Version: <?php echo $system_info["current_version_db"];?></p>
+				  	<p>Current System Version: <?php echo $system_info["current_version_system"];?></p>
+				  </div>
 				</div>
-			  	<p>PBX Host IP: <?php echo $system_info["pbx_host_ip"];?></p>
-			  	<p>PBX Is Natted: <?php echo $system_info["pbx_nat_is_natted"];?></p>
-			  	<p>PBX Localnet: <?php echo $system_info["pbx_nat_localnet"];?></p>
-			  	<p>PBX Static IP: <?php echo $system_info["pbx_nat_public_ip_static"];?></p>
-			  	<p>Current GIT Version: <?php echo $system_info["current_version_git"];?></p>
-			  	<p>Current DB Version: <?php echo $system_info["current_version_db"];?></p>
-			  	<p>Current System Version: <?php echo $system_info["current_version_system"];?></p>
-			  </div>
-			</div>
 
-			<div class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">Iptables Output</h3>
-			  </div>
-			  <div class="panel-body">
-				<code id="iptables-output">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Iptables Output</h3>
+				  </div>
+				  <div class="panel-body">
+					<code id="iptables-output">
+						<?php 
+							$last = exec('sudo /sbin/iptables -nL', $o, $r);  
+							print nl2br(htmlentities(implode("\n", $o)));
+							$j = count($o);
+							for($i=0;$i<$j;$i++) { 
+								echo '<input type="hidden" name="debug-input-ip-tables[]" id="debug-input-ip-tables" value="'.$o[$i].'">';
+							}
+						
+							// load the system info here too
+							$si_arr_keys = array_keys($system_info);
+							$j = count($si_arr_keys);
+							for($i=0;$i<$j;$i++) { 
+								echo '<input type="hidden" name="debug-input-system-info['.$si_arr_keys[$i].']" id="debug-input-system-info" value="'.$system_info[$si_arr_keys[$i]].'">';
+							}
+						?>
+					</code>
+				  </div>
+				</div>
+
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Asterisk Loaded Modules</h3>
+				  </div>
+				  <div class="panel-body">
+					<code id="asterisk-loaded-modules">
+						<?php 
+							$last = exec('sudo /usr/sbin/asterisk -x "module show"', $o1, $r1);  
+							print nl2br(htmlentities(implode("\n", $o1)));
+							for($i=0;$i<$j;$i++) { 
+								echo '<input type="hidden" name="debug-input-asterisk-modules[]" id="debug-input-asterisk-modules" value="'.$o1[$i].'">';
+							}
+						?>
+					</code>
+				  </div>
+				</div>
+
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Trunks</h3>
+				  </div>
+				  <div class="panel-body">
 					<?php 
-						$last = exec('sudo /sbin/iptables -nL', $o, $r);  
-						print nl2br(htmlentities(implode("\n", $o)));
+						$trunks = $Trunk->list_trunks();
+						$Common->ecco( $trunks );
+						$j = count($trunks);
+						for($i=0;$i<$j;$i++) { 
+							$tr_arr_keys = array_keys($trunks[$i]);
+							$jj = count($tr_arr_keys);
+							for($ii=0;$ii<$jj;$ii++) { 
+								echo '<input type="hidden" name="debug-input-trunks['.$i.']['.$tr_arr_keys[$ii].']" value="'.$trunks[$i][$tr_arr_keys[$ii]].'">';
+							}
+						}
 					?>
-				</code>
-				<input type="hidden" id="debug-input-ip-tables" value="<?php echo json_encode($o);?>">
-			  </div>
-			</div>
-
-			<div class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">Asterisk Loaded Modules</h3>
-			  </div>
-			  <div class="panel-body">
-				<code id="asterisk-loaded-modules">
-					<?php 
-						$last = exec('sudo /usr/sbin/asterisk -x "module show"', $o1, $r1);  
-						print nl2br(htmlentities(implode("\n", $o1)));
-					?>
-				</code>
-				<input type="hidden" id="debug-input-asterisk-loaded-modules" value="<?php echo $o1;?>">
-			  </div>
-			</div>
-
-			<div class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">Trunks</h3>
-			  </div>
-			  <div class="panel-body">
-				<?php 
-					$trunks = $Trunk->list_trunks();
-					$Common->ecco( $trunks );
-				?>
-				<input type="hidden" id="debug-input-trunks" value="<?php echo $trunks;?>">
-			  </div>
-			</div>
-
+				  </div>
+				</div>
+			</form>
 
 
 		</div>
