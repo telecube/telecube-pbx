@@ -31,7 +31,6 @@ $trunks = $Trunk->list_trunks();
 			echo '$(function(){$("#password-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
 			
 			echo '$("#toggle-active-'.$trunks[$i]['id'].'").change(function() {trunk_toggle_active($(this),\''.$trunks[$i]['id'].'\');});';
-		//	echo '$("#toggle-active-'.$trunks[$i]['id'].'").bootstrapToggle("off");';
 		}
 		?>
 
@@ -45,9 +44,6 @@ $trunks = $Trunk->list_trunks();
 
 	});
 
-//	$(function() {
-//		$('#toggle-active-40').change(function() {trunk_toggle_active($(this));});
-//	})
 
 	function trunk_toggle_active(obj, trunk_id){
 	//	alert(obj.prop('checked'));
@@ -59,6 +55,8 @@ $trunks = $Trunk->list_trunks();
 				try{ results = JSON.parse(data); }catch(ex){ results['status'] = ex; }
 				// do stuff here
 				if(results['status'] == "OK"){
+					
+					disable_active(trunk_id, results['value']);
 
 				}else{
 					alert(data);
