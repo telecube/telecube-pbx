@@ -1,7 +1,7 @@
 <?php
 require("../init.php");
 
-$Common->ecco($_POST);
+//$Common->ecco($_POST);
 
 /* 
 debug-input-ip-tables
@@ -17,9 +17,13 @@ $url = $Config->get("api_url")."/receive-debug-info.php";
 $data = array("pbx_uuid"=>$pbx_uuid, "ip_tables"=>$_POST["debug-input-ip-tables"], "system_info"=>$_POST["debug-input-system-info"], "asterisk_modules"=>$_POST["debug-input-asterisk-modules"], "trunks"=>$_POST["debug-input-trunks"]);
 $res = $Curl->http($url, $data, '', '', 60, true);
 
+if($res->status == "OK"){
+	header("Location: /debugging/?status=ok");
+}else{
+	$Common->ecco($res);
 
+}
 
-$Common->ecco($res);
 
 
 ?>
