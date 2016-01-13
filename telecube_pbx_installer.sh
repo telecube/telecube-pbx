@@ -688,6 +688,7 @@ echo "write = system,call,log,verbose,command,agent,user,originate" >> /etc/aste
 
 echo "$ami_pass" > /opt/ami_pass
 
+/usr/bin/pkill -f ami-scripts/event-handler.php
 
 # restart asterisk
 service asterisk restart
