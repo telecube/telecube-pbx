@@ -673,6 +673,8 @@ echo "" >> /etc/asterisk/modules.conf
 /bin/chown asterisk:asterisk /etc/asterisk/sip-register.conf
 /bin/chown asterisk:asterisk /etc/asterisk/sip-trunks.conf
 /bin/chown asterisk:asterisk /etc/asterisk/modules.conf
+/bin/chown asterisk:asterisk /etc/asterisk/manager.d
+/bin/chown asterisk:asterisk /etc/asterisk/manager.d/telecube-pbx.conf
 
 # setup astman
 ami_pass=$(openssl rand -base64 16)
