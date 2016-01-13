@@ -30,8 +30,8 @@ function get_server_memory_usage(){
 		<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/js.php");?>
 
 
-		<script type="text/javascript" src="/js/ds3/ds3.js"></script>
-		<script type="text/javascript" src="/js/ds3/gauge.js"></script>
+		<script type="text/javascript" src="/js/d3/d3.min.js"></script>
+		<script type="text/javascript" src="/js/d3/gauge.js"></script>
 
 		<script>
 						
