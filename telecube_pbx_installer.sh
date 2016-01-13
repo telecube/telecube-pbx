@@ -168,7 +168,7 @@ $QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips
 $QUERY "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '2435d30134dc4541d002fb18ec68ce29bbea2f0d');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '9');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '4');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '9');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_next_check','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_wait_count','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('pbx_default_timezone','Australia/Melbourne');"
@@ -410,8 +410,11 @@ echo "www-data ALL=NOPASSWD: /usr/bin/git" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /usr/bin/rsync" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /bin/echo" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /bin/cat" >> /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /bin/chown" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /bin/chmod" >> /etc/sudoers.d/telecube-sudo
 echo "www-data ALL=NOPASSWD: /bin/sh" >> /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /usr/bin/apt-get" >> /etc/sudoers.d/telecube-sudo
+echo "www-data ALL=NOPASSWD: /usr/bin/pkill -f ami-scripts/event-handler.php" >> /etc/sudoers.d/telecube-sudo
 
 # create certs folder
 if [ ! -d /var/www/certs ]; then
@@ -454,6 +457,14 @@ echo "        index index.php;" >> /etc/nginx/sites-available/default
 echo "" >> /etc/nginx/sites-available/default
 echo "        # server name" >> /etc/nginx/sites-available/default
 echo "        server_name _;" >> /etc/nginx/sites-available/default
+echo "" >> /etc/nginx/sites-available/default
+echo "        	location ~ /(auto|classes|includes) {" >> /etc/nginx/sites-available/default
+echo "        		deny all;" >> /etc/nginx/sites-available/default
+echo "        	}" >> /etc/nginx/sites-available/default
+echo "" >> /etc/nginx/sites-available/default
+echo "        	location ~ /init.php {" >> /etc/nginx/sites-available/default
+echo "        		deny all;" >> /etc/nginx/sites-available/default
+echo "        	}" >> /etc/nginx/sites-available/default
 echo "" >> /etc/nginx/sites-available/default
 echo "        # main rule" >> /etc/nginx/sites-available/default
 echo "        location / {" >> /etc/nginx/sites-available/default
@@ -508,34 +519,63 @@ echo "rtcachefriends=yes" >> /etc/asterisk/sip.conf
 echo "rtsavesysname=yes" >> /etc/asterisk/sip.conf
 echo "alwaysauthreject=yes" >> /etc/asterisk/sip.conf
 echo "progressinband=yes" >> /etc/asterisk/sip.conf
+echo "" >> /etc/asterisk/sip.conf
+echo "" >> /etc/asterisk/sip.conf
+echo '#include "sip-conf.conf"' >> /etc/asterisk/sip.conf
+echo "" >> /etc/asterisk/sip.conf
+echo '#include "sip-register.conf"' >> /etc/asterisk/sip.conf
+echo "" >> /etc/asterisk/sip.conf
+echo '#include "sip-trunks.conf"' >> /etc/asterisk/sip.conf
+echo "" >> /etc/asterisk/sip.conf
+
+echo "; extra config options" > /etc/asterisk/sip-conf.conf
+echo "nat=force_rport,comedia" >> /etc/asterisk/sip-conf.conf
+echo "registerattempts=0" >> /etc/asterisk/sip-conf.conf
+
+echo "; SIP Registered Trunks" > /etc/asterisk/sip-register.conf
+echo "; SIP IP Authenticated Trunks" > /etc/asterisk/sip-trunks.conf
 
 cp /etc/asterisk/extensions.conf /etc/asterisk/extensions.conf_BAK_$(date "+%Y-%m-%d-%H:%M:%S")
 
-echo "[globals]" > /etc/asterisk/extensions.conf
+echo ";" > /etc/asterisk/extensions.conf
+echo "; Please don't modify this file directly, it is managed by the PBX and your changes may be overwritten" >> /etc/asterisk/extensions.conf
+echo ";" >> /etc/asterisk/extensions.conf
+echo "" >> /etc/asterisk/extensions.conf
+
+echo "[globals]" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
+
 echo "[public]" >> /etc/asterisk/extensions.conf
-echo "exten => _1[0-9]XX,1,NoOp(Dialing - ${EXTEN})" >> /etc/asterisk/extensions.conf
-echo "exten => _1[0-9]XX,n,Agi(/var/lib/asterisk/agi-bin/voip-in.php)" >> /etc/asterisk/extensions.conf
-echo "exten => _1[0-9]XX,n,Hangup()" >> /etc/asterisk/extensions.conf
+echo "exten => _X.,1,NoOp(Unauthorised Call)" >> /etc/asterisk/extensions.conf
+echo "exten => _X.,n,Agi(/var/lib/asterisk/agi-bin/unauthorised-call.php)" >> /etc/asterisk/extensions.conf
+echo "exten => _X.,n,Hangup()" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
+
 echo "[voip-extensions]" >> /etc/asterisk/extensions.conf
-echo "exten => _X.,1,NoOp(New voip call)" >> /etc/asterisk/extensions.conf
+echo "exten => _X.,1,NoOp(Call out)" >> /etc/asterisk/extensions.conf
 echo "exten => _X.,n,Agi(/var/lib/asterisk/agi-bin/voip-out.php)" >> /etc/asterisk/extensions.conf
 echo "exten => _X.,n,Hangup()" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
-echo "exten => _+X.,1,NoOp(New voip call)" >> /etc/asterisk/extensions.conf
+
+echo "exten => _+X.,1,NoOp(Call out)" >> /etc/asterisk/extensions.conf
 echo "exten => _+X.,n,Agi(/var/lib/asterisk/agi-bin/voip-out.php)" >> /etc/asterisk/extensions.conf
 echo "exten => _+X.,n,Hangup()" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
+
+echo "[voip-trunks]" >> /etc/asterisk/extensions.conf
+echo "exten => _X.,1,NoOp(Inbound call)" >> /etc/asterisk/extensions.conf
+echo "exten => _X.,n,Agi(/var/lib/asterisk/agi-bin/voip-in.php)" >> /etc/asterisk/extensions.conf
+echo "exten => _X.,n,Hangup()" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
+echo "" >> /etc/asterisk/extensions.conf
+
 echo ";;/* Include the BLF Listings */;;" >> /etc/asterisk/extensions.conf
 echo "#include \"blf.conf\"" >> /etc/asterisk/extensions.conf
 echo "" >> /etc/asterisk/extensions.conf
 
-echo ";; BLF Config" > /etc/asterisk/blf.conf
-
 mv /etc/asterisk/extensions.ael /etc/asterisk/extensions.ael_BAK
+mv /etc/asterisk/extensions.lua /etc/asterisk/extensions.lua_BAK
 mv /etc/asterisk/users.conf /etc/asterisk/users.conf_BAK
 
 cp /etc/asterisk/res_config_mysql.conf /etc/asterisk/res_config_mysql.conf_BAK_$(date "+%Y-%m-%d-%H:%M:%S")
@@ -562,11 +602,71 @@ echo "queue_members => mysql,general,queue_members" >> /etc/asterisk/extconfig.c
 echo "musiconhold => mysql,general,musiconhold" >> /etc/asterisk/extconfig.conf
 echo "" >> /etc/asterisk/extconfig.conf
 
+/bin/echo "[modules]" > /etc/asterisk/modules.conf
+/bin/echo "autoload=no" >> /etc/asterisk/modules.conf
+echo "" >> /etc/asterisk/modules.conf
+/bin/echo "load => pbx_realtime.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => res_musiconhold.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => res_timing_dahdi.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => res_rtp_asterisk.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => res_config_mysql.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => res_agi.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => res_speech.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => res_http_websocket.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => chan_sip.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => app_authenticate.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => app_db.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => func_channel.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => func_callerid.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => pbx_config.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => app_dial.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => func_timeout.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => func_extstate.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => func_realtime.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => codec_a_mu.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => codec_adpcm.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => codec_alaw.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => codec_dahdi.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => codec_g722.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => codec_g726.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => codec_gsm.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => codec_lpc10.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => codec_resample.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => codec_speex.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => codec_ulaw.so" >> /etc/asterisk/modules.conf
+
 /bin/chmod 0666 /etc/asterisk/sip.conf
 /bin/chmod 0666 /etc/asterisk/extensions.conf
 /bin/chmod 0666 /etc/asterisk/res_config_mysql.conf
 /bin/chmod 0666 /etc/asterisk/extconfig.conf
 /bin/chmod 0666 /etc/asterisk/blf.conf
+/bin/chmod 0666 /etc/asterisk/sip-conf.conf
+/bin/chmod 0666 /etc/asterisk/sip-register.conf
+/bin/chmod 0666 /etc/asterisk/sip-trunks.conf
+/bin/chmod 0666 /etc/asterisk/modules.conf
+
+/bin/chown asterisk:asterisk /etc/asterisk/sip.conf
+/bin/chown asterisk:asterisk /etc/asterisk/extensions.conf
+/bin/chown asterisk:asterisk /etc/asterisk/res_config_mysql.conf
+/bin/chown asterisk:asterisk /etc/asterisk/extconfig.conf
+/bin/chown asterisk:asterisk /etc/asterisk/blf.conf
+/bin/chown asterisk:asterisk /etc/asterisk/sip-conf.conf
+/bin/chown asterisk:asterisk /etc/asterisk/sip-register.conf
+/bin/chown asterisk:asterisk /etc/asterisk/sip-trunks.conf
+/bin/chown asterisk:asterisk /etc/asterisk/modules.conf
+
+# setup astman
+ami_pass=$(openssl rand -base64 16)
+
+echo "[telecube]" > /etc/asterisk/manager.d/telecube-pbx.conf
+echo "secret = $ami_pass" >> /etc/asterisk/manager.d/telecube-pbx.conf
+echo "deny=0.0.0.0/0.0.0.0" >> /etc/asterisk/manager.d/telecube-pbx.conf
+echo "permit=127.0.0.1/255.255.255.0" >> /etc/asterisk/manager.d/telecube-pbx.conf
+echo "read = system,call,log,verbose,command,agent,user,originate" >> /etc/asterisk/manager.d/telecube-pbx.conf
+echo "write = system,call,log,verbose,command,agent,user,originate" >> /etc/asterisk/manager.d/telecube-pbx.conf
+
+echo "$ami_pass" > /opt/ami_pass
+
 
 # restart asterisk
 service asterisk restart
