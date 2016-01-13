@@ -156,6 +156,81 @@ if($system_info["public_address"] != $system_info["pbx_nat_external_ip"]){
 					?>
 				  </div>
 				</div>
+
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Sip Config</h3>
+				  </div>
+				  <div class="panel-body">
+					<code id="asterisk-loaded-modules">
+						<?php 
+							$last = exec('sudo /bin/cat /etc/asterisk/sip.conf', $o2, $r);  
+							print nl2br(htmlentities(implode("\n", $o2)));
+							$j = count($o2);
+							for($i=0;$i<$j;$i++) { 
+								echo '<input type="hidden" name="debug-input-sip-conf[]" value="'.$o2[$i].'">';
+							}
+						?>
+					</code>
+				  </div>
+				</div>
+
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Sip-Conf Config</h3>
+				  </div>
+				  <div class="panel-body">
+					<code id="asterisk-loaded-modules">
+						<?php 
+							$last = exec('sudo /bin/cat /etc/asterisk/sip-conf.conf', $o3, $r);  
+							print nl2br(htmlentities(implode("\n", $o3)));
+							$j = count($o3);
+							for($i=0;$i<$j;$i++) { 
+								echo '<input type="hidden" name="debug-input-sip-conf-conf[]" value="'.$o3[$i].'">';
+							}
+						?>
+					</code>
+				  </div>
+				</div>
+
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Sip-Register Config</h3>
+				  </div>
+				  <div class="panel-body">
+					<code id="asterisk-loaded-modules">
+						<?php 
+							$last = exec('sudo /bin/cat /etc/asterisk/sip-register.conf', $o4, $r);  
+							print nl2br(htmlentities(implode("\n", $o4)));
+							$j = count($o4);
+							for($i=0;$i<$j;$i++) { 
+								echo '<input type="hidden" name="debug-input-sip-register-conf[]" value="'.$o4[$i].'">';
+							}
+						?>
+					</code>
+				  </div>
+				</div>
+
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Sip-Trunks Config</h3>
+				  </div>
+				  <div class="panel-body">
+					<code id="asterisk-loaded-modules">
+						<?php 
+							$last = exec('sudo /bin/cat /etc/asterisk/sip-trunks.conf', $o5, $r);  
+							print nl2br(htmlentities(implode("\n", $o5)));
+							$j = count($o5);
+							for($i=0;$i<$j;$i++) { 
+								echo '<input type="hidden" name="debug-input-sip-trunks-conf[]" value="'.$o5[$i].'">';
+							}
+						?>
+					</code>
+				  </div>
+				</div>
+
+
+
 			</form>
 
 
