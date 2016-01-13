@@ -68,7 +68,7 @@ if($system_info["public_address"] != $system_info["pbx_nat_external_ip"]){
 				<div class="col-lg-5">
 					<button type="submit" class="btn btn-success btn-block" data-toggle="confirmation" data-title="Send this debug data now?">Securely Send Debug Info to Telecube HTTPS API</button>
 					<p></p>
-					<div class="alert alert-success" role="alert" style="display:<?php echo isset($_GET['status']) && $_GET['status'] == "OK" ? "" : "none";?>">
+					<div class="alert alert-success" role="alert" style="display:<?php echo isset($_GET['status']) && strtolower($_GET['status']) == "ok" ? "" : "none";?>">
 						<strong>Success:</strong> Data sent successfully
 					</div>
 				</div>
