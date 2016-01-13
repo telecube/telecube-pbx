@@ -167,7 +167,7 @@ $QUERY "insert into telecube.preferences (name, value) values ('fw_https_ports',
 $QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[\"103.193.166.0/23\"]');"
 $QUERY "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '2435d30134dc4541d002fb18ec68ce29bbea2f0d');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '9');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '14');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '15');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_next_check','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_wait_count','1');"
