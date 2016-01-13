@@ -7,6 +7,7 @@ $update_active = strpos($rq_uri, "/update/") !== false ? 'class="active"' : "";
 $server_settings_active = strpos($rq_uri, "/firewall/") !== false || strpos($rq_uri, "/preferences/") !== false ? ' active' : ""; 
 $firewall_active = strpos($rq_uri, "/firewall/") !== false ? 'class="active"' : ""; 
 $preferences_active = strpos($rq_uri, "/preferences/") !== false ? 'class="active"' : ""; 
+$debugging_active = strpos($rq_uri, "/debugging/") !== false ? 'class="active"' : ""; 
 
 $pbx_settings_active = strpos($rq_uri, "/extensions/") !== false 
 	|| strpos($rq_uri, "/trunks/") !== false ? ' active' : ""
@@ -51,6 +52,7 @@ $dids_active = strpos($rq_uri, "/dids/") !== false ? 'class="active"' : "";
 					<ul class="dropdown-menu">
 						<li <?php echo $firewall_active;?>><a href="/firewall/">Firewall</a></li>
 						<li <?php echo $preferences_active;?>><a href="/preferences/">Preferences</a></li>
+						<li <?php echo $debugging_active;?>><a href="/debugging/">Debugging</a></li>
 					</ul>
 				</li>
 				<li <?php echo $update_active;?>><a href="/update/">Update <span class="badge"><?php echo $update_wait_count == 0 ? "" : $update_wait_count;?></span></a></li>
