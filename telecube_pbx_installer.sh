@@ -164,7 +164,7 @@ $QUERY "insert into telecube.preferences (name, value) values ('fw_ssh_ports', '
 $QUERY "insert into telecube.preferences (name, value) values ('fw_sip_ports', '5060');"
 $QUERY "insert into telecube.preferences (name, value) values ('fw_rtp_ports', '8000:55000');"
 $QUERY "insert into telecube.preferences (name, value) values ('fw_https_ports', '443');"
-$QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[]');"
+$QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[\"103.193.166.0/23\"]');"
 $QUERY "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '2435d30134dc4541d002fb18ec68ce29bbea2f0d');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '9');"
