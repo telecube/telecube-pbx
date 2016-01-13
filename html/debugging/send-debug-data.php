@@ -2,7 +2,6 @@
 require("../init.php");
 
 $Common->ecco($_POST);
-exit;
 
 /* 
 debug-input-ip-tables
