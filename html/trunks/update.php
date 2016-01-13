@@ -5,6 +5,8 @@ $id = $_POST["pk"];
 $field = str_replace("-".$_POST["pk"], "", $_POST["name"]);
 $value = $_POST["value"];
 
+//$Common->ecco($_POST);
+//exit;
 //echo $id.' '.$field.' '.$value."\n";
 
 //$q = "update trunks set ".$field." = ".$value." where id = ".$id.";";
@@ -18,7 +20,7 @@ $Db->pdo_query($q,$data,$dbPDO);
 //header("HTTP/1.0 400 Bad Request");
 
 //$Common->ecco($_POST);
-echo $value;
+echo json_encode(array("status"=>"OK","value"=>$value));
 
 // if the update is the active status we will run the config builder
 if($field == "active"){

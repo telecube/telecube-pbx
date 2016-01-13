@@ -12,26 +12,31 @@ $trunks = $Trunk->list_trunks();
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/css.php");?>
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/js.php");?>
 
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
+
 	<script type="text/javascript">
 	$(document).ready(function() {
-	//toggle `popup` / `inline` mode
-	$.fn.editable.defaults.mode = 'popup';     
+		//toggle `popup` / `inline` mode
+		$.fn.editable.defaults.mode = 'popup';     
 
-	<?php
-	$j = count($trunks);
-	for($i=0;$i<$j;$i++) { 
-		$disable_editable = $Trunk->is_active($trunks[$i]['id']) == "yes" ? "true" : "false";
-		echo '$(function(){$(\'#active-'.$trunks[$i]['id'].'\').editable({value: \''.$Trunk->is_active($trunks[$i]['id']).'\',source: [{value: \'no\', text: \'Inactive\'},{value: \'yes\', text: \'Active\'}], success: function(data){ disable_active('.$trunks[$i]['id'].', data); } });});';
-		echo '$(function(){$("#description-'.$trunks[$i]['id'].'").editable();});'."\n";
-		echo '$(function(){$("#host_address-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
-		echo '$(function(){$("#username-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
-		echo '$(function(){$("#password-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
-		
-	}
-	?>
+		<?php
+		$j = count($trunks);
+		for($i=0;$i<$j;$i++) { 
+			$disable_editable = $Trunk->is_active($trunks[$i]['id']) == "yes" ? "true" : "false";
+			echo '$(function(){$(\'#active-'.$trunks[$i]['id'].'\').editable({value: \''.$Trunk->is_active($trunks[$i]['id']).'\',source: [{value: \'no\', text: \'Inactive\'},{value: \'yes\', text: \'Active\'}], success: function(data){ disable_active('.$trunks[$i]['id'].', data); } });});';
+			echo '$(function(){$("#description-'.$trunks[$i]['id'].'").editable();});'."\n";
+			echo '$(function(){$("#host_address-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
+			echo '$(function(){$("#username-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
+			echo '$(function(){$("#password-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
+			
+			echo '$("#toggle-active-'.$trunks[$i]['id'].'").change(function() {trunk_toggle_active($(this),\''.$trunks[$i]['id'].'\');});';
+		//	echo '$("#toggle-active-'.$trunks[$i]['id'].'").bootstrapToggle("off");';
+		}
+		?>
 
 
-	$('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
+		$('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
 
 
 
@@ -40,7 +45,26 @@ $trunks = $Trunk->list_trunks();
 
 	});
 
+//	$(function() {
+//		$('#toggle-active-40').change(function() {trunk_toggle_active($(this));});
+//	})
 
+	function trunk_toggle_active(obj, trunk_id){
+	//	alert(obj.prop('checked'));
+		var value = obj.prop('checked') ? "yes" : "no";
+		$.post("/trunks/update.php", { pk: trunk_id, name: "active-"+trunk_id, value: value },
+			function(data){
+			//	alert(data);
+				var results = new Array();
+				try{ results = JSON.parse(data); }catch(ex){ results['status'] = ex; }
+				// do stuff here
+				if(results['status'] == "OK"){
+
+				}else{
+					alert(data);
+				}
+		});
+	}
 
 	function disable_active(id, val){
 		if(val == "yes"){
@@ -80,6 +104,8 @@ $trunks = $Trunk->list_trunks();
 			<div class="well">
 				<p>Trunks are the connections between this PBX server and voip providers or other servers.</p>
 			</div>
+
+
 
 			<div class="row">
 				
@@ -186,7 +212,8 @@ $trunks = $Trunk->list_trunks();
 
 				echo '<p>Description: <a href="#" id="description-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Description">'.$trunks[$i]['description'].'</a></p>'."\n";
 				echo '<p>Auth Type: '.ucwords($trunks[$i]['auth_type']).'</p>';
-				echo '<p>Active Status: <a href="#" id="active-'.$trunks[$i]['id'].'" data-type="select" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Active Status"></a></p>'."\n";
+				$toggleCheckedStatus = $trunks[$i]['active'] == "yes" ? " checked" : "";
+				echo '<p>Active Status: <input type="checkbox" id="toggle-active-'.$trunks[$i]['id'].'" data-toggle="toggle" data-onstyle="success" data-size="mini" data-on="Active" data-off="Inactive" '.$toggleCheckedStatus.'></p>';
 				
 				echo '<span id="">';
 				echo '<hr>';
