@@ -174,10 +174,26 @@ $QUERY "insert into telecube.preferences (name, value) values ('update_wait_coun
 $QUERY "insert into telecube.preferences (name, value) values ('pbx_default_timezone','Australia/Melbourne');"
 
 EXTERNALIP=$(wget https://www.telecube.com.au/api/apps/ip-check.php -q -O -)
-$QUERY "insert into telecube.preferences (name, value) values ('pbx_nat_is_natted','yes');"
+
+HOST_IP=$(ifconfig | awk -F':' '/inet addr/&&!/127.0.0.1/{split($2,_," ");print _[1]}')
+arr=$(echo $HOST_IP | tr " " "\n")
+for x in $arr
+do
+   PBX_IP=$x
+   break
+done
+
+ISNATTED="no"
+if [ "$EXTERNALIP" != "$PBX_IP" ]; then
+        ISNATTED="yes"
+fi
+
+$QUERY "insert into telecube.preferences (name, value) values ('pbx_nat_is_natted','$ISNATTED');"
+
 $QUERY "insert into telecube.preferences (name, value) values ('pbx_nat_public_ip_static','yes');"
 $QUERY "insert into telecube.preferences (name, value) values ('pbx_nat_external_ip','$EXTERNALIP');"
 $QUERY "insert into telecube.preferences (name, value) values ('pbx_nat_localnet','192.168.0.0/16');"
+$QUERY "insert into telecube.preferences (name, value) values ('pbx_host_ip','$PBX_IP');"
 
 
 $QUERY "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
@@ -518,16 +534,6 @@ sed -i 's/astdatadir => \/usr\/share\/asterisk/astdatadir => \/var\/lib\/asteris
 
 cp /etc/asterisk/sip.conf /etc/asterisk/sip.conf_BAK_$(date "+%Y-%m-%d-%H:%M:%S")
 
-HOST_IP=$(ifconfig | awk -F':' '/inet addr/&&!/127.0.0.1/{split($2,_," ");print _[1]}')
-arr=$(echo $HOST_IP | tr " " "\n")
-for x in $arr
-do
-   ASTERISK_IP=$x
-   break
-done
-
-$QUERY "insert into telecube.preferences (name, value) values ('pbx_host_ip','$ASTERISK_IP');"
-
 echo "[general]" > /etc/asterisk/sip.conf
 echo "context=public" >> /etc/asterisk/sip.conf
 echo "allowoverlap=no" >> /etc/asterisk/sip.conf
@@ -560,15 +566,30 @@ echo "" >> /etc/asterisk/sip.conf
 echo '#include "sip-trunks.conf"' >> /etc/asterisk/sip.conf
 echo "" >> /etc/asterisk/sip.conf
 
-echo "; variable network stuff" > /etc/asterisk/sip-network.conf
-echo "udpbindaddr=$ASTERISK_IP" >> /etc/asterisk/sip-network.conf
-echo "tcpenable=no" >> /etc/asterisk/sip-network.conf
-echo "tcpbindaddr=0.0.0.0" >> /etc/asterisk/sip-network.conf
-echo "transport=udp" >> /etc/asterisk/sip-network.conf
+if [ "$ISNATTED" = "yes" ]; then
+
+	echo "; variable network stuff" > /etc/asterisk/sip-network.conf
+	echo "udpbindaddr=$PBX_IP" >> /etc/asterisk/sip-network.conf
+	echo "externip=$EXTERNALIP" >> /etc/asterisk/sip-network.conf
+	echo "localnet=$PBX_IP" >> /etc/asterisk/sip-network.conf
+	echo "tcpenable=no" >> /etc/asterisk/sip-network.conf
+	echo "tcpbindaddr=0.0.0.0" >> /etc/asterisk/sip-network.conf
+	echo "transport=udp" >> /etc/asterisk/sip-network.conf
+
+else
+
+	echo "; variable network stuff" > /etc/asterisk/sip-network.conf
+	echo "udpbindaddr=$PBX_IP" >> /etc/asterisk/sip-network.conf
+	echo "tcpenable=no" >> /etc/asterisk/sip-network.conf
+	echo "tcpbindaddr=0.0.0.0" >> /etc/asterisk/sip-network.conf
+	echo "transport=udp" >> /etc/asterisk/sip-network.conf
+
+fi
+
 
 echo "; extra config options" > /etc/asterisk/sip-conf.conf
-echo "nat=force_rport,comedia" >> /etc/asterisk/sip-conf.conf
-echo "registerattempts=0" >> /etc/asterisk/sip-conf.conf
+#echo "nat=force_rport,comedia" >> /etc/asterisk/sip-conf.conf
+#echo "registerattempts=0" >> /etc/asterisk/sip-conf.conf
 
 echo "; SIP Registered Trunks" > /etc/asterisk/sip-register.conf
 echo "; SIP IP Authenticated Trunks" > /etc/asterisk/sip-trunks.conf

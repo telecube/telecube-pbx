@@ -32,6 +32,8 @@ class Config{
 
 		$api_url 			= "https://www.telecube.com.au/api/apps/cloud-pbx";
 
+		$ip_check_url 		= "https://www.telecube.com.au/api/apps/ip-check.php";
+
 		return isset($$varname) ? $$varname : false;
 	}
 }

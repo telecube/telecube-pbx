@@ -27,6 +27,7 @@ $data = array(
 			"trunks"			=> $_POST["debug-input-trunks"],
 			"sip_conf"			=> $_POST["debug-input-sip-conf"],
 			"sip_conf_conf"		=> $_POST["debug-input-sip-conf-conf"],
+			"sip_network_conf"	=> $_POST["debug-input-sip-network-conf"],
 			"sip_register_conf"	=> $_POST["debug-input-sip-register-conf"],
 			"sip_trunks_conf"	=> $_POST["debug-input-sip-trunks-conf"],
 		);

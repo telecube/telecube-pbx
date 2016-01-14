@@ -1,7 +1,7 @@
 <?php
 require("../init.php");
 $system_info = array();
-$system_info["public_address"] 				= file_get_contents('https://www.telecube.com.au/api/apps/ip-check.php');
+$system_info["public_address"] 				= file_get_contents($Config->get("ip_check_url"));
 $system_info["pbx_host_ip"] 				= $Common->get_pref("pbx_host_ip");
 $system_info["pbx_nat_is_natted"] 			= $Common->get_pref("pbx_nat_is_natted");
 $system_info["pbx_nat_external_ip"] 		= $Common->get_pref("pbx_nat_external_ip");
@@ -29,27 +29,8 @@ if($system_info["public_address"] != $system_info["pbx_nat_external_ip"]){
 
 			$('[data-toggle="confirmation"]').confirmation({onConfirm: function(){$("#form-debug-send-data").submit();}, popout: true, singleton: true, animation: true });
 
-		
 		});
 		
-		function sendDebug(){
-			var iptables = $("#debug-input-ip-tables").val();
-			var loadedmodules = $("#debug-input-asterisk-loaded-modules").val();
-			var trunks = $("#debug-input-trunks").val();
-			$.post("/debugging/send-debug-data.php", { iptables: iptables },
-				function(data){
-				//	alert(data);
-					var results = new Array();
-					try{ results = JSON.parse(data); }catch(ex){ results['status'] = ex; }
-					// do stuff here
-					if(results['status'] == "OK"){
-
-					}else{
-						alert(data);
-					}
-			});
-			//location.reload();
-		}
 		</script>
 	</head>
 	<body>
@@ -177,16 +158,34 @@ if($system_info["public_address"] != $system_info["pbx_nat_external_ip"]){
 
 				<div class="panel panel-default">
 				  <div class="panel-heading">
+				    <h3 class="panel-title">Sip-Network Config</h3>
+				  </div>
+				  <div class="panel-body">
+					<code id="asterisk-loaded-modules">
+						<?php 
+							$last = exec('sudo /bin/cat /etc/asterisk/sip-network.conf', $o3, $r);  
+							print nl2br(htmlentities(implode("\n", $o3)));
+							$j = count($o3);
+							for($i=0;$i<$j;$i++) { 
+								echo '<input type="hidden" name="debug-input-sip-network-conf[]" value="'.$o3[$i].'">';
+							}
+						?>
+					</code>
+				  </div>
+				</div>
+
+				<div class="panel panel-default">
+				  <div class="panel-heading">
 				    <h3 class="panel-title">Sip-Conf Config</h3>
 				  </div>
 				  <div class="panel-body">
 					<code id="asterisk-loaded-modules">
 						<?php 
-							$last = exec('sudo /bin/cat /etc/asterisk/sip-conf.conf', $o3, $r);  
-							print nl2br(htmlentities(implode("\n", $o3)));
-							$j = count($o3);
+							$last = exec('sudo /bin/cat /etc/asterisk/sip-conf.conf', $o3a, $r);  
+							print nl2br(htmlentities(implode("\n", $o3a)));
+							$j = count($o3a);
 							for($i=0;$i<$j;$i++) { 
-								echo '<input type="hidden" name="debug-input-sip-conf-conf[]" value="'.$o3[$i].'">';
+								echo '<input type="hidden" name="debug-input-sip-conf-conf[]" value="'.$o3a[$i].'">';
 							}
 						?>
 					</code>
