@@ -11,3 +11,5 @@
 
     <script src="/js/bootstrap-confirmation.js"></script>
 
+	<script src="/js/bootstrap-toggle.min.js"></script>
+

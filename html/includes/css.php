@@ -3,3 +3,5 @@
     <link href="/css/custom.css" rel="stylesheet">
 
     <link href="/css/bootstrap-editable.css" rel="stylesheet"/>
+
+	<link href="/css/bootstrap-toggle.min.css" rel="stylesheet">

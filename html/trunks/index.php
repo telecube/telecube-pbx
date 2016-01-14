@@ -12,9 +12,6 @@ $trunks = $Trunk->list_trunks();
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/css.php");?>
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/js.php");?>
 
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
-
 	<script type="text/javascript">
 	$(document).ready(function() {
 		//toggle `popup` / `inline` mode
@@ -24,21 +21,23 @@ $trunks = $Trunk->list_trunks();
 		$j = count($trunks);
 		for($i=0;$i<$j;$i++) { 
 			$disable_editable = $Trunk->is_active($trunks[$i]['id']) == "yes" ? "true" : "false";
-			echo '$(function(){$(\'#active-'.$trunks[$i]['id'].'\').editable({value: \''.$Trunk->is_active($trunks[$i]['id']).'\',source: [{value: \'no\', text: \'Inactive\'},{value: \'yes\', text: \'Active\'}], success: function(data){ disable_active('.$trunks[$i]['id'].', data); } });});';
-			echo '$(function(){$("#description-'.$trunks[$i]['id'].'").editable();});'."\n";
-			echo '$(function(){$("#host_address-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
-			echo '$(function(){$("#username-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
-			echo '$(function(){$("#password-'.$trunks[$i]['id'].'").editable({disabled: '.$disable_editable.'});});'."\n";
-			
-			echo '$("#toggle-active-'.$trunks[$i]['id'].'").change(function() {trunk_toggle_active($(this),\''.$trunks[$i]['id'].'\');});';
-		}
 		?>
+			$(function(){$("#active-<?php echo $trunks[$i]['id'];?>").editable({
+					value: "<?php echo $Trunk->is_active($trunks[$i]['id']);?>",
+					source: [{value: 'no', text: 'Inactive'},{value: 'yes', text: 'Active'}], 
+					success: function(data){ disable_active(<?php echo $trunks[$i]['id'];?>, data); } 
+				});});
+			$(function(){$("#description-<?php echo $trunks[$i]['id'];?>").editable();});
+			$(function(){$("#host_address-<?php echo $trunks[$i]['id']?>").editable({disabled: <?php echo $disable_editable;?>});});
+			$(function(){$("#username-<?php echo $trunks[$i]['id'];?>").editable({disabled: <?php echo $disable_editable;?>});});
+			$(function(){$("#password-<?php echo $trunks[$i]['id'];?>").editable({disabled: <?php echo $disable_editable;?>});});
+			
+			$("#toggle-active-<?php echo $trunks[$i]['id'];?>").change(function() {trunk_toggle_active($(this),<?php echo $trunks[$i]['id'];?>);});
+		
+		<?php } ?>
 
 
 		$('[data-toggle="confirmation"]').confirmation({popout: true, singleton: true, animation: true });
-
-
-
 
 
 
@@ -90,10 +89,48 @@ $trunks = $Trunk->list_trunks();
 			$("#panel-trunk-addnew-password").fadeIn();
 		}
 	}
+
+	function trunk_register_status(){
+		if(navigator.userAgent.indexOf("Safari") > 0){$.ajaxSetup({async: false});}
+		$.post("/trunks/register-status.php", { },
+			function(data){
+		//		alert(data);
+				var results = new Array();
+				try{ results = JSON.parse(data); }catch(ex){ results['status'] = ex; }
+				// do stuff here
+				if(results['status'] == "OK"){
+					for (var i = 0; i < results['data'].length; i++) {
+						$("#button-reg-status-"+results['data'][i]['id']).html(results['data'][i]['status']);
+						$("#button-reg-status-"+results['data'][i]['id']).removeClass( "btn-success btn-warning" ).addClass( results['data'][i]['btn-class'] );;
+					};
+
+
+
+					/* 
+					{
+					"status":"OK",
+					"data":[
+							{"id":"40","status":"Registered","btn-class":"btn-success"},
+							{"id":"42","status":"Not Registered","btn-class":"btn-warning"},
+							{"id":"45","status":"Not Registered","btn-class":"btn-warning"}
+						]
+					}
+					*/
+				}else{
+					alert(data);
+				}
+
+				setTimeout(function(){ trunk_register_status(); }, 1000);
+		});
+	}
+
+	function run(){
+		trunk_register_status();
+	}
 	</script>
 
 	</head>
-	<body>
+	<body onload="run();">
 		<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/top-menu.php");?>
 
 		<div class="container">
@@ -196,59 +233,49 @@ $trunks = $Trunk->list_trunks();
 			$j = count($trunks);
 			for($i=0;$i<$j;$i++) { 
 				echo $x==0 ? '<div class="row">'."\n" : "";
-				echo '<div class="col-lg-4">'."\n";
-
-				echo '<form method="post" action="add-new.php">'."\n";
-
-				echo '<div class="panel panel-default">'."\n";
-				echo '<div class="panel-heading">'."\n";
-				echo '<h3 class="panel-title">Trunk: '.$trunks[$i]['name'].'</h3>'."\n";
-				echo '</div>'."\n";
-				echo '<div class="panel-body">'."\n";
-
-
-
-				echo '<p>Description: <a href="#" id="description-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Description">'.$trunks[$i]['description'].'</a></p>'."\n";
-				echo '<p>Auth Type: '.ucwords($trunks[$i]['auth_type']).'</p>';
 				$toggleCheckedStatus = $trunks[$i]['active'] == "yes" ? " checked" : "";
-				echo '<p>Active Status: <input type="checkbox" id="toggle-active-'.$trunks[$i]['id'].'" data-toggle="toggle" data-onstyle="success" data-size="mini" data-on="Active" data-off="Inactive" '.$toggleCheckedStatus.'></p>';
-				
-				echo '<span id="">';
-				echo '<hr>';
-					echo '<p><em>Not editable when trunk is active.</em></p>';
-					echo '<p>Host Address: <a href="#" id="host_address-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="SIP Provider URL">'.$trunks[$i]['host_address'].'</a></p>'."\n";
-					echo '<p>Auth Name: <a href="#" id="username-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Auth Username">'.$trunks[$i]['username'].'</a></p>'."\n";
-					echo '<p>Password: <a href="#" id="password-'.$trunks[$i]['id'].'" data-type="text" data-pk="'.$trunks[$i]['id'].'" data-url="update.php" data-title="Password">'.$trunks[$i]['password'].'</a></p>'."\n";
+			?>
+				<div class="col-lg-4">
 
-				//  echo "\t\t\t\t".'<p>Bar International Calls: <a href="#" id="bar_int-'.$trunks[$i]['name'].'" data-type="select" data-pk="'.$trunks[$i]['name'].'" data-url="update.php" data-title="Bar International Calls">'.$trunks[$i]['bar_int'].'</a></p>'."\n";
-				//         echo '<p>Bar International Calls: <a href="#" id="bar_int-'.$trunks[$i]['name'].'" data-type="select" data-pk="'.$trunks[$i]['name'].'" data-url="update.php" data-title="Bar International Calls"></a></p>'."\n";
-				//         echo '<p>Bar Mobile Calls: <a href="#" id="bar_mobile-'.$trunks[$i]['name'].'" data-type="select" data-pk="'.$trunks[$i]['name'].'" data-url="update.php" data-title="Bar Mobile Calls"></a></p>'."\n";
-				//         echo '<p>Bar Fixed Calls: <a href="#" id="bar_fixed-'.$trunks[$i]['name'].'" data-type="select" data-pk="'.$trunks[$i]['name'].'" data-url="update.php" data-title="Bar Fixed Calls"></a></p>'."\n";
-				//         echo '<p>Bar 13/1300 Calls: <a href="#" id="bar_13-'.$trunks[$i]['name'].'" data-type="select" data-pk="'.$trunks[$i]['name'].'" data-url="update.php" data-title="Bar 13/1300 Calls"></a></p>'."\n";
+					<form method="post" action="add-new.php">
 
-				echo '<hr>';
-				echo '</span>';
+					<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Trunk: <?php echo $trunks[$i]['name'];?> <button id="button-reg-status-<?php echo $trunks[$i]['id'];?>" class="btn btn-xs btn-default pull-right">Checking..</button></h3>
+					</div>
+					<div class="panel-body">
 
-				echo '<a class="btn btn-sm btn-danger" data-toggle="confirmation" data-title="Really, delete this trunk?" data-href="delete.php?id='.$trunks[$i]['id'].'" data-original-title="" title="">Delete</a>'."\n";
+						<p>Description: <a href="#" id="description-<?php echo $trunks[$i]['id'];?>" data-type="text" data-pk="<?php echo $trunks[$i]['id'];?>" data-url="update.php" data-title="Description"><?php echo $trunks[$i]['description'];?></a></p>
+						<p>Auth Type: <?php echo ucwords($trunks[$i]['auth_type']);?></p>
+						<p>Active Status: <input type="checkbox" id="toggle-active-<?php echo $trunks[$i]['id'];?>" data-toggle="toggle" data-onstyle="success" data-size="mini" data-on="Active" data-off="Inactive" <?php echo $toggleCheckedStatus;?>></p>
+						
+						<span id="">
+						<hr>
+							<p><em>Not editable when trunk is active.</em></p>
+							<p>Host Address: <a href="#" id="host_address-<?php echo $trunks[$i]['id'];?>" data-type="text" data-pk="<?php echo $trunks[$i]['id'];?>" data-url="update.php" data-title="SIP Provider URL"><?php echo $trunks[$i]['host_address'];?></a></p>
+							<p>Auth Name: <a href="#" id="username-<?php echo $trunks[$i]['id'];?>" data-type="text" data-pk="<?php echo $trunks[$i]['id'];?>" data-url="update.php" data-title="Auth Username"><?php echo $trunks[$i]['username'];?></a></p>
+							<p>Password: <a href="#" id="password-<?php echo $trunks[$i]['id'];?>" data-type="text" data-pk="<?php echo $trunks[$i]['id'];?>" data-url="update.php" data-title="Password"><?php echo $trunks[$i]['password'];?></a></p>
 
-				echo '</div>'."\n";
-				echo '</div>'."\n";
+						<hr>
+						</span>
+
+						<a class="btn btn-sm btn-danger" data-toggle="confirmation" data-title="Really, delete this trunk?" data-href="delete.php?id=<?php echo $trunks[$i]['id'];?>" data-original-title="" title="">Delete</a>
+
+					</div>
+					</div>
 
 
 
-				echo "\t\t".'</div>'."\n";
+				</div>
+			
+			<?php
 				echo $x==2 || $i == $j-1 ? "\t".'</div>'."\n" : "";
 				$x++;
 				$x=$x==3?0:$x;
 			}
 			?>
 
-
-
-
-
-		</div>
-
+			</div>
 
 	</body>
 </html>
