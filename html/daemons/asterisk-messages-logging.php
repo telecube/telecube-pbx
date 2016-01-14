@@ -14,14 +14,11 @@ while (true) {
 	$res = $Db->pdo_query($q, array(), $dbPDO);
 	$lasthash = isset($res[0]['log_hash']) ? $res[0]['log_hash'] : "nohash";
 
-	echo $lasthash."\n";
-
 	$nLines = 100;
 
 	$file = escapeshellarg("/var/log/asterisk/messages"); // for the security concious (should be everyone!)
 	$log = `tail -n $nLines $file`;
 	$log = explode("\n", trim($log));
-	//print_r($log);
 
 	$next_line_process = 0;
 
@@ -47,8 +44,6 @@ while (true) {
 
 		$line 		= $log[$i];
 		$linehash 	= md5($line);
-		echo $line."\n";
-		echo $linehash."\n";
 
 		// if we already processed a duplicate line
 		if($linehash == $lasthashprocessed) continue;
