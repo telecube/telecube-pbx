@@ -168,7 +168,7 @@ $QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips
 $QUERY "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '150c653456ae3f291bceef18a38b49f331e5d7dd');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '16');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '17');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '18');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_next_check','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_wait_count','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('pbx_default_timezone','Australia/Melbourne');"
@@ -531,10 +531,11 @@ $QUERY "insert into telecube.preferences (name, value) values ('pbx_host_ip','$A
 echo "[general]" > /etc/asterisk/sip.conf
 echo "context=public" >> /etc/asterisk/sip.conf
 echo "allowoverlap=no" >> /etc/asterisk/sip.conf
-echo "udpbindaddr=$ASTERISK_IP" >> /etc/asterisk/sip.conf
-echo "tcpenable=no" >> /etc/asterisk/sip.conf
-echo "tcpbindaddr=0.0.0.0" >> /etc/asterisk/sip.conf
-echo "transport=udp" >> /etc/asterisk/sip.conf
+
+echo "" >> /etc/asterisk/sip.conf
+echo "#include \"sip-network.conf\"" >> /etc/asterisk/sip.conf
+echo "" >> /etc/asterisk/sip.conf
+
 echo "realm=telecube.com.au" >> /etc/asterisk/sip.conf
 echo "srvlookup=yes" >> /etc/asterisk/sip.conf
 echo "maxexpiry=240" >> /etc/asterisk/sip.conf
@@ -558,6 +559,12 @@ echo '#include "sip-register.conf"' >> /etc/asterisk/sip.conf
 echo "" >> /etc/asterisk/sip.conf
 echo '#include "sip-trunks.conf"' >> /etc/asterisk/sip.conf
 echo "" >> /etc/asterisk/sip.conf
+
+echo "; variable network stuff" > /etc/asterisk/sip-network.conf
+echo "udpbindaddr=$ASTERISK_IP" >> /etc/asterisk/sip-network.conf
+echo "tcpenable=no" >> /etc/asterisk/sip-network.conf
+echo "tcpbindaddr=0.0.0.0" >> /etc/asterisk/sip-network.conf
+echo "transport=udp" >> /etc/asterisk/sip-network.conf
 
 echo "; extra config options" > /etc/asterisk/sip-conf.conf
 echo "nat=force_rport,comedia" >> /etc/asterisk/sip-conf.conf
@@ -675,6 +682,7 @@ echo "" >> /etc/asterisk/modules.conf
 /bin/chmod 0666 /etc/asterisk/sip-register.conf
 /bin/chmod 0666 /etc/asterisk/sip-trunks.conf
 /bin/chmod 0666 /etc/asterisk/modules.conf
+/bin/chmod 0666 /etc/asterisk/sip-network.conf
 
 /bin/chown asterisk:asterisk /etc/asterisk/sip.conf
 /bin/chown asterisk:asterisk /etc/asterisk/extensions.conf
@@ -682,6 +690,7 @@ echo "" >> /etc/asterisk/modules.conf
 /bin/chown asterisk:asterisk /etc/asterisk/extconfig.conf
 /bin/chown asterisk:asterisk /etc/asterisk/blf.conf
 /bin/chown asterisk:asterisk /etc/asterisk/sip-conf.conf
+/bin/chown asterisk:asterisk /etc/asterisk/sip-network.conf
 /bin/chown asterisk:asterisk /etc/asterisk/sip-register.conf
 /bin/chown asterisk:asterisk /etc/asterisk/sip-trunks.conf
 /bin/chown asterisk:asterisk /etc/asterisk/modules.conf
