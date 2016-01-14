@@ -237,8 +237,6 @@ $trunks = $Trunk->list_trunks();
 			?>
 				<div class="col-lg-4">
 
-					<form method="post" action="add-new.php">
-
 					<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title">Trunk: <?php echo $trunks[$i]['name'];?> <button id="button-reg-status-<?php echo $trunks[$i]['id'];?>" class="btn btn-xs btn-default pull-right">Checking..</button></h3>
