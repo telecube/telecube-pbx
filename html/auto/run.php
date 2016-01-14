@@ -37,6 +37,23 @@ if(!$running){
 }
 /*- -*/
 
+/*- check the asterisk logging daemon is running -*/
+$running = false;
+$ps = exec("ps axw | /bin/egrep daemons/asterisk-messages-logging.php", $o, $r);
+$j = count($o);
+for($i=0;$i<$j;$i++) { 
+	if(strpos($o[$i], "egrep") !== false){
+		continue;
+	}
+	if(strpos($o[$i], "daemons/asterisk-messages-logging.php") !== false){
+		$running = true;
+	}
+}
+if(!$running){
+	exec("/usr/bin/php /var/www/html/daemons/asterisk-messages-logging.php >/dev/null &");
+}
+/*-  -*/
+
 
 
 
