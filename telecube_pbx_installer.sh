@@ -167,8 +167,8 @@ $QUERY "insert into telecube.preferences (name, value) values ('fw_https_ports',
 $QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[\"103.193.166.0/23\"]');"
 $QUERY "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '2435d30134dc4541d002fb18ec68ce29bbea2f0d');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '14');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '15');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '15');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '17');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_next_check','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_wait_count','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('pbx_default_timezone','Australia/Melbourne');"
@@ -420,6 +420,16 @@ $QUERY "CREATE TABLE IF NOT EXISTS telecube.ami_event_logs (
 	PRIMARY KEY  (id)
 );"
 
+$QUERY "CREATE TABLE IF NOT EXISTS telecube.asterisk_messages_logs (
+	id int(10) unsigned NOT NULL auto_increment,
+	datetime datetime NOT NULL,
+	log_datetime datetime NOT NULL,
+	log_type varchar(8) NOT NULL,
+	log_hash varchar(32) NOT NULL,
+	log_text text NOT NULL,
+	log_raw_text text NOT NULL,
+	PRIMARY KEY  (id)
+);"
 
 # set sudoers permissions
 echo "# Telecube PBX Sudoers permissions" > /etc/sudoers.d/telecube-sudo
@@ -478,7 +488,7 @@ echo "" >> /etc/nginx/sites-available/default
 echo "        # server name" >> /etc/nginx/sites-available/default
 echo "        server_name _;" >> /etc/nginx/sites-available/default
 echo "" >> /etc/nginx/sites-available/default
-echo "        	location ~ /(auto|classes|includes) {" >> /etc/nginx/sites-available/default
+echo "        	location ~ /(auto|classes|daemons|includes) {" >> /etc/nginx/sites-available/default
 echo "        		deny all;" >> /etc/nginx/sites-available/default
 echo "        	}" >> /etc/nginx/sites-available/default
 echo "" >> /etc/nginx/sites-available/default
