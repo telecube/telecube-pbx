@@ -12,11 +12,15 @@ class Trunk{
 		return $trunks;
 	}
 
-	function is_active($id){
+	function is_active($id, $bool=false){
 		global $Db, $dbPDO;
 		$q = "select active from trunks where id = ?;";
 		$trunk = $Db->query($q,array($id),$dbPDO);
-		return empty($trunk[0]['active']) ? "no" : $trunk[0]['active'];
+		if($bool){
+			return empty($trunk[0]['active']) || $trunk[0]['active'] == "no" ? false : true;
+		}else{
+			return empty($trunk[0]['active']) ? "no" : $trunk[0]['active'];
+		}
 	}
 
 	function is_registered($id){

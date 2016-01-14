@@ -31,16 +31,17 @@ for($i=0;$i<$j;$i++) {
 
 			<?php
 			$j = count($sip_devices);
-			for($i=0;$i<$j;$i++) { 
-				echo '$("#label-'.$sip_devices[$i]['name'].'").editable();'."\n";
-				echo '$("#secret-'.$sip_devices[$i]['name'].'").editable();'."\n";
+			for($i=0;$i<$j;$i++) { ?>
+				$("#label-<?php echo $sip_devices[$i]['name'];?>").editable();
+				$("#secret-<?php echo $sip_devices[$i]['name'];?>").editable();
 
-			    echo '$( "#ext_trunk_list_'.$sip_devices[$i]['name'].'" ).sortable({ cursor: "crosshair", update: function(){ getList('.$sip_devices[$i]['name'].'); } });';
-			    echo '$( "#ext_trunk_list_'.$sip_devices[$i]['name'].'" ).disableSelection();';
+			    $( "#ext_trunk_list_<?php echo $sip_devices[$i]['name'];?>" ).sortable({ 
+			    		cursor: "crosshair", 
+			    		update: function(){ getList(<?php echo $sip_devices[$i]['name'];?>); } 
+			    });
+			    $( "#ext_trunk_list_<?php echo $sip_devices[$i]['name'];?>" ).disableSelection();
 
-//			    $ext_routing = 
-			//	$trunks = json_decode($Ext->get_routing($sip_devices[$i]['name']),true);
-			   // $trunks = $orig_trunks;
+				<?php
 				$get_routing 	= $Ext->get_routing($sip_devices[$i]['name']);
 				$trunks 		= $get_routing !== false ? $get_routing : $orig_trunks;
 
@@ -49,24 +50,23 @@ for($i=0;$i<$j;$i++) {
 					if(!isset($trunks[$ii]['allowed'])){
 						$trunks[$ii]['allowed'] = "[]";
 					}
-					//\''.str_replace(array("No Calls","","null",null), '["fixed"]', $trunks[$ii]['allowed']).'\'"
-					echo '$(function(){'."\n";
-					echo '    $("#ext_allowed_calltypes_'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'").editable({'."\n";
-					echo '/* '.json_encode($trunks[$ii]).' */'."\n";
 					$initValue = json_encode($trunks[$ii]['allowed']);
-					echo '        value: \''.$initValue.'\', '."\n";   
-					echo '        emptytext: "No Calls", '."\n";   
-					echo '        source: ['."\n";
-					echo '              {value: "all", text: "All Call Types"},'."\n";
-					echo '              {value: "fixed", text: "Fixed Lines"},'."\n";
-					echo '              {value: "mobile", text: "Mobiles"},'."\n";
-					echo '              {value: "1300", text: "1300 Numbers"},'."\n";
-					echo '              {value: "international", text: "International"}'."\n";
-					echo '           ]'."\n";
-					echo '    });'."\n";
-					echo '});'."\n";
+				?>
+					$(function(){
+					    $("#ext_allowed_calltypes_<?php echo $sip_devices[$i]['name'].'-'.$trunks[$ii]['id'];?>").editable({
+					        value: '<?php echo $initValue;?>',  
+					        emptytext: "No Calls",  
+					        source: [
+					              {value: "all", text: "All Call Types"},
+					              {value: "fixed", text: "Fixed Lines"},
+					              {value: "mobile", text: "Mobiles"},
+					              {value: "1300", text: "1300 Numbers"},
+					              {value: "international", text: "International"}
+					           ]
+					    });
+					});
+			<?php
 				}
-
 			}
 			?>
 
@@ -87,6 +87,8 @@ for($i=0;$i<$j;$i++) {
 
 		function run(){
 			setExtensionRegisterStatus();
+			trunk_register_status();
+			trunk_active_status();
 		}
 
 		function setExtensionRegisterStatus(){
@@ -113,6 +115,46 @@ for($i=0;$i<$j;$i++) {
 				}
 			});				
 
+		}
+
+		function trunk_active_status(){
+			$.post("/extensions/trunk-active-status.php", { },
+				function(data){
+			//		alert(data);
+					var results = new Array();
+					try{ results = JSON.parse(data); }catch(ex){ results['status'] = ex; }
+					// do stuff here
+					if(results['status'] == "OK"){
+						for (var i = 0; i < results['data'].length; i++) {
+							$(".btn-tas-"+results['data'][i]['id']).html(results['data'][i]['status']);
+							$(".btn-tas-"+results['data'][i]['id']).removeClass( "btn-success btn-warning" ).addClass( results['data'][i]['btn-class'] );;
+						};
+					}else{
+						alert(data);
+					}
+
+					setTimeout(function(){ trunk_active_status(); }, 1000);
+			});
+		}
+
+		function trunk_register_status(){
+			$.post("/extensions/trunk-register-status.php", { },
+				function(data){
+			//		alert(data);
+					var results = new Array();
+					try{ results = JSON.parse(data); }catch(ex){ results['status'] = ex; }
+					// do stuff here
+					if(results['status'] == "OK"){
+						for (var i = 0; i < results['data'].length; i++) {
+							$(".btn-trs-"+results['data'][i]['id']).html(results['data'][i]['status']);
+							$(".btn-trs-"+results['data'][i]['id']).removeClass( "btn-success btn-warning" ).addClass( results['data'][i]['btn-class'] );;
+						};
+					}else{
+						alert(data);
+					}
+
+					setTimeout(function(){ trunk_register_status(); }, 1000);
+			});
 		}
 
 
@@ -215,73 +257,81 @@ for($i=0;$i<$j;$i++) {
 			$x=0;
 			$j = count($sip_devices);
 			for($i=0;$i<$j;$i++) { 
-				//$registered = $Asterisk->ext_status($sip_devices[$i]['name'], "expire") > 0 ? true : false;
 				$registered = $Ext->is_registered($sip_devices[$i]['name']);
-				
 				$get_routing 	= $Ext->get_routing($sip_devices[$i]['name']);
 				$trunks 		= $get_routing !== false ? $get_routing : $orig_trunks;
-
-				echo $x==0 ? '<div class="row">'."\n" : "";
-				echo '<div class="col-lg-4">'."\n";
-
-				echo '<div class="panel panel-default">'."\n";
-				echo '<div class="panel-heading">'."\n";
 				$regstatbtncolor = $registered ? "success" : "warning";
 				$regstatbtntext = $registered ? "Registered" : "Not Registered";
-				echo '<h3 class="panel-title">Ext: '.$sip_devices[$i]['name'].' <button type="button" id="btn-ext-register-status-'.$sip_devices[$i]['name'].'" class="btn btn-'.$regstatbtncolor.' btn-xs pull-right"><span id="span-ext-register-status-'.$sip_devices[$i]['name'].'">'.$regstatbtntext.'</span></button></h3>'."\n";
-				echo '</div>'."\n";
-				echo '<div class="panel-body">'."\n";
 
-				echo '<p>Label: <a href="#" id="label-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Label">'.$sip_devices[$i]['label'].'</a></p>'."\n";
-				echo '<p>Password: <a href="#" id="secret-'.$sip_devices[$i]['name'].'" data-type="text" data-pk="'.$sip_devices[$i]['name'].'" data-url="update.php" data-title="Password">'.$sip_devices[$i]['secret'].'</a></p>'."\n";
+				echo $x==0 ? '<div class="row">'."\n" : "";
+			?>
+				<div class="col-lg-4">
 
-				echo '<span id="">';
-					echo '<hr>';
-					echo "<p><small>Drag to sort the trunks and set the allowed call types.</small></p>";
-					echo '<table class="table table-striped">';
-					echo '<tbody id="ext_trunk_list_'.$sip_devices[$i]['name'].'">';
+				<div class="panel panel-default">
+				<div class="panel-heading">
+				<h3 class="panel-title">Ext: <?php echo $sip_devices[$i]['name'];?> <button type="button" id="btn-ext-register-status-<?php echo $sip_devices[$i]['name'];?>" class="btn btn-<?php echo $regstatbtncolor;?> btn-xs pull-right"><span id="span-ext-register-status-<?php echo $sip_devices[$i]['name'];?>"><?php echo $regstatbtntext;?></span></button></h3>
+				</div>
+				<div class="panel-body">
+
+				<p>Label: <a href="#" id="label-<?php echo $sip_devices[$i]['name'];?>" data-type="text" data-pk="<?php echo $sip_devices[$i]['name'];?>" data-url="update.php" data-title="Label"><?php echo $sip_devices[$i]['label'];?></a></p>
+				<p>Password: <a href="#" id="secret-<?php echo $sip_devices[$i]['name'];?>" data-type="text" data-pk="<?php echo $sip_devices[$i]['name'];?>" data-url="update.php" data-title="Password"><?php echo $sip_devices[$i]['secret'];?></a></p>
+
+				<span id="">
+					<hr>
+					<p><small>Drag to sort the trunks and set the allowed call types.</small></p>
+					<table class="table table-striped">
+					<tbody id="ext_trunk_list_<?php echo $sip_devices[$i]['name'];?>">
+					<?php
 					$jj = count($trunks);
 					for($ii=0;$ii<$jj;$ii++) { 
 						if(!empty($trunks[$ii]['id'])){
-							$trunkactivecolour = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "success" : "warning";
-							$trunkactivetooltip = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "Active" : "Inactive";
-							$trunkactivetext = $trunk_active_status[$trunks[$ii]['id']] == "yes" 
-								? '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' 
-								: '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
-							$trunkregisteredcolour = $trunk_register_status[$trunks[$ii]['id']] == "Registered" ? "success" : "warning";
-							$trunkregisteredtooltip = $trunk_register_status[$trunks[$ii]['id']] == "" ? "Unregistered" : $trunk_register_status[$trunks[$ii]['id']];
-							$trunkregisteredtext = $trunk_register_status[$trunks[$ii]['id']] == "" || $trunk_register_status[$trunks[$ii]['id']] == "Unregistered" 
-								? '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' 
-								: '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
+		//					$trunkactivecolour = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "success" : "warning";
+		//					$trunkactivetooltip = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "Active" : "Inactive";
+		//					$trunkactivetext = $trunk_active_status[$trunks[$ii]['id']] == "yes" 
+		//						? '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' 
+		//						: '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
+		//					$trunkregisteredcolour = $trunk_register_status[$trunks[$ii]['id']] == "Registered" ? "success" : "warning";
+		//					$trunkregisteredtooltip = $trunk_register_status[$trunks[$ii]['id']] == "" ? "Unregistered" : $trunk_register_status[$trunks[$ii]['id']];
+		//					$trunkregisteredtext = $trunk_register_status[$trunks[$ii]['id']] == "" || $trunk_register_status[$trunks[$ii]['id']] == "Unregistered" 
+		//						? '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' 
+		//						: '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
 							/* <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> */
 							/* <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> */
-							echo '<tr class="ui-state-default">';
-							echo '<td width="1%" style="display:none;">'.$trunks[$ii]['id'].'</td>';
-							echo '<td width="5%"><div class="btn-group-vertical btn-group-xs"><button type="button" title="'.$trunkactivetooltip.'" data-placement="right" id="btn-ext-register-status-'.$trunks[$ii]['id'].'" class="btn btn-'.$trunkactivecolour.' btn-xs pull-left">'.$trunkactivetext.'</button><button class="btn btn-xs btn-'.$trunkregisteredcolour.' pull-right"  title="'.$trunkregisteredtooltip.'" data-placement="right">'.$trunkregisteredtext.'</button></div></td>';
-							echo '<td><strong>'.$trunks[$ii]['name'].'</strong></td>';
-							echo '<td width="35%"><a class="pull-left" href="#" id="ext_allowed_calltypes_'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'" data-type="checklist" data-url="update-allowed-call-types.php" data-pk="'.$sip_devices[$i]['name'].'-'.$trunks[$ii]['id'].'" data-title="Select allowed call types"></a></td>';
-							echo '</tr>';
+					?>
+							<tr class="ui-state-default">
+							<td width="1%" style="display:none;"><?php echo $trunks[$ii]['id'];?></td>
+							<td width="5%">
+								<div class="btn-group-vertical btn-group-xs">
+									<button class="btn btn-default btn-xs btn-tas-<?php echo $trunks[$ii]['id'];?> pull-left" title="<?php echo $trunkactivetooltip;?>" data-placement="right">x</button>
+									<button class="btn btn-xs btn-default pull-right btn-trs-<?php echo $trunks[$ii]['id'];?>" title="<?php echo $trunkregisteredtooltip;?>" data-placement="right">x</button>
+								</div>
+							</td>
+							<td><strong><?php echo $trunks[$ii]['name'];?></strong></td>
+							<td width="35%"><a class="pull-left" href="#" id="ext_allowed_calltypes_<?php echo $sip_devices[$i]['name'].'-'.$trunks[$ii]['id'];?>" data-type="checklist" data-url="update-allowed-call-types.php" data-pk="<?php echo $sip_devices[$i]['name'].'-'.$trunks[$ii]['id'];?>" data-title="Select allowed call types"></a></td>
+							</tr>
+					<?php	
 						}
 					}
-					echo '</tbody>';
-					echo '</table>';
+					?>
+					</tbody>
+					</table>
 
 
-					echo '<hr>';
+					<hr>
 
-				echo '</span>';
+				</span>
 
-				echo '<a class="btn btn-sm btn-block btn-danger" data-toggle="confirmation" data-title="Really, delete this extension?" data-href="delete.php?ext='.$sip_devices[$i]['name'].'" data-original-title="" title="">Delete</a>'."\n";
+				<a class="btn btn-sm btn-block btn-danger" data-toggle="confirmation" data-title="Really, delete this extension?" data-href="delete.php?ext=<?php echo $sip_devices[$i]['name'];?>" data-original-title="" title="">Delete</a>
 
-				echo '</div>'."\n";
-				echo '</div>'."\n";
+				</div>
+				</div>
 
-				echo "\t\t".'</div>'."\n";
+				</div>
+			<?php
 				echo $x==2 || $i == $j-1 ? "\t".'</div>'."\n" : "";
 				$x++;
 				$x=$x==3?0:$x;
-			}
-			?>
+			}?>
 		</div>
 	</body>
 </html>
