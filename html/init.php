@@ -11,6 +11,7 @@ use Telecube\Curl;
 use Telecube\Db;
 use Telecube\Ext;
 use Telecube\Log;
+use Telecube\Server;
 use Telecube\Trunk;
 $Config = new Config;
 
@@ -44,6 +45,7 @@ $Curl 		= new Curl;
 $Db 		= new Db;
 $Ext 		= new Ext;
 $Log 		= new Log;
+$Server 	= new Server;
 $Trunk 		= new Trunk;
 
 date_default_timezone_set($Common->get_pref("pbx_default_timezone"));

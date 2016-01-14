@@ -4,9 +4,10 @@ $rq_uri = $_SERVER['REQUEST_URI'];
 $dashboard_active = $rq_uri == "/" ? 'class="active"' : "";
 $update_active = strpos($rq_uri, "/update/") !== false ? 'class="active"' : "";
 
-$server_settings_active = strpos($rq_uri, "/firewall/") !== false || strpos($rq_uri, "/preferences/") !== false ? ' active' : ""; 
+$server_settings_active = strpos($rq_uri, "/firewall/") !== false || strpos($rq_uri, "/preferences/") !== false || strpos($rq_uri, "/manage-services/") !== false ? ' active' : ""; 
 $firewall_active = strpos($rq_uri, "/firewall/") !== false ? 'class="active"' : ""; 
 $preferences_active = strpos($rq_uri, "/preferences/") !== false ? 'class="active"' : ""; 
+$manage_services_active = strpos($rq_uri, "/manage-services/") !== false ? 'class="active"' : ""; 
 $debugging_active = strpos($rq_uri, "/debugging/") !== false ? 'class="active"' : ""; 
 
 $pbx_settings_active = strpos($rq_uri, "/extensions/") !== false 
@@ -52,6 +53,7 @@ $dids_active = strpos($rq_uri, "/dids/") !== false ? 'class="active"' : "";
 					<ul class="dropdown-menu">
 						<li <?php echo $firewall_active;?>><a href="/firewall/">Firewall</a></li>
 						<li <?php echo $preferences_active;?>><a href="/preferences/">Preferences</a></li>
+						<li <?php echo $manage_services_active;?>><a href="/manage-services/">Manage Services</a></li>
 						<li <?php echo $debugging_active;?>><a href="/debugging/">Debugging</a></li>
 					</ul>
 				</li>

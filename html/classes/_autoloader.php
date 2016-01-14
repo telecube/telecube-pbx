@@ -8,6 +8,7 @@ $mapping = array(
 	'Telecube\Db' 			=> __DIR__ . '/db.php',
 	'Telecube\Ext' 			=> __DIR__ . '/extension.php',
 	'Telecube\Log' 			=> __DIR__ . '/log.php',
+	'Telecube\Server' 		=> __DIR__ . '/server.php',
 	'Telecube\Trunk' 		=> __DIR__ . '/trunk.php',
 );
 
