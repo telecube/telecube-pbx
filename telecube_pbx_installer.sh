@@ -166,8 +166,8 @@ $QUERY "insert into telecube.preferences (name, value) values ('fw_rtp_ports', '
 $QUERY "insert into telecube.preferences (name, value) values ('fw_https_ports', '443');"
 $QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[\"103.193.166.0/23\"]');"
 $QUERY "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '2435d30134dc4541d002fb18ec68ce29bbea2f0d');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '15');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '150c653456ae3f291bceef18a38b49f331e5d7dd');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '16');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '17');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_next_check','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_wait_count','1');"
@@ -430,6 +430,7 @@ $QUERY "CREATE TABLE IF NOT EXISTS telecube.asterisk_messages_logs (
 	log_raw_text text NOT NULL,
 	PRIMARY KEY  (id)
 );"
+$QUERY "ALTER TABLE telecube.asterisk_messages_logs ADD KEY datetime (datetime);"
 
 # set sudoers permissions
 echo "# Telecube PBX Sudoers permissions" > /etc/sudoers.d/telecube-sudo
