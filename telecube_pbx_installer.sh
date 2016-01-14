@@ -168,7 +168,7 @@ $QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips
 $QUERY "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '150c653456ae3f291bceef18a38b49f331e5d7dd');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '16');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '18');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '19');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_next_check','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_wait_count','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('pbx_default_timezone','Australia/Melbourne');"
@@ -594,6 +594,8 @@ echo "; extra config options" > /etc/asterisk/sip-conf.conf
 echo "; SIP Registered Trunks" > /etc/asterisk/sip-register.conf
 echo "; SIP IP Authenticated Trunks" > /etc/asterisk/sip-trunks.conf
 
+echo "; BLF Config" > /etc/asterisk/blf.conf
+
 cp /etc/asterisk/extensions.conf /etc/asterisk/extensions.conf_BAK_$(date "+%Y-%m-%d-%H:%M:%S")
 
 echo ";" > /etc/asterisk/extensions.conf
@@ -694,6 +696,18 @@ echo "" >> /etc/asterisk/modules.conf
 /bin/echo "load => codec_speex.so" >> /etc/asterisk/modules.conf
 /bin/echo "load => codec_ulaw.so" >> /etc/asterisk/modules.conf
 
+# setup astman
+ami_pass=$(openssl rand -base64 16)
+
+echo "[telecube]" > /etc/asterisk/manager.d/telecube-pbx.conf
+echo "secret = $ami_pass" >> /etc/asterisk/manager.d/telecube-pbx.conf
+echo "deny=0.0.0.0/0.0.0.0" >> /etc/asterisk/manager.d/telecube-pbx.conf
+echo "permit=127.0.0.1/255.255.255.0" >> /etc/asterisk/manager.d/telecube-pbx.conf
+echo "read = system,call,log,verbose,command,agent,user,originate" >> /etc/asterisk/manager.d/telecube-pbx.conf
+echo "write = system,call,log,verbose,command,agent,user,originate" >> /etc/asterisk/manager.d/telecube-pbx.conf
+
+echo "$ami_pass" > /opt/ami_pass
+
 /bin/chmod 0666 /etc/asterisk/sip.conf
 /bin/chmod 0666 /etc/asterisk/extensions.conf
 /bin/chmod 0666 /etc/asterisk/res_config_mysql.conf
@@ -718,17 +732,6 @@ echo "" >> /etc/asterisk/modules.conf
 /bin/chown asterisk:asterisk /etc/asterisk/manager.d
 /bin/chown asterisk:asterisk /etc/asterisk/manager.d/telecube-pbx.conf
 
-# setup astman
-ami_pass=$(openssl rand -base64 16)
-
-echo "[telecube]" > /etc/asterisk/manager.d/telecube-pbx.conf
-echo "secret = $ami_pass" >> /etc/asterisk/manager.d/telecube-pbx.conf
-echo "deny=0.0.0.0/0.0.0.0" >> /etc/asterisk/manager.d/telecube-pbx.conf
-echo "permit=127.0.0.1/255.255.255.0" >> /etc/asterisk/manager.d/telecube-pbx.conf
-echo "read = system,call,log,verbose,command,agent,user,originate" >> /etc/asterisk/manager.d/telecube-pbx.conf
-echo "write = system,call,log,verbose,command,agent,user,originate" >> /etc/asterisk/manager.d/telecube-pbx.conf
-
-echo "$ami_pass" > /opt/ami_pass
 
 # we need to kill the event handler before restarting asterisk
 /usr/bin/pkill -f ami-scripts/event-handler.php
