@@ -292,8 +292,8 @@ for($i=0;$i<$j;$i++) {
 							<td width="1%" style="display:none;"><?php echo $trunks[$ii]['id'];?></td>
 							<td width="5%">
 								<div class="btn-group-vertical btn-group-xs">
-									<button class="btn btn-default btn-xs btn-tas-<?php echo $trunks[$ii]['id'];?> pull-left" title="dgdhdfgh" data-placement="right">x</button>
-									<button class="btn btn-xs btn-default pull-right btn-trs-<?php echo $trunks[$ii]['id'];?>" title="dfghdfgh" data-placement="right">x</button>
+									<button class="btn btn-default btn-xs btn-tas-<?php echo $trunks[$ii]['id'];?> pull-left" data-placement="right">x</button>
+									<button class="btn btn-xs btn-default pull-right btn-trs-<?php echo $trunks[$ii]['id'];?>" data-placement="right">x</button>
 								</div>
 							</td>
 							<td><strong><?php echo $trunks[$ii]['name'];?></strong></td>
