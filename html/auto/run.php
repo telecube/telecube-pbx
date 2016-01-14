@@ -54,7 +54,8 @@ if(!$running){
 }
 /*-  -*/
 
-
-
+/*- checking external ip on natted boxes -*/
+exec("/usr/bin/php ".__DIR__."/check-natted-external-ip.php > /dev/null &");
+/*- -*/
 
 ?>
