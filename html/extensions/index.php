@@ -128,6 +128,7 @@ for($i=0;$i<$j;$i++) {
 						for (var i = 0; i < results['data'].length; i++) {
 							$(".btn-tas-"+results['data'][i]['id']).html(results['data'][i]['status']);
 							$(".btn-tas-"+results['data'][i]['id']).removeClass( "btn-success btn-warning" ).addClass( results['data'][i]['btn-class'] );;
+							$(".btn-tas-"+results['data'][i]['id']).attr('data-original-title',results['data'][i]['tooltip-title']);
 						};
 					}else{
 						alert(data);
@@ -148,6 +149,7 @@ for($i=0;$i<$j;$i++) {
 						for (var i = 0; i < results['data'].length; i++) {
 							$(".btn-trs-"+results['data'][i]['id']).html(results['data'][i]['status']);
 							$(".btn-trs-"+results['data'][i]['id']).removeClass( "btn-success btn-warning" ).addClass( results['data'][i]['btn-class'] );;
+							$(".btn-trs-"+results['data'][i]['id']).attr('data-original-title',results['data'][i]['tooltip-title']);
 						};
 					}else{
 						alert(data);
@@ -285,25 +287,13 @@ for($i=0;$i<$j;$i++) {
 					$jj = count($trunks);
 					for($ii=0;$ii<$jj;$ii++) { 
 						if(!empty($trunks[$ii]['id'])){
-		//					$trunkactivecolour = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "success" : "warning";
-		//					$trunkactivetooltip = $trunk_active_status[$trunks[$ii]['id']] == "yes" ? "Active" : "Inactive";
-		//					$trunkactivetext = $trunk_active_status[$trunks[$ii]['id']] == "yes" 
-		//						? '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' 
-		//						: '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
-		//					$trunkregisteredcolour = $trunk_register_status[$trunks[$ii]['id']] == "Registered" ? "success" : "warning";
-		//					$trunkregisteredtooltip = $trunk_register_status[$trunks[$ii]['id']] == "" ? "Unregistered" : $trunk_register_status[$trunks[$ii]['id']];
-		//					$trunkregisteredtext = $trunk_register_status[$trunks[$ii]['id']] == "" || $trunk_register_status[$trunks[$ii]['id']] == "Unregistered" 
-		//						? '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' 
-		//						: '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
-							/* <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> */
-							/* <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> */
 					?>
 							<tr class="ui-state-default">
 							<td width="1%" style="display:none;"><?php echo $trunks[$ii]['id'];?></td>
 							<td width="5%">
 								<div class="btn-group-vertical btn-group-xs">
-									<button class="btn btn-default btn-xs btn-tas-<?php echo $trunks[$ii]['id'];?> pull-left" title="<?php echo $trunkactivetooltip;?>" data-placement="right">x</button>
-									<button class="btn btn-xs btn-default pull-right btn-trs-<?php echo $trunks[$ii]['id'];?>" title="<?php echo $trunkregisteredtooltip;?>" data-placement="right">x</button>
+									<button class="btn btn-default btn-xs btn-tas-<?php echo $trunks[$ii]['id'];?> pull-left" title="dgdhdfgh" data-placement="right">x</button>
+									<button class="btn btn-xs btn-default pull-right btn-trs-<?php echo $trunks[$ii]['id'];?>" title="dfghdfgh" data-placement="right">x</button>
 								</div>
 							</td>
 							<td><strong><?php echo $trunks[$ii]['name'];?></strong></td>
