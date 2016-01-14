@@ -1,12 +1,8 @@
 <?php
 require("../init.php");
 
-// get the current pid for the process if it's running
-$eventmon_str = "ami-scripts/event-handler.php";
-exec("ps aux | grep '$eventmon_str' | grep -v grep | awk '{ print $2 }' | head -1", $out);
-$pid = $out[0];
-
-if($out[0] > 0){
+// check if it's running
+if($Server->ami_eventmon_running()){
 	exec("sudo /usr/bin/pkill -f ami-scripts/event-handler.php");
 }else{
 	// start the service
@@ -16,8 +12,7 @@ if($out[0] > 0){
 }
 
 // check it was killed
-exec("ps aux | grep '$eventmon_str' | grep -v grep | awk '{ print $2 }' | head -1", $out1);
-if($out1[0] > 0){
+if($Server->ami_eventmon_running()){
 	// kill it properly
 	exec("sudo /usr/bin/kill -9 `ps -ef|grep ami-scripts/event-handler.php|grep -v grep|awk '{print $2}'`");
 }else{
@@ -28,8 +23,7 @@ if($out1[0] > 0){
 }
 
 // check it was killed
-exec("ps aux | grep '$eventmon_str' | grep -v grep | awk '{ print $2 }' | head -1", $out2);
-if($out2[0] > 0){
+if($Server->ami_eventmon_running()){
 	// redirect with an error
 	header("Location: /manage-services/?status=err&service=eventmon&msg=The service could not be restarted.");
 }else{
@@ -38,6 +32,5 @@ if($out2[0] > 0){
 	header("Location: /manage-services/?status=ok&service=eventmon&msg=The service was restarted successfully.");
 	exit;
 }
-
 
 ?>
