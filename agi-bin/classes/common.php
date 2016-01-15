@@ -36,6 +36,10 @@ class Common{
 		if(strlen($n) == 10 && substr($n, 0, 2) == "18"){
 			return "1800";
 		}
+		// call to a international number
+		if(strlen($n) >= 10 && substr($n, 0, 4) == "0011"){
+			return "international";
+		}
 
 		return "unknown";
 	}
