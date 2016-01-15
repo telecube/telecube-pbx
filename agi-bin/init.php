@@ -4,12 +4,14 @@ use Telecube\CubeAgi;
 use Telecube\Common;
 use Telecube\Config;
 use Telecube\Db;
+use Telecube\Exten;
 use Telecube\Trunk;
 
 $Agi 	= new CubeAgi;
 $Common = new Common;
 $Config = new Config;
 $Db 	= new Db;
+$Exten 	= new Exten;
 $Trunk 	= new Trunk;
 
 $calleridnum    = $Agi->request['agi_callerid'];

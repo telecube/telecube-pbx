@@ -26,7 +26,7 @@ class Common{
 		// call to a mobile number
 		$ac = array("04");
 		if(strlen($n) == 10 && in_array(substr($n, 0, 2), $ac)){
-			return "fixed";
+			return "mobile";
 		}
 		// call to a 13/1300 number
 		if((strlen($n) == 10 || strlen($n) == 6) && substr($n, 0, 2) == "13"){

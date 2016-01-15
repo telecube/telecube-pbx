@@ -10,7 +10,7 @@ $mapping = array(
 	'Telecube\Channel' 				=> __DIR__ . '/channel.php',
 	'Telecube\Db' 					=> __DIR__ . '/db.php',
 	'Telecube\Did' 					=> __DIR__ . '/did.php',
-	'Telecube\Exten' 				=> __DIR__ . '/exten.php',
+	'Telecube\Exten' 				=> __DIR__ . '/extension.php',
 	'Telecube\Trunk' 				=> __DIR__ . '/trunk.php',
 
 	'Telecube\Callforward' 			=> __DIR__ . '/callforward.php',

@@ -12,6 +12,11 @@ class Trunk{
 		return $trunk[0]['name'];
 	}
 
-
+	function get_active_status($id){
+		global $Db, $dbPDO;
+		$q = "select active from trunks where id = ?;";
+		$active = $Db->query($q, array($id), $dbPDO);
+		return $active[0]['active'];
+	}
 }
 ?>
