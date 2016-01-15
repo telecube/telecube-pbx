@@ -32,7 +32,7 @@ for($i=0;$i<$j;$i++) {
 	if($routing[$i]['status'] != "active") continue;
 
 	// check the allowed call types
-	if(in_array($callto_type, $routing[$i]['allowed'])){
+	if(in_array($callto_type, $routing[$i]['allowed']) || in_array("all", $routing[$i]['allowed'])){
 		
 		$Agi->dial($dnid."@".$routing[$i]['name'], 120, "SIP");
 		$dialstat = $Agi->get_variable("DIALSTATUS",true);

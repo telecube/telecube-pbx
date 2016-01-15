@@ -55,7 +55,7 @@ for($i=0;$i<$j;$i++) {
 					$(function(){
 					    $("#ext_allowed_calltypes_<?php echo $sip_devices[$i]['name'].'-'.$trunks[$ii]['id'];?>").editable({
 					        value: '<?php echo $initValue;?>',  
-					        emptytext: "No Calls",  
+					        emptytext: "Internal Only",  
 					        source: [
 					              {value: "all", text: "All Call Types"},
 					              {value: "fixed", text: "Fixed Lines"},
