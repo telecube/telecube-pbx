@@ -41,8 +41,11 @@ $dids_active = strpos($rq_uri, "/dids/") !== false ? 'class="active"' : "";
 						<li <?php echo $dids_active;?>><a href="/dids/">DIDs</a></li>
 						<li role="separator" class="divider"></li>
 						<li class="dropdown-header">PBX Features</li>
+						<li><a href="#">Line Hunt Group</a></li>
+						<li><a href="#">Ring Group (Queue)</a></li>
 						<li><a href="#">Auto Attendant (IVR)</a></li>
-						<li><a href="#">Queues (Ring Groups)</a></li>
+						<li><a href="#">Time Based Rules</a></li>
+						<li role="separator" class="divider"></li>
 						<li><a href="#">Music On Hold</a></li>
 						<li><a href="#">Busy Lamp Field</a></li>
 						<li><a href="#">Address Book</a></li>

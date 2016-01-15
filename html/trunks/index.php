@@ -11,6 +11,7 @@ $trunks = $Trunk->list_trunks();
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/title.php");?>
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/css.php");?>
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/includes/js.php");?>
+	<script type="text/javascript" src="functions.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -34,6 +35,26 @@ $trunks = $Trunk->list_trunks();
 				
 				$("#toggle-active-<?php echo $trunks[$i]['id'];?>").change(function() {trunk_toggle_active($(this),<?php echo $trunks[$i]['id'];?>);});
 			
+
+				$(function(){
+				    $("#def_inbound_type-<?php echo $trunks[$i]['id'];?>").editable({
+				        value: "<?php echo $Trunk->get_def_inbound_type($trunks[$i]['id']);?>",    
+				        source: list_types(),
+				        sourceCache : false,
+				        success: function(data){ location.reload(); }
+				    });
+				});
+
+				$(function(){
+				    //$('#def_inbound_id').editable('setValue', null).editable('option', 'pk', null);
+				    $('#def_inbound_id-<?php echo $trunks[$i]['id'];?>').editable({
+				        value: "<?php echo $Trunk->get_def_inbound_id($trunks[$i]['id']);?>", 
+					    sourceCache : false,
+				        source: "get-service-id-list.php?type=<?php echo $Trunk->get_def_inbound_type($trunks[$i]['id']);?>",		
+				    });
+				});
+
+
 			<?php } ?>
 
 
@@ -41,90 +62,25 @@ $trunks = $Trunk->list_trunks();
 
 
 
+
+
 		});
-
-
-		function trunk_toggle_active(obj, trunk_id){
-		//	alert(obj.prop('checked'));
-			var value = obj.prop('checked') ? "yes" : "no";
-			$.post("/trunks/update.php", { pk: trunk_id, name: "active-"+trunk_id, value: value },
-				function(data){
-				//	alert(data);
-					var results = new Array();
-					try{ results = JSON.parse(data); }catch(ex){ results['status'] = ex; }
-					// do stuff here
-					if(results['status'] == "OK"){
-						
-						disable_active(trunk_id, results['value']);
-
-					}else{
-						alert(data);
-					}
+		
+		function listids(type){
+			//$('#def_inbound_id').editable('setValue', null).editable('option', 'pk', null);
+			$(function(){
+			    //$('#def_inbound_id').editable('setValue', null).editable('option', 'pk', null);
+			    $('#def_inbound_id').editable({
+			        value: "", 
+			        source: "get-service-id-list.php?type="+type+"&dt=" + (new Date).getTime(),		
+				    sourceCache : false,
+			    });
 			});
+
 		}
 
-		function disable_active(id, val){
-			if(val == "yes"){
-				$('#host_address-'+id).editable('option', 'disabled', true);
-				$('#username-'+id).editable('option', 'disabled', true);
-				$('#password-'+id).editable('option', 'disabled', true);
-			}else{
-				$('#host_address-'+id).editable('option', 'disabled', false);
-				$('#username-'+id).editable('option', 'disabled', false);
-				$('#password-'+id).editable('option', 'disabled', false);
-			}
-		}
-
-
-		function showAddNew(){
-			$("#panel-trunk-addnew").toggle(100);
-			$("#panel-trunk-addnew-info").toggle(100);
-			$("#trunk-add-err-alert").fadeOut(100);
-		}
-
-		function checkAuthType(type){
-			if(type == 'ip'){
-				$("#panel-trunk-addnew-password").fadeOut();
-			}else{
-				$("#panel-trunk-addnew-password").fadeIn();
-			}
-		}
-
-		function trunk_register_status(){
-			$.post("/trunks/register-status.php", { },
-				function(data){
-			//		alert(data);
-					var results = new Array();
-					try{ results = JSON.parse(data); }catch(ex){ results['status'] = ex; }
-					// do stuff here
-					if(results['status'] == "OK"){
-						for (var i = 0; i < results['data'].length; i++) {
-							$("#button-reg-status-"+results['data'][i]['id']).html(results['data'][i]['status']);
-							$("#button-reg-status-"+results['data'][i]['id']).removeClass( "btn-success btn-warning" ).addClass( results['data'][i]['btn-class'] );;
-						};
-
-
-
-						/* 
-						{
-						"status":"OK",
-						"data":[
-								{"id":"40","status":"Registered","btn-class":"btn-success"},
-								{"id":"42","status":"Not Registered","btn-class":"btn-warning"},
-								{"id":"45","status":"Not Registered","btn-class":"btn-warning"}
-							]
-						}
-						*/
-					}else{
-						alert(data);
-					}
-
-					setTimeout(function(){ trunk_register_status(); }, 1000);
-			});
-		}
-
-		function run(){
-			trunk_register_status();
+		function resetlist(type){
+			$('#def_inbound_id').editable('setValue', null).editable('option', 'pk', null);
 		}
 	</script>
 
@@ -254,9 +210,16 @@ $trunks = $Trunk->list_trunks();
 							<p>Password: <a href="#" id="password-<?php echo $trunks[$i]['id'];?>" data-type="text" data-pk="<?php echo $trunks[$i]['id'];?>" data-url="update.php" data-title="Password"><?php echo $trunks[$i]['password'];?></a></p>
 
 						<hr>
+
+						<h5>Default Inbound Routing</h5>
+						<p>Type: <a href="#" id="def_inbound_type-<?php echo $trunks[$i]['id'];?>" data-type="select" data-pk="<?php echo $trunks[$i]['id'];?>" data-url="set-def-inb-type.php" data-title="Select status"></a></p>
+						<p>Service ID: <a href="#" id="def_inbound_id-<?php echo $trunks[$i]['id'];?>" data-type="select" data-pk="<?php echo $trunks[$i]['id'];?>" data-url="set-def-inb-id.php" data-title="Select status"></a></p>
+
+
 						</span>
 
-						<a class="btn btn-sm btn-danger" data-toggle="confirmation" data-title="Really, delete this trunk?" data-href="delete.php?id=<?php echo $trunks[$i]['id'];?>" data-original-title="" title="">Delete</a>
+						<hr>
+						<a class="btn btn-sm btn-danger btn-block" data-toggle="confirmation" data-title="Really, delete this trunk?" data-href="delete.php?id=<?php echo $trunks[$i]['id'];?>" data-original-title="" title="">Delete Trunk</a>
 
 					</div>
 					</div>

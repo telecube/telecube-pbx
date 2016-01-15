@@ -30,5 +30,18 @@ class Trunk{
 		return $trunk[0]['register_status'] == "Registered" ? true : false;
 	}
 
+	function get_def_inbound_type($id){
+		global $Db, $dbPDO;
+		$q = "select def_inbound_type from trunks where id = ?;";
+		$trunk = $Db->query($q,array($id),$dbPDO);
+		return $trunk[0]['def_inbound_type'];
+	}
+
+	function get_def_inbound_id($id){
+		global $Db, $dbPDO;
+		$q = "select def_inbound_id from trunks where id = ?;";
+		$trunk = $Db->query($q,array($id),$dbPDO);
+		return $trunk[0]['def_inbound_id'];
+	}
 }
 ?>
