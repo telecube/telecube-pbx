@@ -112,7 +112,7 @@ $trunks = $Trunk->list_trunks();
 								<div class="form-group">
 									<label for="trunk_name" class="col-sm-3 control-label">Trunk Name</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control" id="trunk_name" name="trunk_name" placeholder="Trunk Name">
+										<input type="text" class="form-control" id="trunk_name" name="trunk_name" maxlength="20" placeholder="Trunk Name">
 									</div>
 								</div>
 

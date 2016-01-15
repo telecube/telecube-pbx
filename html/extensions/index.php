@@ -297,7 +297,7 @@ for($i=0;$i<$j;$i++) {
 								</div>
 							</td>
 							<td><strong><?php echo $trunks[$ii]['name'];?></strong></td>
-							<td width="35%"><a class="pull-left" href="#" id="ext_allowed_calltypes_<?php echo $sip_devices[$i]['name'].'-'.$trunks[$ii]['id'];?>" data-type="checklist" data-url="update-allowed-call-types.php" data-pk="<?php echo $sip_devices[$i]['name'].'-'.$trunks[$ii]['id'];?>" data-title="Select allowed call types"></a></td>
+							<td width="40%"><a class="pull-left" href="#" id="ext_allowed_calltypes_<?php echo $sip_devices[$i]['name'].'-'.$trunks[$ii]['id'];?>" data-type="checklist" data-url="update-allowed-call-types.php" data-pk="<?php echo $sip_devices[$i]['name'].'-'.$trunks[$ii]['id'];?>" data-title="Select allowed call types"></a></td>
 							</tr>
 					<?php	
 						}
