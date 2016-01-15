@@ -18,5 +18,12 @@ class Trunk{
 		$active = $Db->query($q, array($id), $dbPDO);
 		return $active[0]['active'];
 	}
+
+	function get_routing($id){
+		global $Db, $dbPDO;
+		$q = "select def_inbound_type as type, def_inbound_id as id from trunks where id = ?;";
+		$route = $Db->query($q, array($id), $dbPDO);
+		return $route[0];
+	}
 }
 ?>
