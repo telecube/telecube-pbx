@@ -4,18 +4,21 @@ $rq_uri = $_SERVER['REQUEST_URI'];
 $dashboard_active = $rq_uri == "/" ? 'class="active"' : "";
 $update_active = strpos($rq_uri, "/update/") !== false ? 'class="active"' : "";
 
-$server_settings_active = strpos($rq_uri, "/firewall/") !== false || strpos($rq_uri, "/preferences/") !== false || strpos($rq_uri, "/manage-services/") !== false ? ' active' : ""; 
-$firewall_active = strpos($rq_uri, "/firewall/") !== false ? 'class="active"' : ""; 
-$preferences_active = strpos($rq_uri, "/preferences/") !== false ? 'class="active"' : ""; 
-$manage_services_active = strpos($rq_uri, "/manage-services/") !== false ? 'class="active"' : ""; 
-$debugging_active = strpos($rq_uri, "/debugging/") !== false ? 'class="active"' : ""; 
+/* Server Settings Nav */
+$server_settings_active_arr = array("/firewall/", "/preferences/", "/manage-services/", "/night-lock/");
+$server_settings_active 	= in_array($rq_uri, $server_settings_active_arr) !== false ? ' active' : ""; 
+$firewall_active 			= strpos($rq_uri, "/firewall/") !== false ? 'class="active"' : ""; 
+$preferences_active 		= strpos($rq_uri, "/preferences/") !== false ? 'class="active"' : ""; 
+$manage_services_active 	= strpos($rq_uri, "/manage-services/") !== false ? 'class="active"' : ""; 
+$debugging_active 			= strpos($rq_uri, "/debugging/") !== false ? 'class="active"' : ""; 
+$nightlock_active 			= strpos($rq_uri, "/night-lock/") !== false ? 'class="active"' : ""; 
 
-$pbx_settings_active = strpos($rq_uri, "/extensions/") !== false 
-	|| strpos($rq_uri, "/trunks/") !== false ? ' active' : ""
-	|| strpos($rq_uri, "/dids/") !== false ? ' active' : ""; 
-$extensions_active = strpos($rq_uri, "/extensions/") !== false ? 'class="active"' : ""; 
-$trunks_active = strpos($rq_uri, "/trunks/") !== false ? 'class="active"' : ""; 
-$dids_active = strpos($rq_uri, "/dids/") !== false ? 'class="active"' : ""; 
+/* PBX Settings Nav */
+$pbx_settings_active_arr 	= array("/extensions/", "/trunks/", "/dids/");
+$pbx_settings_active 		= in_array($rq_uri, $pbx_settings_active_arr) !== false ? ' active' : ""; 
+$extensions_active 			= strpos($rq_uri, "/extensions/") !== false ? 'class="active"' : ""; 
+$trunks_active 				= strpos($rq_uri, "/trunks/") !== false ? 'class="active"' : ""; 
+$dids_active 				= strpos($rq_uri, "/dids/") !== false ? 'class="active"' : ""; 
 
 
 ?>
@@ -57,6 +60,7 @@ $dids_active = strpos($rq_uri, "/dids/") !== false ? 'class="active"' : "";
 						<li <?php echo $firewall_active;?>><a href="/firewall/">Firewall</a></li>
 						<li <?php echo $preferences_active;?>><a href="/preferences/">Preferences</a></li>
 						<li <?php echo $manage_services_active;?>><a href="/manage-services/">Manage Services</a></li>
+						<li <?php echo $nightlock_active;?>><a href="/night-lock/">Night Lock</a></li>
 						<li <?php echo $debugging_active;?>><a href="/debugging/">Debugging</a></li>
 					</ul>
 				</li>
