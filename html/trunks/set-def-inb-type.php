@@ -8,9 +8,13 @@ require("../init.php");
 $id 	= $_POST["pk"];
 $value 	= $_POST["value"];
 
-
-$q = "update trunks set def_inbound_type = ? where id = ?;";
-$res = $Db->pdo_query($q, array($value, $id), $dbPDO);
+if(empty($value)){
+	$q = "update trunks set def_inbound_type = ?, def_inbound_id = ? where id = ?;";
+	$res = $Db->pdo_query($q, array($value, "", $id), $dbPDO);
+}else{
+	$q = "update trunks set def_inbound_type = ? where id = ?;";
+	$res = $Db->pdo_query($q, array($value, $id), $dbPDO);
+}
 
 //print_r( $res );
 

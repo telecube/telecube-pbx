@@ -2,7 +2,7 @@
 require("../init.php");
 
 
-if($_GET["type"] == "extension"){
+if(isset($_GET["type"]) && $_GET["type"] == "extension"){
 //	$q = "update trunks set def_inbound_type = ? where id = ?;";
 //	$res = $Db->pdo_query($q, array($value, $id), $dbPDO);
 
@@ -20,7 +20,7 @@ if($_GET["type"] == "extension"){
 //			array("value"=>"ext3", "text"=>"Ext 3"),
 //			array("value"=>"ext4", "text"=>"Ext 4"),
 //		));
-}elseif($_GET["type"] == "timebased"){
+}elseif(isset($_GET["type"]) && $_GET["type"] == "timebased"){
 	echo json_encode(array(
 			array("value"=>"", "text"=>"None"),
 			array("value"=>"time1", "text"=>"Time 1"),

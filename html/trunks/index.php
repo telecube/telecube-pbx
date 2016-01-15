@@ -212,8 +212,8 @@ $trunks = $Trunk->list_trunks();
 						<hr>
 
 						<h5>Default Inbound Routing</h5>
-						<p>Type: <a href="#" id="def_inbound_type-<?php echo $trunks[$i]['id'];?>" data-type="select" data-pk="<?php echo $trunks[$i]['id'];?>" data-url="set-def-inb-type.php" data-title="Select status"></a></p>
-						<p>Service ID: <a href="#" id="def_inbound_id-<?php echo $trunks[$i]['id'];?>" data-type="select" data-pk="<?php echo $trunks[$i]['id'];?>" data-url="set-def-inb-id.php" data-title="Select status"></a></p>
+						<p>Type: <a href="#" id="def_inbound_type-<?php echo $trunks[$i]['id'];?>" data-type="select" data-pk="<?php echo $trunks[$i]['id'];?>" data-url="set-def-inb-type.php" data-title="Select Type"></a></p>
+						<p>Service ID: <a href="#" id="def_inbound_id-<?php echo $trunks[$i]['id'];?>" data-type="select" data-pk="<?php echo $trunks[$i]['id'];?>" data-url="set-def-inb-id.php" data-title="Select Service"></a></p>
 
 
 						</span>
