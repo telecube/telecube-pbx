@@ -3,7 +3,7 @@ require("../init.php");
 
 $name = $_POST["pk"];
 $field = str_replace("-".$_POST["pk"], "", $_POST["name"]);
-$value = $_POST["value"];
+$value = trim($_POST["value"]);
 
 if($field == "bar_int" || $field == "bar_13" || $field == "bar_fixed" || $field == "bar_mobile"){
 	$value == 0 ? $value = "n" : $value = "y";

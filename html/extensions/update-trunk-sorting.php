@@ -11,21 +11,21 @@ $y = 0;
 $j = count($list);
 for($i=0;$i<$j;$i++) { 
 	if($x == 3){
-		$new_routing[$y]['allowed'] = $list[$i];
+		$new_routing[$y]['allowed'] = trim($list[$i]);
 		$x=0;
 		$y++;
 		continue;
 	}
 	if($x == 2){
-		$new_routing[$y]['name'] = $list[$i];
+		$new_routing[$y]['name'] = trim($list[$i]);
 		$x++;
 	}
 	if($x == 1){
-		$new_routing[$y]['status'] = $list[$i];
+		$new_routing[$y]['status'] = trim($list[$i]);
 		$x++;
 	}
 	if($x == 0){
-		$new_routing[$y]['id'] = $list[$i];
+		$new_routing[$y]['id'] = trim($list[$i]);
 		$x++;
 	}
 }
