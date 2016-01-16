@@ -168,7 +168,7 @@ $QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips
 $QUERY "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '150c653456ae3f291bceef18a38b49f331e5d7dd');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '16');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '19');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '20');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_next_check','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_wait_count','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('pbx_default_timezone','Australia/Melbourne');"
@@ -677,6 +677,7 @@ echo "" >> /etc/asterisk/modules.conf
 /bin/echo "load => chan_sip.so" >> /etc/asterisk/modules.conf
 /bin/echo "load => app_authenticate.so" >> /etc/asterisk/modules.conf
 /bin/echo "load => app_db.so" >> /etc/asterisk/modules.conf
+/bin/echo "load => app_exec.so" >> /etc/asterisk/modules.conf
 /bin/echo "load => func_channel.so" >> /etc/asterisk/modules.conf
 /bin/echo "load => func_callerid.so" >> /etc/asterisk/modules.conf
 /bin/echo "load => pbx_config.so" >> /etc/asterisk/modules.conf
