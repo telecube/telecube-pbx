@@ -83,7 +83,6 @@ $exts = $Ext->list_extensions();
 					type_label = "Voip Extension"
 				}
 
-
 				if(id=="") return false;
 				if(desc != ""){
 					desc = "("+desc+")";
@@ -101,9 +100,18 @@ $exts = $Ext->list_extensions();
 
 				$('#lh-tbody-list').append(html);
 
-				$('#linehuntEdit tr').eq($('table#linehuntEdit tr:last').index()+1).effect("highlight", {}, 1000);
+				// this is the new tr object
+				var new_tr = $('#linehuntEdit tr').eq($('table#linehuntEdit tr:last').index()+1);
 
-				$(function(){
+				// highlight the new row
+				new_tr.effect("highlight", {}, 1000);
+
+				// set fixed width on the td in the new row
+				new_tr.find('td').each (function() {
+					$(this).css('width', $(this).width() +'px');
+				});
+
+				new_tr.find('a').each (function() {
 				    $(".timeout").editable({
 				        value: '30',  
 				        source: [
@@ -120,7 +128,6 @@ $exts = $Ext->list_extensions();
 				           ]
 				    });
 				});
-
 			}
 		
 			function save_changes(id){
@@ -225,7 +232,7 @@ $exts = $Ext->list_extensions();
 
 
 				</div>
-				<div class="col-lg-8">
+				<div class="col-lg-7">
 
 
 					<div class="panel panel-default">
@@ -261,29 +268,23 @@ $exts = $Ext->list_extensions();
 				  					echo '<td align="right"><button class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</button></td>';
 				  					echo '</tr>';
 				  				}
-/* 
-				Array
-				(
-				    [id] => 1
-				    [datetime] => 2016-01-16 00:27:41
-				    [name] => test 1
-				    [data] => [{"type":"extension","id":"1002","timeout":"30","description":"1002 (MInnie 3)"},{"type":"extension","id":"1001","timeout":"30","description":"1001 (Suree 2)"}]
-				)
-				var html = '';
-				html += '<tr>';
-				html += '<td style="display:none;">'+type+'</td>';
-				html += '<td style="display:none;">'+id+'</td>';
-				html += '<td width="20%">'+type_label+'</td>';
-				html += '<td width="50%">'+id+' '+desc+'</td>';
-				html += '<td width="20%"><a class="timeout" href="#" id="timeout" data-type="select" data-value="30" data-url="" data-pk="" data-title="Select Timeout"></a></td>';
-				html += '<td align="right" width="10%"><button class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</button></td>';
-				html += '</tr>';
-*/
 					  		?>
 					  		</tbody>
 					  	</table>
 
 					  </div>
+					</div>
+
+				</div>
+				<div class="col-lg-2">
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Trunk Priority</h3>
+						</div>
+						<div class="panel-body">
+							Panel content
+						</div>
 					</div>
 
 				</div>
