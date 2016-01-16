@@ -165,7 +165,6 @@ for($i=0;$i<$j;$i++) {
 			$("#ext_trunk_list_"+ext+" td").each(function() { optionTexts.push($(this).text()) });
 		//	alert(JSON.stringify(optionTexts));
 
-			if(navigator.userAgent.indexOf("Safari") > 0){$.ajaxSetup({async: false});}
 			$.post("/extensions/update-trunk-sorting.php", { ext: ext, arr:  JSON.stringify(optionTexts)},
 				function(data){
 				//	alert(data);
@@ -311,7 +310,7 @@ for($i=0;$i<$j;$i++) {
 
 				</span>
 
-				<a class="btn btn-sm btn-block btn-danger" data-toggle="confirmation" data-title="Really, delete this extension?" data-href="delete.php?ext=<?php echo $sip_devices[$i]['name'];?>" data-original-title="" title="">Delete</a>
+				<a class="btn btn-sm btn-danger" data-toggle="confirmation" data-title="Really, delete this extension?" data-href="delete.php?ext=<?php echo $sip_devices[$i]['name'];?>" data-original-title="" title="">Delete</a>
 
 				</div>
 				</div>

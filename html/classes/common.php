@@ -83,6 +83,34 @@ class Common{
 	    return $str;
 	}
 
+	function html_rows($section, $iteration, $count, $numcols){
+		$iteration = $iteration + 1;
+		
+		if($section == "start"){
+			if($iteration == 1){
+				echo '<div class="row"> <!-- open row //-->'."\n";
+			}
+			echo '<div class="col-lg-'.(12/$numcols).'">'."\n";
+		}
+
+		if($section == "end"){
+			echo '</div>'."\n";
+			// if we are at the nth iteration
+			if($iteration % $numcols === 0){
+				// close and open the row
+				echo '</div> <!-- close row //-->'."\n";
+				if($iteration != $count){
+					echo '<div class="row"> <!-- open row //-->'."\n";
+				}
+			}
+			// if iteration = count close the row
+			if($iteration == $count){
+				echo '</div> <!-- close row //-->'."\n";
+			}
+		}
+	}
+
+
 	// debugging helper
 	function ecco($s){
 		echo "<pre>";

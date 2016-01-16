@@ -219,7 +219,7 @@ $trunks = $Trunk->list_trunks();
 						</span>
 
 						<hr>
-						<a class="btn btn-sm btn-danger btn-block" data-toggle="confirmation" data-title="Really, delete this trunk?" data-href="delete.php?id=<?php echo $trunks[$i]['id'];?>" data-original-title="" title="">Delete Trunk</a>
+						<a class="btn btn-sm btn-danger" data-toggle="confirmation" data-title="Really, delete this trunk?" data-href="delete.php?id=<?php echo $trunks[$i]['id'];?>" data-original-title="" title="">Delete Trunk</a>
 
 					</div>
 					</div>

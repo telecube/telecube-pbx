@@ -1,24 +1,25 @@
 <?php
-$rq_uri = $_SERVER['REQUEST_URI'];
+$rq_uri = trim($_SERVER['REQUEST_URI'],"/");
 
-$dashboard_active = $rq_uri == "/" ? 'class="active"' : "";
-$update_active = strpos($rq_uri, "/update/") !== false ? 'class="active"' : "";
+$dashboard_active = $rq_uri == "" ? 'class="active"' : "";
+$update_active = strpos($rq_uri, "update") !== false ? 'class="active"' : "";
 
 /* Server Settings Nav */
-$server_settings_active_arr = array("/firewall/", "/preferences/", "/manage-services/", "/night-lock/");
+$server_settings_active_arr = array("firewall","preferences","manage-services","night-lock");
 $server_settings_active 	= in_array($rq_uri, $server_settings_active_arr) !== false ? ' active' : ""; 
-$firewall_active 			= strpos($rq_uri, "/firewall/") !== false ? 'class="active"' : ""; 
-$preferences_active 		= strpos($rq_uri, "/preferences/") !== false ? 'class="active"' : ""; 
-$manage_services_active 	= strpos($rq_uri, "/manage-services/") !== false ? 'class="active"' : ""; 
-$debugging_active 			= strpos($rq_uri, "/debugging/") !== false ? 'class="active"' : ""; 
-$nightlock_active 			= strpos($rq_uri, "/night-lock/") !== false ? 'class="active"' : ""; 
+$firewall_active 			= strpos($rq_uri, "firewall") !== false ? 'class="active"' : ""; 
+$preferences_active 		= strpos($rq_uri, "preferences") !== false ? 'class="active"' : ""; 
+$manage_services_active 	= strpos($rq_uri, "manage-services") !== false ? 'class="active"' : ""; 
+$debugging_active 			= strpos($rq_uri, "debugging") !== false ? 'class="active"' : ""; 
+$nightlock_active 			= strpos($rq_uri, "night-lock") !== false ? 'class="active"' : ""; 
 
 /* PBX Settings Nav */
-$pbx_settings_active_arr 	= array("/extensions/", "/trunks/", "/dids/");
+$pbx_settings_active_arr 	= array("extensions","trunks","dids","line-hunt","line-hunt/edit.php");
 $pbx_settings_active 		= in_array($rq_uri, $pbx_settings_active_arr) !== false ? ' active' : ""; 
-$extensions_active 			= strpos($rq_uri, "/extensions/") !== false ? 'class="active"' : ""; 
-$trunks_active 				= strpos($rq_uri, "/trunks/") !== false ? 'class="active"' : ""; 
-$dids_active 				= strpos($rq_uri, "/dids/") !== false ? 'class="active"' : ""; 
+$extensions_active 			= strpos($rq_uri, "extensions") !== false ? 'class="active"' : ""; 
+$trunks_active 				= strpos($rq_uri, "trunks") !== false ? 'class="active"' : ""; 
+$dids_active 				= strpos($rq_uri, "dids") !== false ? 'class="active"' : ""; 
+$linehunt_active 			= strpos($rq_uri, "line-hunt") !== false ? 'class="active"' : ""; 
 
 
 ?>
@@ -44,7 +45,7 @@ $dids_active 				= strpos($rq_uri, "/dids/") !== false ? 'class="active"' : "";
 						<li <?php echo $dids_active;?>><a href="/dids/">DIDs</a></li>
 						<li role="separator" class="divider"></li>
 						<li class="dropdown-header">PBX Features</li>
-						<li><a href="#">Line Hunt Group</a></li>
+						<li <?php echo $linehunt_active;?>><a href="/line-hunt/">Line Hunt Group</a></li>
 						<li><a href="#">Ring Group (Queue)</a></li>
 						<li><a href="#">Auto Attendant (IVR)</a></li>
 						<li><a href="#">Time Based Rules</a></li>

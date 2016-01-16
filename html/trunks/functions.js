@@ -4,7 +4,7 @@ function list_types(){
 	return [
               {value: "", text: 'None'},
               {value: "extension", text: 'Extension'},
-              {value: "linehunt", text: 'Line Hunt Group', disabled: true},
+              {value: "linehunt", text: 'Line Hunt Group'},
               {value: "queue", text: 'Ring Group (Queue)', disabled: true},
               {value: "ivr", text: 'Auto Attendant (IVR)', disabled: true},
               {value: "timebased", text: 'Time Based Rules', disabled: true},
