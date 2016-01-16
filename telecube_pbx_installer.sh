@@ -167,7 +167,7 @@ $QUERY "insert into telecube.preferences (name, value) values ('fw_https_ports',
 $QUERY "insert into telecube.preferences (name, value) values ('fw_whitelist_ips', '[\"103.193.166.0/23\"]');"
 $QUERY "insert into telecube.preferences (name, value) values ('fw_blacklist_ips', '[]');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_git', '150c653456ae3f291bceef18a38b49f331e5d7dd');"
-$QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '16');"
+$QUERY "insert into telecube.preferences (name, value) values ('current_version_db', '18');"
 $QUERY "insert into telecube.preferences (name, value) values ('current_version_system', '20');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_next_check','1');"
 $QUERY "insert into telecube.preferences (name, value) values ('update_wait_count','1');"
@@ -406,6 +406,8 @@ $QUERY "ALTER TABLE telecube.trunks ADD register_status varchar(16) NOT NULL;"
 $QUERY "ALTER TABLE telecube.trunks ADD PRIMARY KEY (id);"
 $QUERY "ALTER TABLE telecube.trunks MODIFY id int(10) NOT NULL AUTO_INCREMENT;"
 $QUERY "ALTER TABLE telecube.trunks ADD UNIQUE KEY name (name);"
+$QUERY "ALTER TABLE telecube.trunks ADD def_inbound_type varchar(16) NOT NULL;"
+$QUERY "ALTER TABLE telecube.trunks ADD def_inbound_id varchar(16) NOT NULL;"
 
 # create update log db
 $QUERY "CREATE TABLE IF NOT EXISTS telecube.logging_updates (
@@ -447,6 +449,16 @@ $QUERY "CREATE TABLE IF NOT EXISTS telecube.asterisk_messages_logs (
 	PRIMARY KEY  (id)
 );"
 $QUERY "ALTER TABLE telecube.asterisk_messages_logs ADD KEY datetime (datetime);"
+
+# create linehunt table
+$QUERY "CREATE TABLE IF NOT EXISTS telecube.linehunt (
+	id int(10) unsigned NOT NULL auto_increment,
+	datetime datetime NOT NULL,
+	name varchar(64) NOT NULL,
+	data text NOT NULL,
+	PRIMARY KEY  (id)
+);"
+
 
 # set sudoers permissions
 echo "# Telecube PBX Sudoers permissions" > /etc/sudoers.d/telecube-sudo
@@ -768,6 +780,10 @@ crontab -l | { cat; echo "*	*	*	*	*	/usr/bin/php /var/www/html/auto/run.php >/de
 echo "\n\nDone!"
 echo "#########################################"
 echo "You can log in to your server at the following address(es)"
+
+if [ "$EXTERNALIP" != "$PBX_IP" ]; then
+	echo "https://$EXTERNALIP/login.php"
+fi
 
 HOST_IP=$(ifconfig | awk -F':' '/inet addr/&&!/127.0.0.1/{split($2,_," ");print _[1]}')
 arr=$(echo $HOST_IP | tr " " "\n")
