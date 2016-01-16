@@ -28,21 +28,15 @@ $exts = $Ext->list_extensions();
 		<script type="text/javascript">
 			$(document).ready(function() {
 
-
-			    $( "#lh-tbody-list" ).sortable({ 
+			    $( "#linehuntEdit > tbody" ).sortable({ 
 		    		cursor: "crosshair",
-		    		update: function( event, ui ){ $('#lh-tbody-list tr').eq(ui.item.index()).effect("highlight", {color: "Moccasin"}, 1000); } 
+		    		update: function( event, ui ){ $('#linehuntEdit > tbody tr').eq(ui.item.index()).effect("highlight", {color: "Moccasin"}, 1000); } 
 			    });
-			    $( "#lh-tbody-list" ).disableSelection();
+			    $( "#linehuntEdit > tbody" ).disableSelection();
 
-				
-
-
-			    $('td').each(function(){
+				$('#linehuntEdit > tbody  > tr > td').each(function(){
 			        $(this).css('width', $(this).width() +'px');
 			    });
-
-
 
 				$("#linehuntEdit").on('click', '.btn-danger', function () {
 				   var tr = $(this).closest('tr');
@@ -98,15 +92,17 @@ $exts = $Ext->list_extensions();
 				html += '<td align="right"><button class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</button></td>';
 				html += '</tr>';
 
-				$('#lh-tbody-list').append(html);
+				$('#linehuntEdit > tbody').append(html);
 
 				// this is the new tr object
-				var new_tr = $('#linehuntEdit tr').eq($('table#linehuntEdit tr:last').index()+1);
+				var new_tr = $('#linehuntEdit tr').eq($('#linehuntEdit > tbody tr:last').index()+1);
+
+				new_tr.hide().fadeIn();
 
 				// highlight the new row
 				new_tr.effect("highlight", {}, 1000);
 
-				// set fixed width on the td in the new row
+				// set fixed width on the td elements in the new row
 				new_tr.find('td').each (function() {
 					$(this).css('width', $(this).width() +'px');
 				});
