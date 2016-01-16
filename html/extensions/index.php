@@ -250,6 +250,14 @@ for($i=0;$i<$j;$i++) {
 					</div>
 				</div>
 
+				<div class="col-lg-4">
+					<div class="panel panel-default">
+						<div class="panel-heading"> 
+							<h3 class="panel-title">External IP Address: <?php echo $Common->get_pref("pbx_nat_external_ip");?></h3> 
+						</div> 
+					</div>
+				</div>
+
 			</div>
 
 
