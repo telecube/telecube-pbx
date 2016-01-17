@@ -46,13 +46,14 @@ $linehunt_active 			= strpos($rq_uri, "line-hunt") !== false ? 'class="active"' 
 						<li role="separator" class="divider"></li>
 						<li class="dropdown-header">PBX Features</li>
 						<li <?php echo $linehunt_active;?>><a href="/line-hunt/"><span class="glyphicon glyphicon-retweet"></span> Line Hunt Group</a></li>
-						<li><a href="#"><span class="glyphicon glyphicon-list"></span> Ring Group (Queue)</a></li>
-						<li><a href="#"><span class="glyphicon glyphicon-bullhorn"></span> Auto Attendant (IVR)</a></li>
-						<li><a href="#"><span class="glyphicon glyphicon-time"></span> Time Based Rules</a></li>
+						<li class="disabled"><a href="#"><span class="glyphicon glyphicon-list"></span> Ring Group (Queue)</a></li>
+						<li class="disabled"><a href="#"><span class="glyphicon glyphicon-bullhorn"></span> Auto Attendant (IVR)</a></li>
+						<li class="disabled"><a href="#"><span class="glyphicon glyphicon-time"></span> Time Based Rules</a></li>
 						<li role="separator" class="divider"></li>
-						<li><a href="#"><span class="glyphicon glyphicon-music"></span> Music On Hold</a></li>
-						<li><a href="#"><span class="glyphicon glyphicon-unchecked"></span>Busy Lamp Field</a></li>
-						<li><a href="#"><span class="glyphicon glyphicon-book"></span> Address Book</a></li>
+						<li class="disabled"><a href="#"><span class="glyphicon glyphicon-music"></span> Music On Hold</a></li>
+						<li class="disabled"><a href="#"><span class="glyphicon glyphicon-envelope"></span> Voicemail</a></li>
+						<li class="disabled"><a href="#"><span class="glyphicon glyphicon-unchecked"></span>Busy Lamp Field</a></li>
+						<li class="disabled"><a href="#"><span class="glyphicon glyphicon-book"></span> Address Book</a></li>
 					</ul>
 				</li>
 				<li class="dropdown <?php echo $server_settings_active;?>">
