@@ -12,6 +12,13 @@ class Trunk{
 		return $trunk[0]['name'];
 	}
 
+	function get_registered(){
+		global $Db, $dbPDO;
+		$q = "select name from trunks where register_status = ?;";
+		$trunks = $Db->query($q, array("Registered"), $dbPDO);
+		return $trunks;
+	}
+
 	function get_active_status($id){
 		global $Db, $dbPDO;
 		$q = "select active from trunks where id = ?;";
