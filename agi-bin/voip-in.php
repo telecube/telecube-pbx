@@ -39,9 +39,12 @@ if($def_route["type"] == "linehunt"){
 			$Agi->dial($callto, $timeout, "SIP");
 			$dialstat = $Channel->dialstatus();
 								$Agi->verbose("Dialstatus: ".$dialstat);
+			// if the call was answered break from the linehunt
 			if($dialstat == "ANSWER"){
 				break;
 			}
+			// skip any more tests in this iteration
+			continue;
 		}
 
 		if($type == "external"){
@@ -60,12 +63,20 @@ if($def_route["type"] == "linehunt"){
 				$Agi->dial($callto."@".$trunks[$ii]['name'], $timeout, "SIP");
 				$dialstat = $Channel->dialstatus();
 									$Agi->verbose("Dialstatus: ".$dialstat);
-				if($dialstat == "ANSWER"){
-					break 2;
+				// if the trunk allowed the call then we break from thw trunk list
+				if($dialstat != "CHANUNAVAIL" && $dialstat != "CONGESTION"){
+					break;
 				}
 			}
-
+			// if the call was answered break from the linehunt
+			if($dialstat == "ANSWER"){
+				break;
+			}
+			// skip any more tests in this iteration
+			continue;
 		}
+
+
 
 	}
 
