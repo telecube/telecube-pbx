@@ -45,6 +45,7 @@ if($field == "active"){
 		$ipStr .= "host=".$res[$i]['host_address']."\n";
 		$ipStr .= "username=".$res[$i]['username']."\n";
 		$ipStr .= "secret=".$res[$i]['password']."\n";
+		$ipStr .= "fromuser=".$res[$i]['username']."\n";
 		$ipStr .= "context=voip-trunks\n";
 		$ipStr .= "insecure=port,invite\n";
 		$ipStr .= "allow=all\n";
