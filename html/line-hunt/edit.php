@@ -88,19 +88,18 @@ $exts = $Ext->list_extensions();
 				html += '<td style="display:none;">'+id+'</td>';
 				html += '<td>'+type_label+'</td>';
 				html += '<td>'+id+' '+desc+'</td>';
-				html += '<td><a class="timeout" href="#" id="timeout" data-type="select" data-value="30" data-url="" data-pk="" data-title="Select Timeout"></a></td>';
+				html += '<td><a class="timeout" href="#" id="timeout" data-type="select" data-url="" data-pk="" data-title="Select Timeout"></a></td>';
 				html += '<td align="right"><button class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</button></td>';
 				html += '</tr>';
 
 				$('#linehuntEdit > tbody').append(html);
 
 				// this is the new tr object
-				var new_tr = $('#linehuntEdit tr').eq($('#linehuntEdit > tbody tr:last').index()+1);
+				//var new_tr = $('#linehuntEdit tr').eq($('#linehuntEdit > tbody tr:last').index()+1);
+				var new_tr = $("#linehuntEdit tr").eq( -1 );
 
-				new_tr.hide().fadeIn();
-
-				// highlight the new row
-				new_tr.effect("highlight", {}, 1000);
+				// for effect .. hide, fade in and highlight the new row
+				new_tr.hide().fadeIn("fast").effect("highlight", { }, 1000);
 
 				// set fixed width on the td elements in the new row
 				new_tr.find('td').each (function() {

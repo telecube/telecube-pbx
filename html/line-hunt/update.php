@@ -22,7 +22,7 @@ for($i=0;$i<$j;$i++) {
 	}
 
 	$type 			= $data[$i][0];
-	$id 			= $data[$i][1];
+	$id 			= trim($data[$i][1]);
 	$timeout		= trim(str_ireplace("seconds", "", $data[$i][4]));
 	$description 	= $data[$i][3];
 

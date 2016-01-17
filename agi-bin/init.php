@@ -1,18 +1,22 @@
 <?php
 require("classes/_autoloader.php");
 use Telecube\CubeAgi;
+use Telecube\Channel;
 use Telecube\Common;
 use Telecube\Config;
 use Telecube\Db;
 use Telecube\Exten;
+use Telecube\Linehunt;
 use Telecube\Trunk;
 
-$Agi 	= new CubeAgi;
-$Common = new Common;
-$Config = new Config;
-$Db 	= new Db;
-$Exten 	= new Exten;
-$Trunk 	= new Trunk;
+$Agi 			= new CubeAgi;
+$Channel 		= new Channel;
+$Common 		= new Common;
+$Config 		= new Config;
+$Db 			= new Db;
+$Exten 			= new Exten;
+$Linehunt 		= new Linehunt;
+$Trunk 			= new Trunk;
 
 $calleridnum    = $Agi->request['agi_callerid'];
 $callerid       = $Agi->request['agi_callerid'];
