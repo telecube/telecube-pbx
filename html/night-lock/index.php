@@ -14,7 +14,7 @@ require("../init.php");
 
 		<div class="container">
 
-			<h1>Night Lock</h1>
+			<h1><span class="glyphicon glyphicon-lock"></span> Night Lock</h1>
 			<div class="well">
 				<p>Most cases of toll fraud happen when you are asleep. Use this screen to lock down the PBX at night so no outbound calls are allowed.</p>
 			</div>

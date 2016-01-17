@@ -159,7 +159,7 @@ $exts = $Ext->list_extensions();
 
 		<div class="container">
 
-			<h1>Edit Line Hunt - <?php echo $lh['name'];?></h1>
+			<h1><span class="glyphicon glyphicon-retweet"></span> Line Hunt Group <small>Editing: <?php echo $lh['name'];?></small></h1>
 			<div class="well">
 				<p>Add services onto the Line Hunt and drag to sort them into the order of priority. Use the delete button to remove it from the list.</p>
 			</div>

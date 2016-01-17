@@ -38,7 +38,7 @@ if($system_info["public_address"] != $system_info["pbx_nat_external_ip"]){
 
 		<div class="container">
 
-			<h1>Debugging</h1>
+			<h1><span class="glyphicon glyphicon-console"></span> Debugging</h1>
 			
 			<div class="row">
 				<div class="col-lg-7">

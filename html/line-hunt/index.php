@@ -26,7 +26,7 @@ $lh = $Linehunt->get_list();
 
 		<div class="container">
 
-			<h1>Line Hunt Group</h1>
+			<h1><span class="glyphicon glyphicon-retweet"></span> Line Hunt Group</h1>
 			<div class="well">
 				<p>A Line Hunt Group allows you to set calls to overflow through a series of extensions until answered.</p>
 			</div>

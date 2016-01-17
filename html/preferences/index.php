@@ -84,7 +84,7 @@ require("../init.php");
 
 		<div class="container">
 
-			<h1>Preferences</h1>
+			<h1><span class="glyphicon glyphicon-compressed"></span> Preferences</h1>
 			<div class="well">
 				<p>Configure preference options here.</p>
 			</div>

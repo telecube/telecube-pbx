@@ -14,7 +14,7 @@ require("../init.php");
 
 		<div class="container">
 
-			<h1>DIDs (Numbers)</h1>
+			<h1><span class="glyphicon glyphicon-random"></span> DIDs (Numbers)</h1>
 			
 			<div class="well">
 				<p>Adding DIDs (Numbers) to the system allows you to receive calls from voip providers that are hosting those numbers for you.</p>

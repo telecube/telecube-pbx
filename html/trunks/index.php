@@ -90,7 +90,7 @@ $trunks = $Trunk->list_trunks();
 
 		<div class="container">
 
-			<h1>Trunks</h1>
+			<h1><span class="glyphicon glyphicon-transfer"></span> Trunks</h1>
 			<div class="well">
 				<p>Trunks are the connections between this PBX server and voip providers or other servers.</p>
 			</div>

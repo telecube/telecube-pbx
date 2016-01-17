@@ -97,7 +97,7 @@ $fw_whitelist_ips = json_decode($fw_whitelist_ips);
 
 		<div class="container">
 
-			<h1>Firewall</h1>
+			<h1><span class="glyphicon glyphicon-fire"></span> Firewall</h1>
 			<div class="well">
 				<p>Configure firewall options here.</p>
 			</div>

@@ -25,7 +25,7 @@ $eventmon_running = $Server->ami_eventmon_running();
 
 		<div class="container">
 
-			<h1>Manage Services</h1>
+			<h1><span class="glyphicon glyphicon-cog"></span> Manage Services</h1>
 			
 			<div class="well">
 				<p>Manage system services here.</p>

@@ -32,41 +32,41 @@ $linehunt_active 			= strpos($rq_uri, "line-hunt") !== false ? 'class="active"' 
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/">Telecube PBX</a>
+			<a class="navbar-brand" href="/"><span class="glyphicon glyphicon-home"></span> Telecube PBX</a>
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li <?php echo $dashboard_active;?>><a href="/">Dashboard</a></li>
+				<li <?php echo $dashboard_active;?>><a href="/"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
 				<li class="dropdown  <?php echo $pbx_settings_active;?>">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">PBX Settings <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-phone-alt"></span> PBX Settings <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li <?php echo $extensions_active;?>><a href="/extensions/">Extensions</a></li>
-						<li <?php echo $trunks_active;?>><a href="/trunks/">Trunks</a></li>
-						<li <?php echo $dids_active;?>><a href="/dids/">DIDs</a></li>
+						<li <?php echo $extensions_active;?>><a href="/extensions/"><span class="glyphicon glyphicon-earphone"></span> Extensions</a></li>
+						<li <?php echo $trunks_active;?>><a href="/trunks/"><span class="glyphicon glyphicon-transfer"></span> Trunks</a></li>
+						<li <?php echo $dids_active;?>><a href="/dids/"><span class="glyphicon glyphicon-random"></span> DIDs</a></li>
 						<li role="separator" class="divider"></li>
 						<li class="dropdown-header">PBX Features</li>
-						<li <?php echo $linehunt_active;?>><a href="/line-hunt/">Line Hunt Group</a></li>
-						<li><a href="#">Ring Group (Queue)</a></li>
-						<li><a href="#">Auto Attendant (IVR)</a></li>
-						<li><a href="#">Time Based Rules</a></li>
+						<li <?php echo $linehunt_active;?>><a href="/line-hunt/"><span class="glyphicon glyphicon-retweet"></span> Line Hunt Group</a></li>
+						<li><a href="#"><span class="glyphicon glyphicon-list"></span> Ring Group (Queue)</a></li>
+						<li><a href="#"><span class="glyphicon glyphicon-bullhorn"></span> Auto Attendant (IVR)</a></li>
+						<li><a href="#"><span class="glyphicon glyphicon-time"></span> Time Based Rules</a></li>
 						<li role="separator" class="divider"></li>
-						<li><a href="#">Music On Hold</a></li>
-						<li><a href="#">Busy Lamp Field</a></li>
-						<li><a href="#">Address Book</a></li>
+						<li><a href="#"><span class="glyphicon glyphicon-music"></span> Music On Hold</a></li>
+						<li><a href="#"><span class="glyphicon glyphicon-unchecked"></span>Busy Lamp Field</a></li>
+						<li><a href="#"><span class="glyphicon glyphicon-book"></span> Address Book</a></li>
 					</ul>
 				</li>
 				<li class="dropdown <?php echo $server_settings_active;?>">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Server Settings <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-hdd"></span> Server Settings <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li <?php echo $firewall_active;?>><a href="/firewall/">Firewall</a></li>
-						<li <?php echo $preferences_active;?>><a href="/preferences/">Preferences</a></li>
-						<li <?php echo $manage_services_active;?>><a href="/manage-services/">Manage Services</a></li>
-						<li <?php echo $nightlock_active;?>><a href="/night-lock/">Night Lock</a></li>
-						<li <?php echo $debugging_active;?>><a href="/debugging/">Debugging</a></li>
+						<li <?php echo $firewall_active;?>><a href="/firewall/"><span class="glyphicon glyphicon-fire"></span> Firewall</a></li>
+						<li <?php echo $preferences_active;?>><a href="/preferences/"><span class="glyphicon glyphicon-compressed"></span>Preferences</a></li>
+						<li <?php echo $manage_services_active;?>><a href="/manage-services/"><span class="glyphicon glyphicon-cog"></span> Manage Services</a></li>
+						<li <?php echo $nightlock_active;?>><a href="/night-lock/"><span class="glyphicon glyphicon-lock"></span> Night Lock</a></li>
+						<li <?php echo $debugging_active;?>><a href="/debugging/"><span class="glyphicon glyphicon-console"></span> Debugging</a></li>
 					</ul>
 				</li>
-				<li <?php echo $update_active;?>><a href="/update/">Update <span class="badge"><?php echo $update_wait_count == 0 ? "" : $update_wait_count;?></span></a></li>
-				<li><a href="/logout.php">Logout</a></li>
+				<li <?php echo $update_active;?>><a href="/update/"><span class="glyphicon glyphicon-save"></span> Update <span class="badge"><?php echo $update_wait_count == 0 ? "" : $update_wait_count;?></span></a></li>
+				<li><a href="/logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 			</ul>
 		</div><!--/.nav-collapse -->
 	</div>

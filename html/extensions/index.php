@@ -193,7 +193,7 @@ for($i=0;$i<$j;$i++) {
 
 		<div class="container">
 
-			<h1>Extensions</h1>
+			<h1><span class="glyphicon glyphicon-earphone"></span> Extensions</h1>
 			
 			<div class="well">
 				<p>Extensions are the points on this PBX server that your voip devices connect to.</p>
