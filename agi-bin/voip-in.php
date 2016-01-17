@@ -28,9 +28,10 @@ if($def_route["type"] == "linehunt"){
 //							$Agi->verbose("Def Route: ".json_encode($lhdata));
 	$j = count($lhdata);
 	for($i=0;$i<$j;$i++) { 
-		$type 		= $lhdata[$i]['type'];
-		$callto 	= trim($lhdata[$i]['id']);
-		$timeout 	= $lhdata[$i]['timeout'];
+		$type 			= $lhdata[$i]['type'];
+		$callto 		= trim($lhdata[$i]['id']);
+		$timeout 		= $lhdata[$i]['timeout'];
+		$trunk_order	= explode("|", $lhdata[$i]['trunk_order']);
 //								$Agi->verbose("Type: ".$lhdata[$i]['type']);
 //								$Agi->verbose("ID: ".$lhdata[$i]['id']);
 //								$Agi->verbose("Timeout: ".$lhdata[$i]['timeout']);
@@ -44,8 +45,16 @@ if($def_route["type"] == "linehunt"){
 		}
 
 		if($type == "external"){
-			// get registered trunks
-			$trunks = $Trunk->get_registered();
+			// get the trunks
+			if($trunk_order[0] == "any"){
+				$trunks = $Trunk->get_registered();
+			}else{
+				$trunks = array();
+				$jj = count($trunk_order);
+				for($ii=0;$ii<$jj;$ii++) { 
+					$trunks[] = $Trunk->get_from_id($trunk_order[$ii]);
+				}
+			}
 			$jj = count($trunks);
 			for($ii=0;$ii<$jj;$ii++) { 
 				$Agi->dial($callto."@".$trunks[$ii]['name'], $timeout, "SIP");

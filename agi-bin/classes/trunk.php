@@ -5,6 +5,13 @@ namespace Telecube;
 
 class Trunk{
 
+	function get_from_id($id){
+		global $Db, $dbPDO;
+		$q = "select * from trunks where id = ?;";
+		$trunk = $Db->query($q, array($id), $dbPDO);
+		return $trunk[0];
+	}
+
 	function get_active(){
 		global $Db, $dbPDO;
 		$q = "select name from trunks where active = ? order by rand() limit 1;";
