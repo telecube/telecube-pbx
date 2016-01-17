@@ -23,10 +23,11 @@ for($i=0;$i<$j;$i++) {
 
 	$type 			= $data[$i][0];
 	$id 			= trim($data[$i][1]);
-	$timeout		= trim(str_ireplace("seconds", "", $data[$i][4]));
-	$description 	= $data[$i][3];
+	$trunk_order	= trim($data[$i][2]);
+	$timeout		= trim(str_ireplace("seconds", "", $data[$i][5]));
+	$description 	= $data[$i][4];
 
-	$lhList[] = array("type"=>$type, "id"=>$id, "timeout"=>$timeout, "description"=>$description);
+	$lhList[] = array("type"=>$type, "id"=>$id, "timeout"=>$timeout, "trunk_order"=>$trunk_order, "description"=>$description);
 
 }
 
