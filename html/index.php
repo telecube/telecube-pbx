@@ -97,7 +97,7 @@ function get_server_memory_usage(){
 
 		<div class="container">
 
-			<h1>Telecube Cloud PBX</h1>
+			<h1><span class="glyphicon glyphicon-dashboard"></span> Telecube Cloud PBX</h1>
 			
 			<?php echo "<p>".date("H:i:s")."</p>";?>
 
