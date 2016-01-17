@@ -58,7 +58,7 @@ $linehunt_active 			= strpos($rq_uri, "line-hunt") !== false ? 'class="active"' 
 				<li class="dropdown <?php echo $server_settings_active;?>">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-hdd"></span> Server Settings <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li <?php echo $firewall_active;?>><a href="/firewall/"><span class="glyphicon glyphicon-fire"></span> Firewall</a></li>
+						<li <?php echo $firewall_active;?>><a href="/firewall/"><span class="glyphicon glyphicon-fire text-danger"></span> Firewall</a></li>
 						<li <?php echo $preferences_active;?>><a href="/preferences/"><span class="glyphicon glyphicon-compressed"></span>Preferences</a></li>
 						<li <?php echo $manage_services_active;?>><a href="/manage-services/"><span class="glyphicon glyphicon-cog"></span> Manage Services</a></li>
 						<li <?php echo $nightlock_active;?>><a href="/night-lock/"><span class="glyphicon glyphicon-lock"></span> Night Lock</a></li>
