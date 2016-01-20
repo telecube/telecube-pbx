@@ -6,7 +6,6 @@ require("../init.php");
 
 if(file_exists("/opt/telecube-pbx/html")){
 
-#	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ pull", $gOut, $return_var0);
 	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ fetch origin master", $gfOut1, $return_var0);
 	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ reset --hard FETCH_HEAD", $grOut1, $return_var00);
 
