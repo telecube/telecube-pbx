@@ -47,6 +47,19 @@ class Common{
 		return $commit_id;
 	}
 
+	function git_check_update(){
+
+
+
+		/* 
+		Updating 8489e51..3d55e02
+		error: Your local changes to the following files would be overwritten by merge:
+			functions/inb-13-18.php
+		Please, commit your changes or stash them before you can merge.
+		Aborting
+		*/
+	}
+
 	function system_update($com, $v){
 		global $Db, $dbPDO;
 		

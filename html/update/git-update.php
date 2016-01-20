@@ -6,7 +6,12 @@ require("../init.php");
 
 if(file_exists("/opt/telecube-pbx/html")){
 
-	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ pull", $gOut, $return_var0);
+#	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ pull", $gOut, $return_var0);
+	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ fetch origin master", $gfOut1, $return_var0);
+	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ reset --hard FETCH_HEAD", $grOut1, $return_var00);
+#	/usr/bin/git -C /opt/asterisk-inbound-original/ fetch origin master
+#	/usr/bin/git -C /opt/asterisk-inbound-original/ reset --hard FETCH_HEAD
+#	/usr/bin/git -C /opt/asterisk-inbound-original/ clean -df
 
 	// get the latest commit id after the pull
 	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ log -1", $gl2Out, $return_var0a);
