@@ -31,6 +31,7 @@ fi
 # remove installed packages
 apt-get purge -y asterisk*
 apt-get purge -y nginx*
+apt-get purge -y nginx-*
 apt-get purge -y mysql-server*
 apt-get purge -y mysql*
 apt-get purge -y php5*

@@ -79,6 +79,9 @@ fi
 # restart ssh
 /etc/init.d/ssh restart
 
+# make sure aptitude is installed
+apt-get install -y aptitude
+
 if [ ! -f /etc/apt/sources.list.d/nginx-stable.list ]; then
 	echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/nginx-stable.list 
 	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C 

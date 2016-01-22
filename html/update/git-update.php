@@ -9,6 +9,11 @@ if(file_exists("/opt/telecube-pbx/html")){
 	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ fetch origin master", $gfOut1, $return_var0);
 	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ reset --hard FETCH_HEAD", $grOut1, $return_var00);
 
+	/* 
+		to get latest tags from github:
+		git fetch
+	*/
+	
 	// get the latest commit id after the pull
 	$res = exec("sudo /usr/bin/git -C /opt/telecube-pbx/ log -1", $gl2Out, $return_var0a);
 	$thiscmtid = $Common->git_commit_id_from_log($gl2Out);
